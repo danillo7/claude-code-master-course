@@ -13,7 +13,8 @@ import {
   Code, Sparkles, Award, Hammer, ChevronRight, ChevronDown,
   Moon, Sun, BookOpen, Trophy, Flame, Bell, Search, Menu,
   CheckCircle2, Circle, Lock, Play, Clock, Star, Target,
-  ArrowRight, Bookmark, FileText, BarChart3, Monitor, Check
+  ArrowRight, Bookmark, FileText, BarChart3, Monitor, Check,
+  LogOut, Mail, Calendar
 } from 'lucide-react';
 import { NewsTicker, TrendsSection } from './components/NewsAndTrends';
 import './index.css';
@@ -300,10 +301,129 @@ function ThemeSelector() {
 }
 
 // ============================================================================
+// USER MENU COMPONENT
+// ============================================================================
+
+function UserMenu({ profile, onLogout }: { profile: UserProfile; onLogout: () => void }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const stats = useCourseStore((s) => s.stats);
+  const level = getLevelFromXp(stats.totalXp);
+
+  const handleLogout = () => {
+    if (confirm('Tem certeza que deseja sair? Seu progresso será mantido.')) {
+      onLogout();
+    }
+  };
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-9 h-9 bg-gradient-to-br from-indigo-500 to-emerald-500
+                   rounded-full flex items-center justify-center text-white font-bold
+                   hover:ring-2 hover:ring-indigo-300 dark:hover:ring-indigo-600 transition-all"
+        title="Menu do usuário"
+      >
+        {profile.name.charAt(0).toUpperCase()}
+      </button>
+
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setIsOpen(false)}
+          />
+          {/* Dropdown */}
+          <div className="absolute right-0 top-full mt-2 w-72 bg-white dark:bg-slate-900
+                         border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl
+                         overflow-hidden z-50 animate-fade-in">
+            {/* Profile Header */}
+            <div className="p-4 bg-gradient-to-br from-indigo-500 to-violet-600">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                  {profile.name.charAt(0).toUpperCase()}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-white truncate">{profile.name}</div>
+                  <div className="text-sm text-indigo-100 flex items-center gap-1">
+                    <span>{level.icon}</span>
+                    <span>{level.name}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center gap-2">
+                <span className="inline-flex items-center gap-1 px-2 py-1 bg-white/20 rounded text-xs text-white font-medium">
+                  <Trophy className="w-3 h-3" /> {stats.totalXp} XP
+                </span>
+                {stats.streak.current > 0 && (
+                  <span className="inline-flex items-center gap-1 px-2 py-1 bg-orange-500/30 rounded text-xs text-white font-medium">
+                    <Flame className="w-3 h-3" /> {stats.streak.current} dias
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Profile Info */}
+            <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+              {profile.email && (
+                <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-2">
+                  <Mail className="w-4 h-4" />
+                  <span className="truncate">{profile.email}</span>
+                </div>
+              )}
+              <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 mb-2">
+                <Calendar className="w-4 h-4" />
+                <span>Desde {new Date(profile.createdAt).toLocaleDateString('pt-BR')}</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
+                <Clock className="w-4 h-4" />
+                <span>Meta: {profile.dailyGoalMinutes} min/dia</span>
+              </div>
+            </div>
+
+            {/* Stats Summary */}
+            <div className="p-3 border-b border-slate-200 dark:border-slate-700">
+              <div className="grid grid-cols-3 gap-2 text-center">
+                <div className="p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                  <div className="text-lg font-bold text-indigo-500">{stats.lessonsCompleted}</div>
+                  <div className="text-[10px] text-slate-500">Lições</div>
+                </div>
+                <div className="p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                  <div className="text-lg font-bold text-emerald-500">{stats.totalXp}</div>
+                  <div className="text-[10px] text-slate-500">XP Total</div>
+                </div>
+                <div className="p-2 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                  <div className="text-lg font-bold text-violet-500">{stats.badges.length}</div>
+                  <div className="text-[10px] text-slate-500">Badges</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="p-2">
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+                          text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20
+                          transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                <span className="font-medium">Sair da conta</span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
 // HEADER COMPONENT
 // ============================================================================
 
-function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSidebar: () => void }) {
+function Header({ profile, toggleSidebar, onLogout }: { profile: UserProfile; toggleSidebar: () => void; onLogout: () => void }) {
   const { greeting, weather } = useGreetingAndWeather();
   const { formatted } = useCurrentTime();
   const stats = useCourseStore((s) => s.stats);
@@ -397,10 +517,7 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
 
         <ThemeSelector />
 
-        <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-emerald-500
-                       rounded-full flex items-center justify-center text-white font-bold">
-          {profile.name.charAt(0).toUpperCase()}
-        </div>
+        <UserMenu profile={profile} onLogout={onLogout} />
       </div>
     </header>
   );
@@ -1014,6 +1131,12 @@ function App() {
     setProfile(newProfile);
   };
 
+  const handleLogout = () => {
+    // Remove profile from localStorage (keeps course progress in store)
+    localStorage.removeItem('claude-code-course-profile');
+    setProfile(null);
+  };
+
   // Show onboarding if no profile
   if (!profile) {
     return <Onboarding onComplete={handleOnboarding} />;
@@ -1040,7 +1163,7 @@ function App() {
         />
 
         <div className="flex-1 flex flex-col min-w-0">
-          <Header profile={profile} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
+          <Header profile={profile} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} onLogout={handleLogout} />
 
           <main className="flex-1 overflow-y-auto">
           {currentLesson ? (
