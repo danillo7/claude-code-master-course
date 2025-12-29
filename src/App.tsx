@@ -13,7 +13,7 @@ import {
   Code, Sparkles, Award, Hammer, ChevronRight, ChevronDown,
   Moon, Sun, BookOpen, Trophy, Flame, Bell, Search, Menu,
   CheckCircle2, Circle, Lock, Play, Clock, Star, Target,
-  ArrowRight, Bookmark, FileText, BarChart3
+  ArrowRight, Bookmark, FileText, BarChart3, Monitor, Check
 } from 'lucide-react';
 import { NewsTicker, TrendsSection } from './components/NewsAndTrends';
 import './index.css';
@@ -222,6 +222,84 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
 }
 
 // ============================================================================
+// THEME SELECTOR COMPONENT
+// ============================================================================
+
+function ThemeSelector() {
+  const [isOpen, setIsOpen] = useState(false);
+  const settings = useCourseStore((s) => s.settings);
+  const updateSettings = useCourseStore((s) => s.updateSettings);
+
+  const themes = [
+    { id: 'light', label: 'Claro', icon: Sun, desc: 'Tema claro' },
+    { id: 'dark', label: 'Escuro', icon: Moon, desc: 'Tema escuro' },
+    { id: 'system', label: 'Sistema', icon: Monitor, desc: 'Seguir sistema' },
+  ] as const;
+
+  const currentTheme = themes.find((t) => t.id === settings.theme) || themes[2];
+  const CurrentIcon = currentTheme.icon;
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg transition-colors
+                   flex items-center gap-1"
+        title={`Tema: ${currentTheme.label}`}
+      >
+        <CurrentIcon className="w-5 h-5" />
+      </button>
+
+      {isOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setIsOpen(false)}
+          />
+          {/* Dropdown */}
+          <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-dark-900
+                         border border-dark-200 dark:border-dark-700 rounded-xl shadow-xl
+                         overflow-hidden z-50 animate-fade-in">
+            <div className="p-2">
+              <div className="text-xs font-medium text-dark-500 px-3 py-2">
+                Aparência
+              </div>
+              {themes.map((theme) => {
+                const Icon = theme.icon;
+                const isSelected = settings.theme === theme.id;
+                return (
+                  <button
+                    key={theme.id}
+                    onClick={() => {
+                      updateSettings({ theme: theme.id });
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+                              transition-colors ${
+                      isSelected
+                        ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
+                        : 'hover:bg-dark-100 dark:hover:bg-dark-800'
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <div className="flex-1 text-left">
+                      <div className="text-sm font-medium">{theme.label}</div>
+                      <div className="text-xs text-dark-500">{theme.desc}</div>
+                    </div>
+                    {isSelected && <Check className="w-4 h-4 text-primary-500" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
 // HEADER COMPONENT
 // ============================================================================
 
@@ -229,10 +307,9 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
   const { greeting, weather } = useGreetingAndWeather();
   const { formatted } = useCurrentTime();
   const stats = useCourseStore((s) => s.stats);
-  const settings = useCourseStore((s) => s.settings);
-  const updateSettings = useCourseStore((s) => s.updateSettings);
   const notifications = useCourseStore((s) => s.notifications);
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadNotifications = notifications.filter((n) => !n.read);
+  const unreadCount = unreadNotifications.length;
 
   const level = getLevelFromXp(stats.totalXp);
   const xpProgress = getXpProgress(stats.totalXp);
@@ -317,16 +394,7 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
           )}
         </button>
 
-        <button
-          onClick={() => updateSettings({ theme: settings.theme === 'dark' ? 'light' : 'dark' })}
-          className="p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg"
-        >
-          {settings.theme === 'dark' ? (
-            <Sun className="w-5 h-5" />
-          ) : (
-            <Moon className="w-5 h-5" />
-          )}
-        </button>
+        <ThemeSelector />
 
         <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-500
                        rounded-full flex items-center justify-center text-white font-bold">
@@ -887,11 +955,27 @@ function App() {
     }
   }, []);
 
-  // Apply theme
+  // Apply theme with system preference detection
   useEffect(() => {
-    const isDark = settings.theme === 'dark' ||
-      (settings.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    document.documentElement.classList.toggle('dark', isDark);
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const applyTheme = () => {
+      const isDark = settings.theme === 'dark' ||
+        (settings.theme === 'system' && mediaQuery.matches);
+      document.documentElement.classList.toggle('dark', isDark);
+    };
+
+    applyTheme();
+
+    // Listen for system theme changes when in 'system' mode
+    const handleChange = () => {
+      if (settings.theme === 'system') {
+        applyTheme();
+      }
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, [settings.theme]);
 
   const handleOnboarding = (data: OnboardingData) => {
