@@ -57,7 +57,7 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-100 via-dark-50 to-white dark:from-dark-900 dark:via-dark-950 dark:to-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-slate-50 to-white dark:from-slate-900 dark:via-slate-950 dark:to-black flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Progress dots */}
         <div className="flex justify-center gap-2 mb-8">
@@ -65,30 +65,30 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
             <div
               key={s}
               className={`w-2 h-2 rounded-full transition-all ${
-                s === step ? 'bg-primary-500 w-8' : s < step ? 'bg-accent-500' : 'bg-dark-300 dark:bg-dark-700'
+                s === step ? 'bg-indigo-500 w-8' : s < step ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700'
               }`}
             />
           ))}
         </div>
 
-        <div className="card p-8">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm p-8">
           {step === 1 && (
             <div className="animate-fade-in">
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-primary-100 dark:bg-primary-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Rocket className="w-8 h-8 text-primary-500" />
+                <div className="w-16 h-16 bg-indigo-100 dark:bg-indigo-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Rocket className="w-8 h-8 text-indigo-500" />
                 </div>
-                <h1 className="text-2xl font-bold text-dark-900 dark:text-white mb-2">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
                   Bem-vindo ao Claude Code Master!
                 </h1>
-                <p className="text-dark-500 dark:text-dark-400">
+                <p className="text-slate-500 dark:text-slate-400">
                   Vamos personalizar sua experiência de aprendizado
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     Seu nome
                   </label>
                   <input
@@ -96,14 +96,14 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Como você quer ser chamado?"
-                    className="w-full px-4 py-3 bg-dark-100 dark:bg-dark-800 border border-dark-200 dark:border-dark-700 rounded-lg
-                             text-dark-900 dark:text-white placeholder-dark-400 dark:placeholder-dark-500
-                             focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg
+                             text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                             focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     Email (opcional)
                   </label>
                   <input
@@ -111,9 +111,9 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Para backup do progresso"
-                    className="w-full px-4 py-3 bg-dark-100 dark:bg-dark-800 border border-dark-200 dark:border-dark-700 rounded-lg
-                             text-dark-900 dark:text-white placeholder-dark-400 dark:placeholder-dark-500
-                             focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg
+                             text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500
+                             focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -132,10 +132,10 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
           {step === 2 && (
             <div className="animate-fade-in">
               <div className="text-center mb-6">
-                <h2 className="text-xl font-bold text-dark-900 dark:text-white mb-2">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
                   Qual é seu contexto principal?
                 </h2>
-                <p className="text-dark-500 dark:text-dark-400 text-sm">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
                   Personalizaremos os desafios e exemplos
                 </p>
               </div>
@@ -147,15 +147,15 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
                     onClick={() => setPrimaryContext(ctx.id as any)}
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                       primaryContext === ctx.id
-                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10'
-                        : 'border-dark-200 dark:border-dark-700 hover:border-dark-300 dark:hover:border-dark-600'
+                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{ctx.icon}</span>
                       <div>
-                        <div className="font-medium text-dark-900 dark:text-white">{ctx.name}</div>
-                        <div className="text-sm text-dark-500 dark:text-dark-400">{ctx.desc}</div>
+                        <div className="font-medium text-slate-900 dark:text-white">{ctx.name}</div>
+                        <div className="text-sm text-slate-500 dark:text-slate-400">{ctx.desc}</div>
                       </div>
                     </div>
                   </button>
@@ -174,10 +174,10 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
           {step === 3 && (
             <div className="animate-fade-in">
               <div className="text-center mb-6">
-                <h2 className="text-xl font-bold text-dark-900 dark:text-white mb-2">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
                   Meta diária de estudo
                 </h2>
-                <p className="text-dark-500 dark:text-dark-400 text-sm">
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
                   Consistência é mais importante que intensidade
                 </p>
               </div>
@@ -190,16 +190,16 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
                     className={`w-full p-4 rounded-lg border-2 flex items-center justify-between
                               transition-all ${
                       dailyGoal === mins
-                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10'
-                        : 'border-dark-200 dark:border-dark-700 hover:border-dark-300 dark:hover:border-dark-600'
+                        ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10'
+                        : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Clock className="w-5 h-5 text-dark-500 dark:text-dark-400" />
-                      <span className="text-dark-900 dark:text-white font-medium">{mins} minutos/dia</span>
+                      <Clock className="w-5 h-5 text-slate-500 dark:text-slate-400" />
+                      <span className="text-slate-900 dark:text-white font-medium">{mins} minutos/dia</span>
                     </div>
                     {mins === 30 && (
-                      <span className="text-xs bg-accent-100 dark:bg-accent-500/20 text-accent-600 dark:text-accent-400 px-2 py-1 rounded">
+                      <span className="text-xs bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 py-1 rounded">
                         Recomendado
                       </span>
                     )}
@@ -243,8 +243,8 @@ function ThemeSelector() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg transition-colors
-                   flex items-center gap-1 text-dark-600 dark:text-dark-300"
+        className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors
+                   flex items-center gap-1 text-slate-600 dark:text-slate-300"
         title={`Tema: ${currentTheme.label}`}
       >
         <CurrentIcon className="w-5 h-5" />
@@ -258,11 +258,11 @@ function ThemeSelector() {
             onClick={() => setIsOpen(false)}
           />
           {/* Dropdown */}
-          <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-dark-900
-                         border border-dark-200 dark:border-dark-700 rounded-xl shadow-xl
+          <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-900
+                         border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl
                          overflow-hidden z-50 animate-fade-in">
             <div className="p-2">
-              <div className="text-xs font-medium text-dark-500 dark:text-dark-400 px-3 py-2">
+              <div className="text-xs font-medium text-slate-500 dark:text-slate-400 px-3 py-2">
                 Aparência
               </div>
               {themes.map((theme) => {
@@ -278,16 +278,16 @@ function ThemeSelector() {
                     className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
                               transition-colors ${
                       isSelected
-                        ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                        : 'hover:bg-dark-100 dark:hover:bg-dark-800 text-dark-700 dark:text-dark-200'
+                        ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400'
+                        : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
                     <div className="flex-1 text-left">
-                      <div className="text-sm font-medium text-dark-900 dark:text-dark-100">{theme.label}</div>
-                      <div className="text-xs text-dark-500">{theme.desc}</div>
+                      <div className="text-sm font-medium text-slate-900 dark:text-slate-100">{theme.label}</div>
+                      <div className="text-xs text-slate-500">{theme.desc}</div>
                     </div>
-                    {isSelected && <Check className="w-4 h-4 text-primary-500" />}
+                    {isSelected && <Check className="w-4 h-4 text-indigo-500" />}
                   </button>
                 );
               })}
@@ -316,13 +316,13 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
   const overallProgress = Math.round((stats.lessonsCompleted / stats.totalLessons) * 100);
 
   return (
-    <header className="h-16 bg-white dark:bg-dark-900 border-b border-dark-200 dark:border-dark-800
+    <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800
                        flex items-center justify-between px-4 lg:px-6 sticky top-0 z-50">
       {/* Left: Menu + Greeting */}
       <div className="flex items-center gap-4">
         <button
           onClick={toggleSidebar}
-          className="lg:hidden p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg text-dark-600 dark:text-dark-300"
+          className="lg:hidden p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -330,15 +330,15 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
         <div className="hidden sm:block">
           <div className="flex items-center gap-2">
             <span className="text-xl">{greeting.emoji}</span>
-            <span className="text-xl font-semibold text-dark-900 dark:text-dark-100">
-              {greeting.greeting}, <span className="text-primary-500">{profile.name.split(' ')[0]}</span>!
+            <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+              {greeting.greeting}, <span className="text-indigo-500">{profile.name.split(' ')[0]}</span>!
             </span>
           </div>
-          <div className="flex items-center gap-3 text-sm text-dark-500 dark:text-dark-400 mt-0.5">
+          <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mt-0.5">
             <span className="capitalize">{formatted}</span>
             {!weather.isLoading && !weather.error && (
               <>
-                <span className="text-dark-300 dark:text-dark-600">•</span>
+                <span className="text-slate-300 dark:text-slate-600">•</span>
                 <span className="flex items-center gap-1.5">
                   <span>{weather.icon}</span>
                   <span>{weather.temperature}°C</span>
@@ -352,32 +352,32 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
       {/* Center: Progress */}
       <div className="hidden md:flex items-center gap-4">
         <div className="text-center">
-          <div className="text-2xl font-bold text-gradient">{overallProgress}%</div>
-          <div className="text-xs text-dark-500">Progresso</div>
+          <div className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-violet-500 bg-clip-text text-transparent">{overallProgress}%</div>
+          <div className="text-xs text-slate-500">Progresso</div>
         </div>
-        <div className="h-10 w-px bg-dark-200 dark:bg-dark-700" />
+        <div className="h-10 w-px bg-slate-200 dark:bg-slate-700" />
         <div className="flex items-center gap-2">
           <span className="text-2xl">{level.icon}</span>
           <div>
-            <div className="font-medium text-dark-900 dark:text-white">{level.name}</div>
+            <div className="font-medium text-slate-900 dark:text-white">{level.name}</div>
             <div className="flex items-center gap-2">
-              <div className="w-20 h-1.5 bg-dark-200 dark:bg-dark-700 rounded-full overflow-hidden">
+              <div className="w-20 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full"
+                  className="h-full bg-gradient-to-r from-indigo-500 to-emerald-500 rounded-full"
                   style={{ width: `${xpProgress.percentage}%` }}
                 />
               </div>
-              <span className="text-xs text-dark-500">{stats.totalXp} XP</span>
+              <span className="text-xs text-slate-500">{stats.totalXp} XP</span>
             </div>
           </div>
         </div>
         {stats.streak.current > 0 && (
           <>
-            <div className="h-10 w-px bg-dark-200 dark:bg-dark-700" />
+            <div className="h-10 w-px bg-slate-200 dark:bg-slate-700" />
             <div className="flex items-center gap-1">
               <Flame className="w-5 h-5 text-orange-500 animate-pulse" />
               <span className="font-bold text-orange-500">{stats.streak.current}</span>
-              <span className="text-xs text-dark-500">dias</span>
+              <span className="text-xs text-slate-500">dias</span>
             </div>
           </>
         )}
@@ -385,10 +385,10 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
 
       {/* Right: Actions */}
       <div className="flex items-center gap-2">
-        <button className="relative p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg text-dark-600 dark:text-dark-300">
+        <button className="relative p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300">
           <Bell className="w-5 h-5" />
           {unreadCount > 0 && (
-            <span className="absolute top-1 right-1 w-4 h-4 bg-primary-500 text-white
+            <span className="absolute top-1 right-1 w-4 h-4 bg-indigo-500 text-white
                            text-xs rounded-full flex items-center justify-center">
               {unreadCount}
             </span>
@@ -397,7 +397,7 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
 
         <ThemeSelector />
 
-        <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-500
+        <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-emerald-500
                        rounded-full flex items-center justify-center text-white font-bold">
           {profile.name.charAt(0).toUpperCase()}
         </div>
@@ -439,24 +439,24 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
       )}
 
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-white dark:bg-dark-900
-                   border-r border-dark-200 dark:border-dark-800 flex flex-col
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-72 bg-white dark:bg-slate-900
+                   border-r border-slate-200 dark:border-slate-800 flex flex-col
                    transform transition-transform duration-300
                    ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Search */}
-        <div className="p-4 border-b border-dark-200 dark:border-dark-700">
+        <div className="p-4 border-b border-slate-200 dark:border-slate-700">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400 dark:text-dark-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar lições..."
-              className="w-full pl-10 pr-4 py-2.5 bg-dark-100 dark:bg-dark-800 rounded-xl
-                       text-sm text-dark-900 dark:text-dark-100
-                       placeholder:text-dark-400 dark:placeholder:text-dark-500
-                       focus:ring-2 focus:ring-primary-500 focus:bg-white dark:focus:bg-dark-700
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800 rounded-xl
+                       text-sm text-slate-900 dark:text-slate-100
+                       placeholder:text-slate-400 dark:placeholder:text-slate-500
+                       focus:ring-2 focus:ring-indigo-500 focus:bg-white dark:focus:bg-slate-700
                        outline-none transition-all"
             />
           </div>
@@ -479,32 +479,32 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl
                             transition-all ${
                     currentModule === module.id
-                      ? 'bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400'
-                      : 'text-dark-700 dark:text-dark-200 hover:bg-dark-100 dark:hover:bg-dark-800'
+                      ? 'bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  <Icon className="w-5 h-5 flex-shrink-0 text-dark-500 dark:text-dark-400" />
+                  <Icon className="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400" />
                   <div className="flex-1 text-left">
-                    <div className="text-sm font-medium text-dark-900 dark:text-dark-100">{module.title}</div>
-                    <div className="flex items-center gap-2 text-xs text-dark-500 dark:text-dark-400">
+                    <div className="text-sm font-medium text-slate-900 dark:text-slate-100">{module.title}</div>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                       <span>{completedLessons}/{module.lessons.length} lições</span>
-                      <div className="w-12 h-1.5 bg-dark-200 dark:bg-dark-700 rounded-full overflow-hidden">
+                      <div className="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-accent-500 rounded-full transition-all"
+                          className="h-full bg-emerald-500 rounded-full transition-all"
                           style={{ width: `${progress}%` }}
                         />
                       </div>
                     </div>
                   </div>
                   {isExpanded ? (
-                    <ChevronDown className="w-4 h-4 text-dark-400" />
+                    <ChevronDown className="w-4 h-4 text-slate-400" />
                   ) : (
-                    <ChevronRight className="w-4 h-4 text-dark-400" />
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
                   )}
                 </button>
 
                 {isExpanded && (
-                  <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-dark-200 dark:border-dark-700 pl-3">
+                  <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-slate-200 dark:border-slate-700 pl-3">
                     {module.lessons.map((lesson) => {
                       const status = lessonProgress[lesson.id]?.status || 'available';
                       const StatusIcon =
@@ -517,25 +517,25 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
                           key={lesson.id}
                           onClick={() => onSelectLesson(lesson.id)}
                           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left
-                                   text-dark-700 dark:text-dark-300
-                                   hover:bg-dark-100 dark:hover:bg-dark-800
-                                   hover:text-dark-900 dark:hover:text-dark-100
+                                   text-slate-700 dark:text-slate-300
+                                   hover:bg-slate-100 dark:hover:bg-slate-800
+                                   hover:text-slate-900 dark:hover:text-slate-100
                                    transition-all group"
                         >
                           <StatusIcon
                             className={`w-4 h-4 flex-shrink-0 ${
-                              status === 'completed' ? 'text-accent-500' :
-                              status === 'in_progress' ? 'text-primary-500' :
-                              'text-dark-400 dark:text-dark-500'
+                              status === 'completed' ? 'text-emerald-500' :
+                              status === 'in_progress' ? 'text-indigo-500' :
+                              'text-slate-400 dark:text-slate-500'
                             }`}
                           />
                           <span className="text-sm truncate flex-1">{lesson.title}</span>
                           {lesson.isNew && (
-                            <span className="text-[10px] bg-primary-500 text-white px-1.5 py-0.5 rounded font-medium">
+                            <span className="text-[10px] bg-indigo-500 text-white px-1.5 py-0.5 rounded font-medium">
                               NEW
                             </span>
                           )}
-                          <span className="text-xs text-dark-500 dark:text-dark-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="text-xs text-slate-500 dark:text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
                             +{lesson.xp}xp
                           </span>
                         </button>
@@ -549,25 +549,25 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
         </div>
 
         {/* Stats footer */}
-        <div className="p-4 border-t border-dark-200 dark:border-dark-700 bg-dark-100/50 dark:bg-dark-800/50">
+        <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
           <div className="grid grid-cols-3 gap-3 text-center">
-            <div className="p-2 rounded-lg bg-white dark:bg-dark-800">
-              <div className="text-lg font-bold text-primary-500">
+            <div className="p-2 rounded-lg bg-white dark:bg-slate-800">
+              <div className="text-lg font-bold text-indigo-500">
                 {useCourseStore.getState().stats.lessonsCompleted}
               </div>
-              <div className="text-xs text-dark-500 dark:text-dark-400">Lições</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">Lições</div>
             </div>
-            <div className="p-2 rounded-lg bg-white dark:bg-dark-800">
-              <div className="text-lg font-bold text-accent-500">
+            <div className="p-2 rounded-lg bg-white dark:bg-slate-800">
+              <div className="text-lg font-bold text-emerald-500">
                 {useCourseStore.getState().stats.totalXp}
               </div>
-              <div className="text-xs text-dark-500 dark:text-dark-400">XP</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">XP</div>
             </div>
-            <div className="p-2 rounded-lg bg-white dark:bg-dark-800">
+            <div className="p-2 rounded-lg bg-white dark:bg-slate-800">
               <div className="text-lg font-bold text-orange-500">
                 {useCourseStore.getState().stats.streak.current}
               </div>
-              <div className="text-xs text-dark-500 dark:text-dark-400">Streak</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">Streak</div>
             </div>
           </div>
         </div>
@@ -614,14 +614,14 @@ function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void
   return (
     <div className="max-w-4xl mx-auto p-6 lg:p-8">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-dark-500 mb-4">
-        <button onClick={onBack} className="hover:text-primary-500">
+      <div className="flex items-center gap-2 text-sm text-slate-500 mb-4">
+        <button onClick={onBack} className="hover:text-indigo-500">
           Módulos
         </button>
         <ChevronRight className="w-4 h-4" />
         <span>{module.title}</span>
         <ChevronRight className="w-4 h-4" />
-        <span className="text-dark-900 dark:text-white">{lesson.title}</span>
+        <span className="text-slate-900 dark:text-white">{lesson.title}</span>
       </div>
 
       {/* Header */}
@@ -633,24 +633,24 @@ function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void
               lesson.difficulty === 'advanced' ? 'gold' : 'platinum'}`}>
               {lesson.difficulty}
             </span>
-            <span className="xp-badge">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-lg text-sm font-bold">
               <Star className="w-3 h-3" /> {lesson.xp} XP
             </span>
-            <span className="flex items-center gap-1 text-sm text-dark-500">
+            <span className="flex items-center gap-1 text-sm text-slate-500">
               <Clock className="w-3 h-3" /> {lesson.duration} min
             </span>
           </div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-dark-900 dark:text-white">
+          <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white">
             {lesson.title}
           </h1>
-          <p className="text-dark-500 mt-1">{lesson.description}</p>
+          <p className="text-slate-500 mt-1">{lesson.description}</p>
         </div>
         <button
           onClick={() => toggleBookmark(lessonId)}
           className={`p-2 rounded-lg ${
             isBookmarked
               ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600'
-              : 'hover:bg-dark-100 dark:hover:bg-dark-800'
+              : 'hover:bg-slate-100 dark:hover:bg-slate-800'
           }`}
         >
           <Bookmark className="w-5 h-5" fill={isBookmarked ? 'currentColor' : 'none'} />
@@ -658,21 +658,21 @@ function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void
       </div>
 
       {/* Content */}
-      <div className="card mb-6">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm mb-6">
         <div className="p-6 lg:p-8 prose prose-lg dark:prose-invert max-w-none
-                       prose-headings:font-bold prose-code:text-primary-500
-                       prose-pre:bg-dark-900 prose-pre:text-dark-100">
+                       prose-headings:font-bold prose-code:text-indigo-500
+                       prose-pre:bg-slate-900 prose-pre:text-slate-100">
           <div dangerouslySetInnerHTML={{
             __html: lesson.content
               .replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre class="code-block"><code>$2</code></pre>')
-              .replace(/`([^`]+)`/g, '<code class="bg-dark-100 dark:bg-dark-800 px-1.5 py-0.5 rounded text-primary-500">$1</code>')
+              .replace(/`([^`]+)`/g, '<code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-indigo-500">$1</code>')
               .replace(/^# (.+)$/gm, '<h1>$1</h1>')
               .replace(/^## (.+)$/gm, '<h2>$1</h2>')
               .replace(/^### (.+)$/gm, '<h3>$1</h3>')
               .replace(/^\* (.+)$/gm, '<li>$1</li>')
               .replace(/^\| (.+) \|$/gm, (match) => {
                 const cells = match.split('|').filter(Boolean).map(c => c.trim());
-                return `<tr>${cells.map(c => `<td class="border border-dark-200 dark:border-dark-700 px-3 py-2">${c}</td>`).join('')}</tr>`;
+                return `<tr>${cells.map(c => `<td class="border border-slate-200 dark:border-slate-700 px-3 py-2">${c}</td>`).join('')}</tr>`;
               })
               .replace(/\n/g, '<br/>')
           }} />
@@ -681,10 +681,10 @@ function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void
 
       {/* Challenges */}
       {lesson.challenges.length > 0 && (
-        <div className="card mb-6">
-          <div className="p-4 border-b border-dark-200 dark:border-dark-700">
-            <h2 className="font-bold flex items-center gap-2">
-              <Target className="w-5 h-5 text-primary-500" />
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm mb-6">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+            <h2 className="font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+              <Target className="w-5 h-5 text-indigo-500" />
               Desafios Práticos
             </h2>
           </div>
@@ -692,17 +692,17 @@ function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void
             {lesson.challenges.map((challenge) => (
               <div
                 key={challenge.id}
-                className="p-4 bg-dark-50 dark:bg-dark-800 rounded-lg"
+                className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <h3 className="font-medium">{challenge.title}</h3>
-                    <p className="text-sm text-dark-500 mt-1">{challenge.description}</p>
-                    <p className="text-xs text-dark-400 mt-2 italic">
+                    <h3 className="font-medium text-slate-900 dark:text-white">{challenge.title}</h3>
+                    <p className="text-sm text-slate-500 mt-1">{challenge.description}</p>
+                    <p className="text-xs text-slate-400 mt-2 italic">
                       💡 {challenge.contextDescription}
                     </p>
                   </div>
-                  <span className="xp-badge flex-shrink-0">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-lg text-sm font-bold flex-shrink-0">
                     +{challenge.xpBonus} XP
                   </span>
                 </div>
@@ -714,23 +714,24 @@ function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void
 
       {/* Quiz */}
       {lesson.quizzes.length > 0 && (
-        <div className="card mb-6">
-          <div className="p-4 border-b border-dark-200 dark:border-dark-700">
-            <h2 className="font-bold flex items-center gap-2">
-              <FileText className="w-5 h-5 text-accent-500" />
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm mb-6">
+          <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+            <h2 className="font-bold flex items-center gap-2 text-slate-900 dark:text-white">
+              <FileText className="w-5 h-5 text-emerald-500" />
               Quiz de Verificação
             </h2>
           </div>
           <div className="p-4 space-y-4">
             {lesson.quizzes.map((quiz) => (
-              <div key={quiz.id} className="p-4 bg-dark-50 dark:bg-dark-800 rounded-lg">
-                <p className="font-medium mb-3">{quiz.question}</p>
+              <div key={quiz.id} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                <p className="font-medium mb-3 text-slate-900 dark:text-white">{quiz.question}</p>
                 <div className="space-y-2">
                   {quiz.options.map((option, idx) => (
                     <button
                       key={idx}
-                      className="w-full text-left p-3 rounded-lg border border-dark-200
-                               dark:border-dark-700 hover:border-primary-500 transition-all"
+                      className="w-full text-left p-3 rounded-lg border border-slate-200
+                               dark:border-slate-700 hover:border-indigo-500 transition-all
+                               text-slate-700 dark:text-slate-300"
                     >
                       {option}
                     </button>
@@ -754,8 +755,8 @@ function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void
       )}
 
       {progress?.status === 'completed' && (
-        <div className="text-center p-4 bg-accent-50 dark:bg-accent-900/20 rounded-lg
-                       text-accent-700 dark:text-accent-400">
+        <div className="text-center p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-lg
+                       text-emerald-700 dark:text-emerald-400">
           <CheckCircle2 className="w-6 h-6 mx-auto mb-2" />
           <div className="font-medium">Lição concluída!</div>
           <div className="text-sm">+{lesson.xp} XP ganhos</div>
@@ -787,98 +788,103 @@ function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => v
   const recentActivity = activityLog.slice(0, 5);
 
   return (
-    <div className="p-6 lg:p-8 max-w-6xl mx-auto">
-      {/* Stats cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="card p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg
-                          flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-primary-500" />
+    <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
+      {/* Stats cards - Modern design with clear visibility */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* XP Total */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-500/20 rounded-xl flex items-center justify-center">
+              <Trophy className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-dark-900 dark:text-white">
+              <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
                 {stats.totalXp}
-              </div>
-              <div className="text-sm text-dark-500">XP Total</div>
+              </p>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">XP Total</p>
             </div>
           </div>
         </div>
 
-        <div className="card p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-accent-100 dark:bg-accent-900/30 rounded-lg
-                          flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-accent-500" />
+        {/* Lições */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-500/20 rounded-xl flex items-center justify-center">
+              <BookOpen className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-dark-900 dark:text-white">
-                {stats.lessonsCompleted}/{stats.totalLessons}
-              </div>
-              <div className="text-sm text-dark-500">Lições</div>
+              <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+                {stats.lessonsCompleted}<span className="text-lg text-slate-400">/{stats.totalLessons}</span>
+              </p>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Lições</p>
             </div>
           </div>
         </div>
 
-        <div className="card p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/30 rounded-lg
-                          flex items-center justify-center">
-              <Flame className="w-5 h-5 text-orange-500" />
+        {/* Streak */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-orange-100 dark:bg-orange-500/20 rounded-xl flex items-center justify-center">
+              <Flame className="w-6 h-6 text-orange-600 dark:text-orange-400" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-dark-900 dark:text-white">
+              <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
                 {stats.streak.current}
-              </div>
-              <div className="text-sm text-dark-500">Dias seguidos</div>
+              </p>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Dias seguidos</p>
             </div>
           </div>
         </div>
 
-        <div className="card p-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg
-                          flex items-center justify-center">
-              <Award className="w-5 h-5 text-purple-500" />
+        {/* Badges */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-violet-100 dark:bg-violet-500/20 rounded-xl flex items-center justify-center">
+              <Award className="w-6 h-6 text-violet-600 dark:text-violet-400" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-dark-900 dark:text-white">
+              <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
                 {stats.badges.length}
-              </div>
-              <div className="text-sm text-dark-500">Badges</div>
+              </p>
+              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Badges</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Continue learning */}
+      {/* Continue learning - Modern gradient card */}
       {nextLesson && (
-        <div className="card mb-8 overflow-hidden">
-          <div className="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-600 p-6 relative">
-            {/* Subtle pattern overlay */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent)] pointer-events-none" />
-            <h2 className="text-xl font-bold text-white mb-4 relative">Continuar Estudando</h2>
-            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-5 border border-white/10 relative">
-              <div className="flex items-center justify-between gap-4">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-violet-600 p-6 shadow-lg">
+          {/* Decorative elements */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.2),transparent)] pointer-events-none" />
+          <div className="absolute -right-20 -top-20 w-60 h-60 bg-white/10 rounded-full blur-3xl" />
+
+          <div className="relative">
+            <h2 className="text-lg font-semibold text-white/90 mb-4 flex items-center gap-2">
+              <Rocket className="w-5 h-5" />
+              Continuar Estudando
+            </h2>
+
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <div className="text-white/70 text-sm mb-1 font-medium">
+                  <p className="text-sm font-medium text-indigo-200 mb-1">
                     Módulo {nextLesson.moduleId}
-                  </div>
-                  <h3 className="text-xl font-semibold text-white">{nextLesson.title}</h3>
-                  <div className="flex items-center gap-4 mt-3 text-white/80 text-sm">
-                    <span className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-lg">
+                  </p>
+                  <h3 className="text-xl font-bold text-white">{nextLesson.title}</h3>
+                  <div className="flex items-center gap-3 mt-3">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/20 text-white text-sm font-medium rounded-lg">
                       <Clock className="w-4 h-4" /> {nextLesson.duration} min
                     </span>
-                    <span className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-lg">
-                      <Star className="w-4 h-4" /> {nextLesson.xp} XP
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/30 text-emerald-100 text-sm font-medium rounded-lg">
+                      <Star className="w-4 h-4" /> +{nextLesson.xp} XP
                     </span>
                   </div>
                 </div>
                 <button
                   onClick={() => onSelectLesson(nextLesson.id)}
-                  className="px-6 py-3 bg-white text-primary-600 font-semibold rounded-xl
-                           hover:bg-white/95 hover:scale-105 transition-all flex items-center gap-2
-                           shadow-lg shadow-black/10"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-indigo-600 font-semibold rounded-xl
+                           hover:bg-indigo-50 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg"
                 >
                   <Play className="w-5 h-5" /> Começar
                 </button>
@@ -888,54 +894,55 @@ function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => v
         </div>
       )}
 
-      {/* Level progress */}
-      <div className="card p-6 mb-8">
+      {/* Level progress - Clean design */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
         <div className="flex items-center gap-4 mb-4">
           <span className="text-4xl">{level.icon}</span>
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-dark-900 dark:text-dark-100">{level.name}</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">{level.name}</h3>
             <div className="flex items-center gap-3 mt-2">
-              <div className="flex-1 h-3 bg-dark-200 dark:bg-dark-700 rounded-full overflow-hidden">
+              <div className="flex-1 h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full
-                           transition-all duration-500"
+                  className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full transition-all duration-500"
                   style={{ width: `${xpProgress.percentage}%` }}
                 />
               </div>
-              <span className="text-sm font-medium text-dark-600 dark:text-dark-400">
+              <span className="text-sm font-semibold text-slate-600 dark:text-slate-300 tabular-nums">
                 {xpProgress.current}/{xpProgress.max} XP
               </span>
             </div>
           </div>
         </div>
-        <div className="text-sm text-dark-500 dark:text-dark-400">
-          Benefícios: {level.benefits.join(' • ')}
-        </div>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          <span className="font-medium text-slate-700 dark:text-slate-300">Benefícios:</span> {level.benefits.join(' • ')}
+        </p>
       </div>
 
       {/* AI Trends Section */}
       <TrendsSection />
 
-      {/* Recent activity */}
+      {/* Recent activity - Clean list */}
       {recentActivity.length > 0 && (
-        <div className="card">
-          <div className="p-4 border-b border-dark-200 dark:border-dark-700">
-            <h2 className="font-bold flex items-center gap-2 text-dark-900 dark:text-dark-100">
-              <BarChart3 className="w-5 h-5 text-primary-500" />
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+          <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-700">
+            <h2 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+              <BarChart3 className="w-5 h-5 text-indigo-500" />
               Atividade Recente
             </h2>
           </div>
-          <div className="divide-y divide-dark-200 dark:divide-dark-700">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {recentActivity.map((activity) => (
-              <div key={activity.id} className="p-4 flex items-center justify-between">
+              <div key={activity.id} className="px-5 py-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                 <div>
-                  <div className="text-sm font-medium text-dark-900 dark:text-dark-100">{activity.description}</div>
-                  <div className="text-xs text-dark-500 dark:text-dark-400">
+                  <p className="text-sm font-medium text-slate-900 dark:text-white">{activity.description}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                     {new Date(activity.timestamp).toLocaleString('pt-BR')}
-                  </div>
+                  </p>
                 </div>
                 {activity.xpEarned && (
-                  <span className="xp-badge">+{activity.xpEarned} XP</span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-sm font-bold rounded-lg">
+                    +{activity.xpEarned} XP
+                  </span>
                 )}
               </div>
             ))}
@@ -1013,7 +1020,7 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-dark-50 dark:bg-dark-950 flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
       {/* AI News Ticker */}
       <NewsTicker />
 

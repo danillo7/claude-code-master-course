@@ -264,11 +264,11 @@ export function NewsTicker() {
   const categoryColor = categoryConfig[currentNews.category]?.color || 'text-gray-500';
 
   return (
-    <div className="bg-dark-100 dark:bg-dark-950 border-b border-dark-200 dark:border-dark-800">
+    <div className="bg-slate-100 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
       <div className="max-w-7xl mx-auto px-4 py-2">
         <div className="flex items-center gap-3">
           {/* Label */}
-          <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 bg-primary-100 dark:bg-primary-500/20 rounded text-primary-600 dark:text-primary-400 text-xs font-medium">
+          <div className="hidden sm:flex items-center gap-1.5 px-2 py-1 bg-indigo-100 dark:bg-indigo-500/20 rounded text-indigo-600 dark:text-indigo-400 text-xs font-medium">
             <Newspaper className="w-3 h-3" />
             AI News
           </div>
@@ -277,19 +277,19 @@ export function NewsTicker() {
           <div className="flex items-center gap-1">
             <button
               onClick={handlePrev}
-              className="p-1 hover:bg-dark-200 dark:hover:bg-dark-800 rounded text-dark-500 dark:text-dark-400 hover:text-dark-900 dark:hover:text-white transition-colors"
+              className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => setIsPaused(!isPaused)}
-              className="p-1 hover:bg-dark-200 dark:hover:bg-dark-800 rounded text-dark-500 dark:text-dark-400 hover:text-dark-900 dark:hover:text-white transition-colors"
+              className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               {isPaused ? <Play className="w-4 h-4" /> : <Pause className="w-4 h-4" />}
             </button>
             <button
               onClick={handleNext}
-              className="p-1 hover:bg-dark-200 dark:hover:bg-dark-800 rounded text-dark-500 dark:text-dark-400 hover:text-dark-900 dark:hover:text-white transition-colors"
+              className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -305,14 +305,14 @@ export function NewsTicker() {
             onMouseLeave={() => setIsPaused(false)}
           >
             <CategoryIcon className={`w-4 h-4 flex-shrink-0 ${categoryColor}`} />
-            <span className="text-sm text-dark-900 dark:text-white truncate group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors">
+            <span className="text-sm text-slate-900 dark:text-white truncate group-hover:text-indigo-500 dark:group-hover:text-indigo-400 transition-colors">
               {currentNews.title}
             </span>
-            <ExternalLink className="w-3 h-3 text-dark-400 dark:text-dark-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+            <ExternalLink className="w-3 h-3 text-slate-400 dark:text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
           </a>
 
           {/* Meta info */}
-          <div className="hidden md:flex items-center gap-2 text-[10px] text-dark-500 flex-shrink-0">
+          <div className="hidden md:flex items-center gap-2 text-[10px] text-slate-500 flex-shrink-0">
             <span className="flex items-center gap-1">
               <Clock className="w-3 h-3" />
               {formatTimeAgo(currentNews.timestamp)}
@@ -324,14 +324,14 @@ export function NewsTicker() {
           {/* Refresh */}
           <button
             onClick={handleRefresh}
-            className="p-1 hover:bg-dark-200 dark:hover:bg-dark-800 rounded text-dark-500 dark:text-dark-400 hover:text-dark-900 dark:hover:text-white transition-colors"
+            className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
             title="Atualizar notícias"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
 
           {/* Counter */}
-          <span className="text-[10px] text-dark-500 dark:text-dark-600 font-mono">
+          <span className="text-[10px] text-slate-500 dark:text-slate-600 font-mono">
             {currentIndex + 1}/{news.length}
           </span>
         </div>
@@ -351,15 +351,15 @@ export function TrendsSection() {
   const displayedTrends = showAll ? trends : trends.slice(0, 3);
 
   return (
-    <div className="card mb-6">
-      <div className="p-4 border-b border-dark-200 dark:border-dark-700 flex items-center justify-between">
-        <h2 className="font-bold flex items-center gap-2 text-dark-900 dark:text-dark-100">
-          <TrendingUp className="w-5 h-5 text-primary-500" />
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+      <div className="px-5 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+        <h2 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+          <TrendingUp className="w-5 h-5 text-indigo-500" />
           Tendências em AI
         </h2>
         <button
           onClick={() => setShowAll(!showAll)}
-          className="text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-medium"
+          className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-medium transition-colors"
         >
           {showAll ? 'Ver menos' : 'Ver todas'}
         </button>
@@ -369,25 +369,25 @@ export function TrendsSection() {
         {displayedTrends.map((trend) => (
           <div
             key={trend.id}
-            className="p-4 bg-dark-50 dark:bg-dark-800/70 rounded-xl border border-transparent
-                     hover:border-primary-500/30 hover:bg-dark-100 dark:hover:bg-dark-800
+            className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700
+                     hover:border-indigo-300 dark:hover:border-indigo-500/50 hover:bg-slate-100 dark:hover:bg-slate-800
                      transition-all cursor-default"
           >
             <div className="flex items-start gap-3">
               <span className="text-2xl">{trend.icon}</span>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-dark-900 dark:text-dark-100">
+                  <h3 className="font-semibold text-slate-900 dark:text-white">
                     {trend.title}
                   </h3>
                   {trend.change === 'up' && (
-                    <span className="text-xs text-accent-600 dark:text-accent-400 flex items-center gap-0.5 font-medium">
+                    <span className="inline-flex items-center gap-0.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
                       <TrendingUp className="w-3 h-3" /> Alta
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-dark-600 dark:text-dark-400 mt-1">{trend.description}</p>
-                <span className="text-xs text-dark-500 dark:text-dark-500 mt-2 inline-block bg-dark-100 dark:bg-dark-700 px-2 py-0.5 rounded">
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">{trend.description}</p>
+                <span className="text-xs text-slate-500 mt-2 inline-block bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded font-medium">
                   {trend.category}
                 </span>
               </div>
@@ -431,10 +431,10 @@ export function NewsFeed() {
   ];
 
   return (
-    <div className="card">
-      <div className="p-4 border-b border-dark-200 dark:border-dark-700">
-        <h2 className="font-bold flex items-center gap-2 mb-4 text-dark-900 dark:text-dark-100">
-          <Newspaper className="w-5 h-5 text-primary-500" />
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-sm overflow-hidden">
+      <div className="p-4 border-b border-slate-200 dark:border-slate-700">
+        <h2 className="font-bold flex items-center gap-2 mb-4 text-slate-900 dark:text-white">
+          <Newspaper className="w-5 h-5 text-indigo-500" />
           Feed de Notícias AI
         </h2>
 
@@ -446,8 +446,8 @@ export function NewsFeed() {
               onClick={() => setFilter(cat.id)}
               className={`px-3 py-1.5 rounded-lg text-sm transition-all ${
                 filter === cat.id
-                  ? 'bg-primary-500 text-white'
-                  : 'bg-dark-100 dark:bg-dark-800 text-dark-600 dark:text-dark-400 hover:bg-dark-200 dark:hover:bg-dark-700'
+                  ? 'bg-indigo-500 text-white'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {cat.label}
@@ -456,7 +456,7 @@ export function NewsFeed() {
         </div>
       </div>
 
-      <div className="divide-y divide-dark-200 dark:divide-dark-700">
+      <div className="divide-y divide-slate-100 dark:divide-slate-800">
         {filteredNews.map((item) => {
           const CategoryIcon = categoryConfig[item.category]?.icon || Newspaper;
           const categoryColor = categoryConfig[item.category]?.color || 'text-gray-500';
@@ -467,17 +467,17 @@ export function NewsFeed() {
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block p-4 hover:bg-dark-50 dark:hover:bg-dark-800/50 transition-colors group"
+              className="block p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors group"
             >
               <div className="flex items-start gap-3">
-                <div className={`p-2 rounded-lg bg-dark-100 dark:bg-dark-800 ${categoryColor}`}>
+                <div className={`p-2 rounded-lg bg-slate-100 dark:bg-slate-800 ${categoryColor}`}>
                   <CategoryIcon className="w-4 h-4" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-dark-900 dark:text-white group-hover:text-primary-500 transition-colors">
+                  <h3 className="font-medium text-slate-900 dark:text-white group-hover:text-indigo-500 transition-colors">
                     {item.title}
                   </h3>
-                  <div className="flex items-center gap-2 mt-1 text-xs text-dark-500 dark:text-dark-400">
+                  <div className="flex items-center gap-2 mt-1 text-xs text-slate-500 dark:text-slate-400">
                     <span>{item.source}</span>
                     <span>•</span>
                     <span className="flex items-center gap-1">
@@ -486,7 +486,7 @@ export function NewsFeed() {
                     </span>
                   </div>
                 </div>
-                <ExternalLink className="w-4 h-4 text-dark-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                <ExternalLink className="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
               </div>
             </a>
           );
