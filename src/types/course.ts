@@ -1,6 +1,52 @@
 // ============================================================================
-// CLAUDE CODE MASTER COURSE - TYPE DEFINITIONS
-// Estado-da-arte typing system with full persistence support
+// AI MASTER PORTAL - TYPE DEFINITIONS
+// Multi-course platform with estado-da-arte typing system
+// ============================================================================
+
+// ============================================================================
+// COURSE CATALOG TYPES
+// ============================================================================
+
+export type CourseId = 'claude-code' | 'warp-terminal';
+
+export interface CourseInfo {
+  id: CourseId;
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: string; // Emoji or Lucide icon name
+  color: string; // Primary color class
+  gradient: string; // Tailwind gradient classes
+  totalModules: number;
+  totalLessons: number;
+  estimatedHours: number;
+  difficulty: 'beginner' | 'intermediate' | 'advanced' | 'all-levels';
+  tags: string[];
+  features: string[];
+  prerequisites: string[];
+  author: string;
+  version: string;
+  lastUpdated: string;
+  isNew?: boolean;
+  isFeatured?: boolean;
+}
+
+export interface CourseProgress {
+  courseId: CourseId;
+  lessonsCompleted: number;
+  totalLessons: number;
+  modulesCompleted: number;
+  totalModules: number;
+  totalXp: number;
+  timeSpentMinutes: number;
+  lastAccessedAt: string;
+  startedAt: string;
+  completedAt?: string;
+  percentComplete: number;
+}
+
+// ============================================================================
+// LESSON & MODULE TYPES
 // ============================================================================
 
 export type LessonStatus = 'locked' | 'available' | 'in_progress' | 'completed';
@@ -68,6 +114,7 @@ export interface Lesson {
 
 export interface Module {
   id: string;
+  courseId: CourseId; // Which course this module belongs to
   number: number;
   title: string;
   slug: string;
@@ -271,6 +318,10 @@ export interface CourseState {
   // Course Data
   modules: Module[];
 
+  // Multi-course State
+  currentCourseId: CourseId | null;
+  courseProgress: Record<CourseId, CourseProgress>;
+
   // User Progress
   lessonProgress: Record<string, UserProgress>;
   moduleProgress: Record<string, ModuleProgress>;
@@ -375,4 +426,70 @@ export function getXpProgress(xp: number): { current: number; max: number; perce
   const max = level.maxXp - level.minXp;
   const percentage = Math.min(100, Math.round((current / max) * 100));
   return { current, max, percentage };
+}
+
+// ============================================================================
+// COURSE CATALOG
+// ============================================================================
+
+export const COURSE_CATALOG: CourseInfo[] = [
+  {
+    id: 'claude-code',
+    title: 'Claude Code Master',
+    subtitle: 'Domine o CLI da Anthropic',
+    description: 'Curso completo para dominar o Claude Code CLI. Desde fundamentos até técnicas avançadas de Skills, MCPs, Hooks e Subagents.',
+    icon: 'Terminal',
+    color: 'indigo',
+    gradient: 'from-indigo-500 via-violet-500 to-purple-500',
+    totalModules: 12,
+    totalLessons: 80,
+    estimatedHours: 15,
+    difficulty: 'all-levels',
+    tags: ['AI', 'CLI', 'Automação', 'Produtividade', 'Claude'],
+    features: [
+      'Skills personalizadas',
+      'MCPs (Model Context Protocol)',
+      'Hooks para automação',
+      'Subagents para tarefas paralelas',
+      'Integração com IDEs',
+      'Enterprise patterns'
+    ],
+    prerequisites: ['Terminal básico', 'Conhecimento básico de programação'],
+    author: 'Dr. Danillo Costa',
+    version: '2.0.0',
+    lastUpdated: '2025-12-29',
+    isFeatured: true
+  },
+  {
+    id: 'warp-terminal',
+    title: 'Warp Terminal Mastery',
+    subtitle: 'O Terminal AI-Native do TOP 1%',
+    description: 'Domine o Warp, o terminal moderno com IA integrada. Blocks, Workflows, Warp AI e configurações de produtividade máxima.',
+    icon: 'Zap',
+    color: 'emerald',
+    gradient: 'from-emerald-500 via-teal-500 to-cyan-500',
+    totalModules: 8,
+    totalLessons: 45,
+    estimatedHours: 8,
+    difficulty: 'beginner',
+    tags: ['Terminal', 'AI', 'Produtividade', 'DevOps', 'Workflows'],
+    features: [
+      'Warp AI integrado',
+      'Blocks para organização',
+      'Workflows personalizados',
+      'Launch Configurations',
+      'Integração com Claude Code',
+      'Atalhos de produtividade'
+    ],
+    prerequisites: ['macOS ou Linux'],
+    author: 'Dr. Danillo Costa',
+    version: '1.0.0',
+    lastUpdated: '2025-12-29',
+    isNew: true,
+    isFeatured: true
+  }
+];
+
+export function getCourseInfo(courseId: CourseId): CourseInfo | undefined {
+  return COURSE_CATALOG.find(c => c.id === courseId);
 }

@@ -16,9 +16,12 @@ import type {
   Notification,
   Note,
   UserSettings,
+  CourseId,
+  CourseProgress,
 } from '../types/course';
-import { getLevelFromXp } from '../types/course';
+import { getLevelFromXp, COURSE_CATALOG } from '../types/course';
 import { courseModules } from '../data/courseData';
+import { warpCourseModules } from '../data/warpCourseData';
 
 // ============================================================================
 // DEFAULT VALUES
@@ -106,6 +109,11 @@ const availableBadges: Badge[] = [
 // ============================================================================
 
 interface CourseActions {
+  // Course selection
+  selectCourse: (courseId: CourseId) => void;
+  exitCourse: () => void;
+  getModulesForCourse: (courseId: CourseId) => typeof courseModules;
+
   // Lesson actions
   startLesson: (lessonId: string) => void;
   completeLesson: (lessonId: string, timeSpent: number) => void;
@@ -184,6 +192,55 @@ export const useCourseStore = create<CourseStore>()(
       currentLessonId: null,
       sidebarOpen: true,
       searchQuery: '',
+
+      // Multi-course support
+      currentCourseId: null as CourseId | null,
+      courseProgress: {} as Record<CourseId, CourseProgress>,
+
+      // ========== Course Actions ==========
+      selectCourse: (courseId: CourseId) => {
+        const modules = courseId === 'claude-code' ? courseModules : warpCourseModules;
+        const now = new Date().toISOString();
+
+        set((state) => {
+          // Initialize course progress if not exists
+          const existingProgress = state.courseProgress[courseId];
+          const courseInfo = COURSE_CATALOG.find(c => c.id === courseId);
+
+          const courseProgress: CourseProgress = existingProgress || {
+            courseId,
+            lessonsCompleted: 0,
+            totalLessons: courseInfo?.totalLessons || modules.reduce((acc, m) => acc + m.lessons.length, 0),
+            modulesCompleted: 0,
+            totalModules: courseInfo?.totalModules || modules.length,
+            totalXp: 0,
+            timeSpentMinutes: 0,
+            lastAccessedAt: now,
+            startedAt: now,
+            percentComplete: 0,
+          };
+
+          return {
+            currentCourseId: courseId,
+            modules,
+            courseProgress: {
+              ...state.courseProgress,
+              [courseId]: {
+                ...courseProgress,
+                lastAccessedAt: now,
+              },
+            },
+          };
+        });
+      },
+
+      exitCourse: () => {
+        set({ currentCourseId: null });
+      },
+
+      getModulesForCourse: (courseId: CourseId) => {
+        return courseId === 'claude-code' ? courseModules : warpCourseModules;
+      },
 
       // ========== Lesson Actions ==========
       startLesson: (lessonId: string) => {
@@ -683,6 +740,8 @@ export const useCourseStore = create<CourseStore>()(
         activityLog: state.activityLog,
         searchHistory: state.searchHistory,
         notifications: state.notifications,
+        courseProgress: state.courseProgress,
+        currentCourseId: state.currentCourseId,
       }),
     }
   )

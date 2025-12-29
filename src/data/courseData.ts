@@ -1255,6 +1255,7 @@ Neste projeto, você construirá uma API REST completa para gestão de tarefas.
 export const courseModules: Module[] = [
   {
     id: '01',
+    courseId: 'claude-code',
     number: 1,
     title: 'Fundamentos',
     slug: 'fundamentos',
@@ -1270,6 +1271,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '02',
+    courseId: 'claude-code',
     number: 2,
     title: 'Comandos CLI',
     slug: 'comandos-cli',
@@ -1285,6 +1287,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '03',
+    courseId: 'claude-code',
     number: 3,
     title: 'Configuração',
     slug: 'configuracao',
@@ -1300,6 +1303,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '04',
+    courseId: 'claude-code',
     number: 4,
     title: 'Skills',
     slug: 'skills',
@@ -1315,6 +1319,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '05',
+    courseId: 'claude-code',
     number: 5,
     title: 'MCP',
     slug: 'mcp',
@@ -1330,6 +1335,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '06',
+    courseId: 'claude-code',
     number: 6,
     title: 'Hooks',
     slug: 'hooks',
@@ -1345,6 +1351,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '07',
+    courseId: 'claude-code',
     number: 7,
     title: 'Subagents',
     slug: 'subagents',
@@ -1360,6 +1367,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '08',
+    courseId: 'claude-code',
     number: 8,
     title: 'Plugins',
     slug: 'plugins',
@@ -1375,6 +1383,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '09',
+    courseId: 'claude-code',
     number: 9,
     title: 'Integrações IDE',
     slug: 'integracoes-ide',
@@ -1390,6 +1399,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '10',
+    courseId: 'claude-code',
     number: 10,
     title: 'Avançado',
     slug: 'avancado',
@@ -1405,6 +1415,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '11',
+    courseId: 'claude-code',
     number: 11,
     title: 'Best Practices',
     slug: 'best-practices',
@@ -1420,6 +1431,7 @@ export const courseModules: Module[] = [
   },
   {
     id: '12',
+    courseId: 'claude-code',
     number: 12,
     title: 'Projetos Práticos',
     slug: 'projetos-praticos',

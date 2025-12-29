@@ -1,20 +1,21 @@
 // ============================================================================
-// CLAUDE CODE MASTER COURSE - MAIN APP
-// Estado-da-arte React application with full feature set
+// AI MASTER PORTAL - MAIN APP
+// Estado-da-arte multi-course React application
 // ============================================================================
 
 import { useEffect, useState } from 'react';
 import { useCourseStore } from './store/useCourseStore';
 import { useGreetingAndWeather, useCurrentTime } from './hooks/useGreetingAndWeather';
-import { getLevelFromXp, getXpProgress } from './types/course';
-import type { UserProfile, OnboardingData } from './types/course';
+import { getLevelFromXp, getXpProgress, getCourseInfo } from './types/course';
+import type { UserProfile, OnboardingData, CourseId, Module } from './types/course';
+import { CourseSelector } from './components/CourseSelector';
 import {
   Rocket, Terminal, Settings, Zap, Plug, Anchor, Users, Package,
   Code, Sparkles, Award, Hammer, ChevronRight, ChevronDown,
   Moon, Sun, BookOpen, Trophy, Flame, Bell, Search, Menu,
   CheckCircle2, Circle, Lock, Play, Clock, Star, Target,
   ArrowRight, Bookmark, FileText, BarChart3, Monitor, Check,
-  LogOut, Mail, Calendar
+  LogOut, Mail, Calendar, Home
 } from 'lucide-react';
 import { NewsTicker, TrendsSection } from './components/NewsAndTrends';
 import './index.css';
@@ -423,7 +424,15 @@ function UserMenu({ profile, onLogout }: { profile: UserProfile; onLogout: () =>
 // HEADER COMPONENT
 // ============================================================================
 
-function Header({ profile, toggleSidebar, onLogout }: { profile: UserProfile; toggleSidebar: () => void; onLogout: () => void }) {
+interface HeaderProps {
+  profile: UserProfile;
+  toggleSidebar: () => void;
+  onLogout: () => void;
+  currentCourseId?: CourseId | null;
+  onBackToPortal?: () => void;
+}
+
+function Header({ profile, toggleSidebar, onLogout, currentCourseId, onBackToPortal }: HeaderProps) {
   const { greeting, weather } = useGreetingAndWeather();
   const { formatted } = useCurrentTime();
   const stats = useCourseStore((s) => s.stats);
@@ -433,12 +442,13 @@ function Header({ profile, toggleSidebar, onLogout }: { profile: UserProfile; to
 
   const level = getLevelFromXp(stats.totalXp);
   const xpProgress = getXpProgress(stats.totalXp);
+  const courseInfo = currentCourseId ? getCourseInfo(currentCourseId) : null;
   const overallProgress = Math.round((stats.lessonsCompleted / stats.totalLessons) * 100);
 
   return (
     <header className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800
                        flex items-center justify-between px-4 lg:px-6 sticky top-0 z-50">
-      {/* Left: Menu + Greeting */}
+      {/* Left: Menu + Course Title + Greeting */}
       <div className="flex items-center gap-4">
         <button
           onClick={toggleSidebar}
@@ -447,10 +457,36 @@ function Header({ profile, toggleSidebar, onLogout }: { profile: UserProfile; to
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="hidden sm:block">
+        {/* Back to Portal button */}
+        {onBackToPortal && (
+          <button
+            onClick={onBackToPortal}
+            className="hidden sm:flex items-center gap-2 px-3 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800
+                     rounded-lg text-slate-600 dark:text-slate-300 transition-colors"
+            title="Voltar ao Portal"
+          >
+            <Home className="w-4 h-4" />
+            <span className="text-sm font-medium">Portal</span>
+          </button>
+        )}
+
+        {/* Course Title when in course */}
+        {courseInfo && (
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-indigo-500/10 to-violet-500/10
+                        rounded-lg border border-indigo-200 dark:border-indigo-800">
+            <span className={`text-lg ${courseInfo.color === 'indigo' ? 'text-indigo-500' : 'text-emerald-500'}`}>
+              {courseInfo.icon === 'Terminal' ? '>' : '⚡'}
+            </span>
+            <span className="font-semibold text-slate-900 dark:text-white text-sm">
+              {courseInfo.title}
+            </span>
+          </div>
+        )}
+
+        <div className="hidden md:block">
           <div className="flex items-center gap-2">
             <span className="text-xl">{greeting.emoji}</span>
-            <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+            <span className="text-lg font-semibold text-slate-900 dark:text-slate-100">
               {greeting.greeting}, <span className="text-indigo-500">{profile.name.split(' ')[0]}</span>!
             </span>
           </div>
@@ -527,15 +563,17 @@ function Header({ profile, toggleSidebar, onLogout }: { profile: UserProfile; to
 // SIDEBAR COMPONENT
 // ============================================================================
 
-function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
-  {
-    isOpen: boolean;
-    onClose: () => void;
-    currentModule: string | null;
-    onSelectLesson: (lessonId: string) => void;
-  }
-) {
-  const modules = useCourseStore((s) => s.modules);
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  currentModule: string | null;
+  onSelectLesson: (lessonId: string) => void;
+  courseModules?: Module[];
+}
+
+function Sidebar({ isOpen, onClose, currentModule, onSelectLesson, courseModules }: SidebarProps) {
+  const storeModules = useCourseStore((s) => s.modules);
+  const modules = courseModules || storeModules;
   const lessonProgress = useCourseStore((s) => s.lessonProgress);
   const [expandedModule, setExpandedModule] = useState<string | null>(currentModule);
   const [searchQuery, setSearchQuery] = useState('');
@@ -697,8 +735,15 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
 // LESSON VIEW COMPONENT
 // ============================================================================
 
-function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void }) {
-  const modules = useCourseStore((s) => s.modules);
+interface LessonViewProps {
+  lessonId: string;
+  onBack: () => void;
+  courseModules?: Module[];
+}
+
+function LessonView({ lessonId, onBack, courseModules }: LessonViewProps) {
+  const storeModules = useCourseStore((s) => s.modules);
+  const modules = courseModules || storeModules;
   const lessonProgress = useCourseStore((s) => s.lessonProgress);
   const startLesson = useCourseStore((s) => s.startLesson);
   const completeLesson = useCourseStore((s) => s.completeLesson);
@@ -887,9 +932,15 @@ function LessonView({ lessonId, onBack }: { lessonId: string; onBack: () => void
 // DASHBOARD COMPONENT
 // ============================================================================
 
-function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => void }) {
+interface DashboardProps {
+  onSelectLesson: (lessonId: string) => void;
+  courseModules?: Module[];
+}
+
+function Dashboard({ onSelectLesson, courseModules }: DashboardProps) {
   const stats = useCourseStore((s) => s.stats);
-  const modules = useCourseStore((s) => s.modules);
+  const storeModules = useCourseStore((s) => s.modules);
+  const modules = courseModules || storeModules;
   const lessonProgress = useCourseStore((s) => s.lessonProgress);
   const activityLog = useCourseStore((s) => s.activityLog);
 
@@ -1076,10 +1127,14 @@ function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => v
 
 function App() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [currentCourseId, setCurrentCourseId] = useState<CourseId | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentModule, setCurrentModule] = useState<string | null>(null);
   const [currentLesson, setCurrentLesson] = useState<string | null>(null);
   const settings = useCourseStore((s) => s.settings);
+  const selectCourse = useCourseStore((s) => s.selectCourse);
+  const exitCourse = useCourseStore((s) => s.exitCourse);
+  const getModulesForCourse = useCourseStore((s) => s.getModulesForCourse);
 
   // Load profile from localStorage
   useEffect(() => {
@@ -1088,6 +1143,22 @@ function App() {
       setProfile(JSON.parse(saved));
     }
   }, []);
+
+  // Handle course selection
+  const handleSelectCourse = (courseId: CourseId) => {
+    setCurrentCourseId(courseId);
+    selectCourse(courseId);
+    setCurrentModule(null);
+    setCurrentLesson(null);
+  };
+
+  // Handle back to portal
+  const handleBackToPortal = () => {
+    setCurrentCourseId(null);
+    exitCourse();
+    setCurrentModule(null);
+    setCurrentLesson(null);
+  };
 
   // Apply theme with system preference detection
   useEffect(() => {
@@ -1142,6 +1213,19 @@ function App() {
     return <Onboarding onComplete={handleOnboarding} />;
   }
 
+  // Show course selector if no course is selected
+  if (!currentCourseId) {
+    return (
+      <CourseSelector
+        profile={profile}
+        onSelectCourse={handleSelectCourse}
+      />
+    );
+  }
+
+  // Get modules for current course
+  const courseModules = getModulesForCourse(currentCourseId);
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
       {/* AI News Ticker */}
@@ -1153,33 +1237,42 @@ function App() {
           onClose={() => setSidebarOpen(false)}
           currentModule={currentModule}
           onSelectLesson={(id) => {
-            const modules = useCourseStore.getState().modules;
-            const lesson = modules.flatMap(m => m.lessons).find(l => l.id === id);
+            const lesson = courseModules.flatMap(m => m.lessons).find(l => l.id === id);
             if (lesson) {
               setCurrentModule(lesson.moduleId);
               setCurrentLesson(id);
             }
           }}
+          courseModules={courseModules}
         />
 
         <div className="flex-1 flex flex-col min-w-0">
-          <Header profile={profile} toggleSidebar={() => setSidebarOpen(!sidebarOpen)} onLogout={handleLogout} />
+          <Header
+            profile={profile}
+            toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+            onLogout={handleLogout}
+            currentCourseId={currentCourseId}
+            onBackToPortal={handleBackToPortal}
+          />
 
           <main className="flex-1 overflow-y-auto">
           {currentLesson ? (
             <LessonView
               lessonId={currentLesson}
               onBack={() => setCurrentLesson(null)}
+              courseModules={courseModules}
             />
           ) : (
-            <Dashboard onSelectLesson={(id) => {
-              const modules = useCourseStore.getState().modules;
-              const lesson = modules.flatMap(m => m.lessons).find(l => l.id === id);
-              if (lesson) {
-                setCurrentModule(lesson.moduleId);
-                setCurrentLesson(id);
-              }
-            }} />
+            <Dashboard
+              onSelectLesson={(id) => {
+                const lesson = courseModules.flatMap(m => m.lessons).find(l => l.id === id);
+                if (lesson) {
+                  setCurrentModule(lesson.moduleId);
+                  setCurrentLesson(id);
+                }
+              }}
+              courseModules={courseModules}
+            />
           )}
           </main>
         </div>
