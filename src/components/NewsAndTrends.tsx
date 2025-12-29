@@ -353,13 +353,13 @@ export function TrendsSection() {
   return (
     <div className="card mb-6">
       <div className="p-4 border-b border-dark-200 dark:border-dark-700 flex items-center justify-between">
-        <h2 className="font-bold flex items-center gap-2">
+        <h2 className="font-bold flex items-center gap-2 text-dark-900 dark:text-dark-100">
           <TrendingUp className="w-5 h-5 text-primary-500" />
           Tendências em AI
         </h2>
         <button
           onClick={() => setShowAll(!showAll)}
-          className="text-sm text-primary-500 hover:underline"
+          className="text-sm text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-medium"
         >
           {showAll ? 'Ver menos' : 'Ver todas'}
         </button>
@@ -369,24 +369,25 @@ export function TrendsSection() {
         {displayedTrends.map((trend) => (
           <div
             key={trend.id}
-            className="p-4 bg-dark-50 dark:bg-dark-800 rounded-lg hover:ring-2
-                     hover:ring-primary-500/20 transition-all"
+            className="p-4 bg-dark-50 dark:bg-dark-800/70 rounded-xl border border-transparent
+                     hover:border-primary-500/30 hover:bg-dark-100 dark:hover:bg-dark-800
+                     transition-all cursor-default"
           >
             <div className="flex items-start gap-3">
               <span className="text-2xl">{trend.icon}</span>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-medium text-dark-900 dark:text-white">
+                  <h3 className="font-semibold text-dark-900 dark:text-dark-100">
                     {trend.title}
                   </h3>
                   {trend.change === 'up' && (
-                    <span className="text-xs text-green-500 flex items-center gap-0.5">
+                    <span className="text-xs text-accent-600 dark:text-accent-400 flex items-center gap-0.5 font-medium">
                       <TrendingUp className="w-3 h-3" /> Alta
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-dark-500 mt-1">{trend.description}</p>
-                <span className="text-xs text-dark-400 mt-2 inline-block">
+                <p className="text-sm text-dark-600 dark:text-dark-400 mt-1">{trend.description}</p>
+                <span className="text-xs text-dark-500 dark:text-dark-500 mt-2 inline-block bg-dark-100 dark:bg-dark-700 px-2 py-0.5 rounded">
                   {trend.category}
                 </span>
               </div>

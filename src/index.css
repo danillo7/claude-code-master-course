@@ -5,64 +5,66 @@
 @source "../";
 
 @theme {
-  /* Colors */
-  --color-primary-50: #fdf4f3;
-  --color-primary-100: #fce7e4;
-  --color-primary-200: #fad3ce;
-  --color-primary-300: #f5b4ab;
-  --color-primary-400: #ed8779;
-  --color-primary-500: #e15d4e;
-  --color-primary-600: #cc4030;
-  --color-primary-700: #ab3326;
-  --color-primary-800: #8d2e24;
-  --color-primary-900: #762c24;
-  --color-primary-950: #40130e;
+  /* Primary Brand Colors - Coral/Red tones */
+  --color-primary-50: #fef2f2;
+  --color-primary-100: #fee2e2;
+  --color-primary-200: #fecaca;
+  --color-primary-300: #fca5a5;
+  --color-primary-400: #f87171;
+  --color-primary-500: #ef4444;
+  --color-primary-600: #dc2626;
+  --color-primary-700: #b91c1c;
+  --color-primary-800: #991b1b;
+  --color-primary-900: #7f1d1d;
+  --color-primary-950: #450a0a;
 
-  --color-accent-50: #f0fdf4;
-  --color-accent-100: #dcfce7;
-  --color-accent-200: #bbf7d0;
-  --color-accent-300: #86efac;
-  --color-accent-400: #4ade80;
-  --color-accent-500: #22c55e;
-  --color-accent-600: #16a34a;
-  --color-accent-700: #15803d;
-  --color-accent-800: #166534;
-  --color-accent-900: #14532d;
-  --color-accent-950: #052e16;
+  /* Accent Colors - Emerald/Green tones */
+  --color-accent-50: #ecfdf5;
+  --color-accent-100: #d1fae5;
+  --color-accent-200: #a7f3d0;
+  --color-accent-300: #6ee7b7;
+  --color-accent-400: #34d399;
+  --color-accent-500: #10b981;
+  --color-accent-600: #059669;
+  --color-accent-700: #047857;
+  --color-accent-800: #065f46;
+  --color-accent-900: #064e3b;
+  --color-accent-950: #022c22;
 
-  --color-dark-50: #f6f6f7;
-  --color-dark-100: #e1e3e6;
-  --color-dark-200: #c3c6cd;
-  --color-dark-300: #9ea2ac;
-  --color-dark-400: #797e8b;
-  --color-dark-500: #5e6370;
-  --color-dark-600: #4a4e59;
-  --color-dark-700: #3d404a;
-  --color-dark-800: #35373f;
-  --color-dark-900: #1a1b1f;
-  --color-dark-950: #0d0e10;
+  /* Neutral/Dark Colors - Slate tones for better readability */
+  --color-dark-50: #f8fafc;
+  --color-dark-100: #f1f5f9;
+  --color-dark-200: #e2e8f0;
+  --color-dark-300: #cbd5e1;
+  --color-dark-400: #94a3b8;
+  --color-dark-500: #64748b;
+  --color-dark-600: #475569;
+  --color-dark-700: #334155;
+  --color-dark-800: #1e293b;
+  --color-dark-900: #0f172a;
+  --color-dark-950: #020617;
 
   /* Fonts */
   --font-family-sans: 'Inter', system-ui, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   /* Animations */
-  --animate-fade-in: fadeIn 0.5s ease-out;
-  --animate-slide-in: slideIn 0.3s ease-out;
+  --animate-fade-in: fadeIn 0.3s ease-out;
+  --animate-slide-in: slideIn 0.2s ease-out;
   --animate-pulse-glow: pulseGlow 2s infinite;
   --animate-progress: progress 1s ease-out forwards;
 
   @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(10px); }
+    0% { opacity: 0; transform: translateY(8px); }
     100% { opacity: 1; transform: translateY(0); }
   }
   @keyframes slideIn {
-    0% { transform: translateX(-10px); opacity: 0; }
+    0% { transform: translateX(-8px); opacity: 0; }
     100% { transform: translateX(0); opacity: 1; }
   }
   @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 5px rgba(225, 93, 78, 0.5); }
-    50% { box-shadow: 0 0 20px rgba(225, 93, 78, 0.8); }
+    0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.4); }
+    50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.7); }
   }
   @keyframes progress {
     0% { width: 0%; }
@@ -70,33 +72,43 @@
   }
 }
 
-/* Base styles */
+/* ================================================================
+   BASE STYLES - Light Mode Default
+   ================================================================ */
+
 * {
   border-color: var(--color-dark-200);
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-dark-50);
+  color: var(--color-dark-900);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* ================================================================
+   DARK MODE OVERRIDES
+   ================================================================ */
 
 .dark * {
   border-color: var(--color-dark-700);
 }
 
-/* Smooth theme transitions */
-html {
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-body {
-  background-color: white;
-  color: var(--color-dark-900);
-  font-family: 'Inter', system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 .dark body {
   background-color: var(--color-dark-950);
-  color: var(--color-dark-50);
+  color: var(--color-dark-100);
 }
+
+/* ================================================================
+   SCROLLBAR STYLES
+   ================================================================ */
 
 ::-webkit-scrollbar {
   width: 8px;
@@ -105,10 +117,11 @@ body {
 
 ::-webkit-scrollbar-track {
   background-color: var(--color-dark-100);
+  border-radius: 4px;
 }
 
 .dark ::-webkit-scrollbar-track {
-  background-color: var(--color-dark-800);
+  background-color: var(--color-dark-900);
 }
 
 ::-webkit-scrollbar-thumb {
@@ -128,102 +141,211 @@ body {
   background-color: var(--color-dark-500);
 }
 
-/* Component classes */
+/* ================================================================
+   BUTTON COMPONENTS
+   ================================================================ */
+
 .btn-primary {
-  @apply px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg
-         font-medium transition-all duration-200 shadow-md hover:shadow-lg
-         active:scale-95 focus:ring-2 focus:ring-primary-400 focus:ring-offset-2;
+  @apply px-5 py-2.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl
+         font-semibold transition-all duration-200 shadow-lg shadow-primary-500/25
+         hover:shadow-xl hover:shadow-primary-500/30 active:scale-[0.98]
+         focus:ring-2 focus:ring-primary-400 focus:ring-offset-2 focus:outline-none;
 }
 
 .dark .btn-primary {
-  @apply focus:ring-offset-dark-900;
+  @apply shadow-primary-500/10 hover:shadow-primary-500/20 focus:ring-offset-dark-900;
 }
 
 .btn-secondary {
-  @apply px-4 py-2 bg-accent-500 hover:bg-accent-600 text-white rounded-lg
-         font-medium transition-all duration-200 shadow-md hover:shadow-lg
-         active:scale-95;
+  @apply px-5 py-2.5 bg-accent-500 hover:bg-accent-600 text-white rounded-xl
+         font-semibold transition-all duration-200 shadow-lg shadow-accent-500/25
+         hover:shadow-xl hover:shadow-accent-500/30 active:scale-[0.98];
+}
+
+.dark .btn-secondary {
+  @apply shadow-accent-500/10 hover:shadow-accent-500/20;
 }
 
 .btn-ghost {
-  @apply px-4 py-2 hover:bg-dark-100 rounded-lg font-medium transition-all duration-200;
+  @apply px-4 py-2 hover:bg-dark-100 text-dark-700 rounded-xl font-medium
+         transition-all duration-200;
 }
 
 .dark .btn-ghost {
-  @apply hover:bg-dark-800;
+  @apply hover:bg-dark-800 text-dark-300;
 }
 
+/* ================================================================
+   CARD COMPONENT
+   ================================================================ */
+
 .card {
-  @apply bg-white border border-dark-200 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200;
+  @apply bg-white border border-dark-200 rounded-2xl shadow-sm
+         hover:shadow-md transition-shadow duration-200;
 }
 
 .dark .card {
-  @apply bg-dark-900 border-dark-700;
+  @apply bg-dark-900 border-dark-700/50 shadow-none
+         hover:shadow-lg hover:shadow-black/20;
 }
 
-.badge-bronze { @apply bg-amber-100 text-amber-800; }
-.dark .badge-bronze { @apply bg-amber-900/30 text-amber-400; }
+/* ================================================================
+   BADGE COMPONENTS
+   ================================================================ */
 
-.badge-silver { @apply bg-gray-100 text-gray-800; }
-.dark .badge-silver { @apply bg-gray-800 text-gray-300; }
+.badge {
+  @apply inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold;
+}
 
-.badge-gold { @apply bg-yellow-100 text-yellow-800; }
-.dark .badge-gold { @apply bg-yellow-900/30 text-yellow-400; }
+.badge-bronze {
+  @apply bg-amber-100 text-amber-800 border border-amber-200;
+}
+.dark .badge-bronze {
+  @apply bg-amber-900/40 text-amber-300 border-amber-700/50;
+}
 
-.badge-platinum { @apply bg-cyan-100 text-cyan-800; }
-.dark .badge-platinum { @apply bg-cyan-900/30 text-cyan-400; }
+.badge-silver {
+  @apply bg-slate-100 text-slate-700 border border-slate-200;
+}
+.dark .badge-silver {
+  @apply bg-slate-800/60 text-slate-300 border-slate-600/50;
+}
 
-.badge-diamond { @apply bg-purple-100 text-purple-800; }
-.dark .badge-diamond { @apply bg-purple-900/30 text-purple-400; }
+.badge-gold {
+  @apply bg-yellow-100 text-yellow-800 border border-yellow-200;
+}
+.dark .badge-gold {
+  @apply bg-yellow-900/40 text-yellow-300 border-yellow-700/50;
+}
 
-.badge-master { @apply bg-indigo-100 text-indigo-800; }
-.dark .badge-master { @apply bg-indigo-900/30 text-indigo-400; }
+.badge-platinum {
+  @apply bg-cyan-100 text-cyan-800 border border-cyan-200;
+}
+.dark .badge-platinum {
+  @apply bg-cyan-900/40 text-cyan-300 border-cyan-700/50;
+}
 
-.badge-legendary { @apply bg-gradient-to-r from-primary-500 to-accent-500 text-white; }
+.badge-diamond {
+  @apply bg-purple-100 text-purple-800 border border-purple-200;
+}
+.dark .badge-diamond {
+  @apply bg-purple-900/40 text-purple-300 border-purple-700/50;
+}
+
+.badge-master {
+  @apply bg-indigo-100 text-indigo-800 border border-indigo-200;
+}
+.dark .badge-master {
+  @apply bg-indigo-900/40 text-indigo-300 border-indigo-700/50;
+}
+
+.badge-legendary {
+  @apply bg-gradient-to-r from-primary-500 to-accent-500 text-white border-0;
+}
+
+/* ================================================================
+   SIDEBAR STYLES
+   ================================================================ */
 
 .sidebar-link {
-  @apply flex items-center gap-3 px-4 py-3 rounded-lg text-dark-600
+  @apply flex items-center gap-3 px-4 py-3 rounded-xl text-dark-600
          hover:bg-dark-100 hover:text-dark-900 transition-all duration-200;
 }
 
 .dark .sidebar-link {
-  @apply text-dark-400 hover:bg-dark-800 hover:text-dark-100;
+  @apply text-dark-300 hover:bg-dark-800 hover:text-dark-50;
 }
 
 .sidebar-link.active {
-  @apply bg-primary-50 text-primary-600 font-medium;
+  @apply bg-primary-50 text-primary-600 font-semibold;
 }
 
 .dark .sidebar-link.active {
-  @apply bg-primary-900/20 text-primary-400;
+  @apply bg-primary-500/15 text-primary-400;
 }
 
+/* ================================================================
+   XP BADGE
+   ================================================================ */
+
 .xp-badge {
-  @apply inline-flex items-center gap-1 px-2 py-1 bg-accent-100
-         text-accent-700 rounded-md text-xs font-semibold;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 bg-accent-100
+         text-accent-700 rounded-lg text-xs font-bold;
 }
 
 .dark .xp-badge {
-  @apply bg-accent-900/30 text-accent-400;
+  @apply bg-accent-500/20 text-accent-400;
 }
 
+/* ================================================================
+   CODE BLOCK
+   ================================================================ */
+
 .code-block {
-  @apply bg-dark-900 text-dark-100 rounded-lg p-4
+  @apply bg-dark-900 text-dark-100 rounded-xl p-4
          font-mono text-sm overflow-x-auto border border-dark-700;
 }
 
 .dark .code-block {
-  @apply bg-dark-950;
+  @apply bg-dark-950 border-dark-800;
 }
+
+/* ================================================================
+   UTILITY CLASSES
+   ================================================================ */
 
 .text-gradient {
   @apply bg-gradient-to-r from-primary-500 to-accent-500 bg-clip-text text-transparent;
 }
 
 .glass {
-  @apply bg-white/80 backdrop-blur-lg;
+  @apply bg-white/80 backdrop-blur-xl;
 }
 
 .dark .glass {
   @apply bg-dark-900/80;
+}
+
+/* ================================================================
+   INPUT STYLES
+   ================================================================ */
+
+input[type="text"],
+input[type="email"],
+input[type="search"] {
+  color: var(--color-dark-900);
+}
+
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="search"] {
+  color: var(--color-dark-100);
+}
+
+input::placeholder {
+  color: var(--color-dark-400);
+}
+
+.dark input::placeholder {
+  color: var(--color-dark-500);
+}
+
+/* ================================================================
+   FOCUS STATES (ACCESSIBILITY)
+   ================================================================ */
+
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-500;
+}
+
+/* ================================================================
+   SELECTION STYLES
+   ================================================================ */
+
+::selection {
+  @apply bg-primary-500/30 text-dark-900;
+}
+
+.dark ::selection {
+  @apply bg-primary-500/40 text-dark-50;
 }

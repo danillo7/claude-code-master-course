@@ -328,19 +328,20 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
         </button>
 
         <div className="hidden sm:block">
-          <div className="flex items-center gap-2 text-lg font-medium">
-            <span>{greeting.emoji}</span>
-            <span className="text-dark-900 dark:text-white">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{greeting.emoji}</span>
+            <span className="text-xl font-semibold text-dark-900 dark:text-dark-100">
               {greeting.greeting}, <span className="text-primary-500">{profile.name.split(' ')[0]}</span>!
             </span>
           </div>
-          <div className="flex items-center gap-3 text-sm text-dark-500">
+          <div className="flex items-center gap-3 text-sm text-dark-500 dark:text-dark-400 mt-0.5">
             <span className="capitalize">{formatted}</span>
             {!weather.isLoading && !weather.error && (
               <>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  {weather.icon} {weather.temperature}°C
+                <span className="text-dark-300 dark:text-dark-600">•</span>
+                <span className="flex items-center gap-1.5">
+                  <span>{weather.icon}</span>
+                  <span>{weather.temperature}°C</span>
                 </span>
               </>
             )}
@@ -444,16 +445,19 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
                    ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}
       >
         {/* Search */}
-        <div className="p-4 border-b border-dark-200 dark:border-dark-800">
+        <div className="p-4 border-b border-dark-200 dark:border-dark-700">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-dark-400 dark:text-dark-500" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar lições..."
-              className="w-full pl-10 pr-4 py-2 bg-dark-100 dark:bg-dark-800 rounded-lg
-                       text-sm focus:ring-2 focus:ring-primary-500 outline-none"
+              className="w-full pl-10 pr-4 py-2.5 bg-dark-100 dark:bg-dark-800 rounded-xl
+                       text-sm text-dark-900 dark:text-dark-100
+                       placeholder:text-dark-400 dark:placeholder:text-dark-500
+                       focus:ring-2 focus:ring-primary-500 focus:bg-white dark:focus:bg-dark-700
+                       outline-none transition-all"
             />
           </div>
         </div>
@@ -472,35 +476,35 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
               <div key={module.id} className="mb-1">
                 <button
                   onClick={() => setExpandedModule(isExpanded ? null : module.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg
+                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl
                             transition-all ${
                     currentModule === module.id
-                      ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                      : 'hover:bg-dark-100 dark:hover:bg-dark-800'
+                      ? 'bg-primary-50 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400'
+                      : 'text-dark-700 dark:text-dark-200 hover:bg-dark-100 dark:hover:bg-dark-800'
                   }`}
                 >
-                  <Icon className="w-5 h-5 flex-shrink-0" />
+                  <Icon className="w-5 h-5 flex-shrink-0 text-dark-500 dark:text-dark-400" />
                   <div className="flex-1 text-left">
-                    <div className="text-sm font-medium">{module.title}</div>
-                    <div className="flex items-center gap-2 text-xs text-dark-500">
+                    <div className="text-sm font-medium text-dark-900 dark:text-dark-100">{module.title}</div>
+                    <div className="flex items-center gap-2 text-xs text-dark-500 dark:text-dark-400">
                       <span>{completedLessons}/{module.lessons.length} lições</span>
-                      <div className="w-12 h-1 bg-dark-200 dark:bg-dark-700 rounded-full">
+                      <div className="w-12 h-1.5 bg-dark-200 dark:bg-dark-700 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-accent-500 rounded-full"
+                          className="h-full bg-accent-500 rounded-full transition-all"
                           style={{ width: `${progress}%` }}
                         />
                       </div>
                     </div>
                   </div>
                   {isExpanded ? (
-                    <ChevronDown className="w-4 h-4" />
+                    <ChevronDown className="w-4 h-4 text-dark-400" />
                   ) : (
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-4 h-4 text-dark-400" />
                   )}
                 </button>
 
                 {isExpanded && (
-                  <div className="ml-4 mt-1 space-y-1 border-l-2 border-dark-200 dark:border-dark-700 pl-3">
+                  <div className="ml-4 mt-1 space-y-0.5 border-l-2 border-dark-200 dark:border-dark-700 pl-3">
                     {module.lessons.map((lesson) => {
                       const status = lessonProgress[lesson.id]?.status || 'available';
                       const StatusIcon =
@@ -513,22 +517,25 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
                           key={lesson.id}
                           onClick={() => onSelectLesson(lesson.id)}
                           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left
-                                   hover:bg-dark-100 dark:hover:bg-dark-800 transition-all group"
+                                   text-dark-700 dark:text-dark-300
+                                   hover:bg-dark-100 dark:hover:bg-dark-800
+                                   hover:text-dark-900 dark:hover:text-dark-100
+                                   transition-all group"
                         >
                           <StatusIcon
                             className={`w-4 h-4 flex-shrink-0 ${
                               status === 'completed' ? 'text-accent-500' :
                               status === 'in_progress' ? 'text-primary-500' :
-                              'text-dark-400'
+                              'text-dark-400 dark:text-dark-500'
                             }`}
                           />
                           <span className="text-sm truncate flex-1">{lesson.title}</span>
                           {lesson.isNew && (
-                            <span className="text-[10px] bg-primary-500 text-white px-1.5 py-0.5 rounded">
+                            <span className="text-[10px] bg-primary-500 text-white px-1.5 py-0.5 rounded font-medium">
                               NEW
                             </span>
                           )}
-                          <span className="text-xs text-dark-500 opacity-0 group-hover:opacity-100">
+                          <span className="text-xs text-dark-500 dark:text-dark-400 opacity-0 group-hover:opacity-100 transition-opacity">
                             +{lesson.xp}xp
                           </span>
                         </button>
@@ -542,25 +549,25 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson }:
         </div>
 
         {/* Stats footer */}
-        <div className="p-4 border-t border-dark-200 dark:border-dark-800 bg-dark-50 dark:bg-dark-800/50">
-          <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <div>
-              <div className="font-bold text-primary-500">
+        <div className="p-4 border-t border-dark-200 dark:border-dark-700 bg-dark-100/50 dark:bg-dark-800/50">
+          <div className="grid grid-cols-3 gap-3 text-center">
+            <div className="p-2 rounded-lg bg-white dark:bg-dark-800">
+              <div className="text-lg font-bold text-primary-500">
                 {useCourseStore.getState().stats.lessonsCompleted}
               </div>
-              <div className="text-dark-500">Lições</div>
+              <div className="text-xs text-dark-500 dark:text-dark-400">Lições</div>
             </div>
-            <div>
-              <div className="font-bold text-accent-500">
+            <div className="p-2 rounded-lg bg-white dark:bg-dark-800">
+              <div className="text-lg font-bold text-accent-500">
                 {useCourseStore.getState().stats.totalXp}
               </div>
-              <div className="text-dark-500">XP</div>
+              <div className="text-xs text-dark-500 dark:text-dark-400">XP</div>
             </div>
-            <div>
-              <div className="font-bold text-orange-500">
+            <div className="p-2 rounded-lg bg-white dark:bg-dark-800">
+              <div className="text-lg font-bold text-orange-500">
                 {useCourseStore.getState().stats.streak.current}
               </div>
-              <div className="text-dark-500">Streak</div>
+              <div className="text-xs text-dark-500 dark:text-dark-400">Streak</div>
             </div>
           </div>
         </div>
@@ -847,28 +854,31 @@ function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => v
       {/* Continue learning */}
       {nextLesson && (
         <div className="card mb-8 overflow-hidden">
-          <div className="bg-gradient-to-r from-primary-500 to-accent-500 p-6">
-            <h2 className="text-xl font-bold text-white mb-4">Continuar Estudando</h2>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <div className="bg-gradient-to-br from-primary-600 via-primary-500 to-primary-600 p-6 relative">
+            {/* Subtle pattern overlay */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent)] pointer-events-none" />
+            <h2 className="text-xl font-bold text-white mb-4 relative">Continuar Estudando</h2>
+            <div className="bg-white/15 backdrop-blur-sm rounded-xl p-5 border border-white/10 relative">
               <div className="flex items-center justify-between gap-4">
                 <div>
-                  <div className="text-white/80 text-sm mb-1">
+                  <div className="text-white/70 text-sm mb-1 font-medium">
                     Módulo {nextLesson.moduleId}
                   </div>
-                  <h3 className="text-lg font-medium text-white">{nextLesson.title}</h3>
-                  <div className="flex items-center gap-3 mt-2 text-white/70 text-sm">
-                    <span className="flex items-center gap-1">
+                  <h3 className="text-xl font-semibold text-white">{nextLesson.title}</h3>
+                  <div className="flex items-center gap-4 mt-3 text-white/80 text-sm">
+                    <span className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-lg">
                       <Clock className="w-4 h-4" /> {nextLesson.duration} min
                     </span>
-                    <span className="flex items-center gap-1">
+                    <span className="flex items-center gap-1.5 bg-white/10 px-2.5 py-1 rounded-lg">
                       <Star className="w-4 h-4" /> {nextLesson.xp} XP
                     </span>
                   </div>
                 </div>
                 <button
                   onClick={() => onSelectLesson(nextLesson.id)}
-                  className="px-6 py-3 bg-white text-primary-600 font-medium rounded-lg
-                           hover:bg-white/90 transition-all flex items-center gap-2"
+                  className="px-6 py-3 bg-white text-primary-600 font-semibold rounded-xl
+                           hover:bg-white/95 hover:scale-105 transition-all flex items-center gap-2
+                           shadow-lg shadow-black/10"
                 >
                   <Play className="w-5 h-5" /> Começar
                 </button>
@@ -883,8 +893,8 @@ function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => v
         <div className="flex items-center gap-4 mb-4">
           <span className="text-4xl">{level.icon}</span>
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-dark-900 dark:text-white">{level.name}</h3>
-            <div className="flex items-center gap-2 mt-1">
+            <h3 className="text-lg font-bold text-dark-900 dark:text-dark-100">{level.name}</h3>
+            <div className="flex items-center gap-3 mt-2">
               <div className="flex-1 h-3 bg-dark-200 dark:bg-dark-700 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full
@@ -892,13 +902,13 @@ function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => v
                   style={{ width: `${xpProgress.percentage}%` }}
                 />
               </div>
-              <span className="text-sm text-dark-500">
+              <span className="text-sm font-medium text-dark-600 dark:text-dark-400">
                 {xpProgress.current}/{xpProgress.max} XP
               </span>
             </div>
           </div>
         </div>
-        <div className="text-sm text-dark-500">
+        <div className="text-sm text-dark-500 dark:text-dark-400">
           Benefícios: {level.benefits.join(' • ')}
         </div>
       </div>
@@ -910,7 +920,7 @@ function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => v
       {recentActivity.length > 0 && (
         <div className="card">
           <div className="p-4 border-b border-dark-200 dark:border-dark-700">
-            <h2 className="font-bold flex items-center gap-2">
+            <h2 className="font-bold flex items-center gap-2 text-dark-900 dark:text-dark-100">
               <BarChart3 className="w-5 h-5 text-primary-500" />
               Atividade Recente
             </h2>
@@ -919,8 +929,8 @@ function Dashboard({ onSelectLesson }: { onSelectLesson: (lessonId: string) => v
             {recentActivity.map((activity) => (
               <div key={activity.id} className="p-4 flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-medium">{activity.description}</div>
-                  <div className="text-xs text-dark-500">
+                  <div className="text-sm font-medium text-dark-900 dark:text-dark-100">{activity.description}</div>
+                  <div className="text-xs text-dark-500 dark:text-dark-400">
                     {new Date(activity.timestamp).toLocaleString('pt-BR')}
                   </div>
                 </div>
