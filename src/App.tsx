@@ -57,7 +57,7 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-900 via-dark-950 to-black flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-dark-100 via-dark-50 to-white dark:from-dark-900 dark:via-dark-950 dark:to-black flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Progress dots */}
         <div className="flex justify-center gap-2 mb-8">
@@ -65,7 +65,7 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
             <div
               key={s}
               className={`w-2 h-2 rounded-full transition-all ${
-                s === step ? 'bg-primary-500 w-8' : s < step ? 'bg-accent-500' : 'bg-dark-700'
+                s === step ? 'bg-primary-500 w-8' : s < step ? 'bg-accent-500' : 'bg-dark-300 dark:bg-dark-700'
               }`}
             />
           ))}
@@ -75,20 +75,20 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
           {step === 1 && (
             <div className="animate-fade-in">
               <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-primary-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-primary-100 dark:bg-primary-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Rocket className="w-8 h-8 text-primary-500" />
                 </div>
-                <h1 className="text-2xl font-bold text-white mb-2">
+                <h1 className="text-2xl font-bold text-dark-900 dark:text-white mb-2">
                   Bem-vindo ao Claude Code Master!
                 </h1>
-                <p className="text-dark-400">
+                <p className="text-dark-500 dark:text-dark-400">
                   Vamos personalizar sua experiência de aprendizado
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">
                     Seu nome
                   </label>
                   <input
@@ -96,14 +96,14 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Como você quer ser chamado?"
-                    className="w-full px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg
-                             text-white placeholder-dark-500 focus:border-primary-500 focus:ring-1
-                             focus:ring-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-dark-100 dark:bg-dark-800 border border-dark-200 dark:border-dark-700 rounded-lg
+                             text-dark-900 dark:text-white placeholder-dark-400 dark:placeholder-dark-500
+                             focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-dark-300 mb-2">
+                  <label className="block text-sm font-medium text-dark-700 dark:text-dark-300 mb-2">
                     Email (opcional)
                   </label>
                   <input
@@ -111,9 +111,9 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Para backup do progresso"
-                    className="w-full px-4 py-3 bg-dark-800 border border-dark-700 rounded-lg
-                             text-white placeholder-dark-500 focus:border-primary-500 focus:ring-1
-                             focus:ring-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 bg-dark-100 dark:bg-dark-800 border border-dark-200 dark:border-dark-700 rounded-lg
+                             text-dark-900 dark:text-white placeholder-dark-400 dark:placeholder-dark-500
+                             focus:border-primary-500 focus:ring-1 focus:ring-primary-500 outline-none transition-all"
                   />
                 </div>
               </div>
@@ -132,10 +132,10 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
           {step === 2 && (
             <div className="animate-fade-in">
               <div className="text-center mb-6">
-                <h2 className="text-xl font-bold text-white mb-2">
+                <h2 className="text-xl font-bold text-dark-900 dark:text-white mb-2">
                   Qual é seu contexto principal?
                 </h2>
-                <p className="text-dark-400 text-sm">
+                <p className="text-dark-500 dark:text-dark-400 text-sm">
                   Personalizaremos os desafios e exemplos
                 </p>
               </div>
@@ -147,15 +147,15 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
                     onClick={() => setPrimaryContext(ctx.id as any)}
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                       primaryContext === ctx.id
-                        ? 'border-primary-500 bg-primary-500/10'
-                        : 'border-dark-700 hover:border-dark-600'
+                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10'
+                        : 'border-dark-200 dark:border-dark-700 hover:border-dark-300 dark:hover:border-dark-600'
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{ctx.icon}</span>
                       <div>
-                        <div className="font-medium text-white">{ctx.name}</div>
-                        <div className="text-sm text-dark-400">{ctx.desc}</div>
+                        <div className="font-medium text-dark-900 dark:text-white">{ctx.name}</div>
+                        <div className="text-sm text-dark-500 dark:text-dark-400">{ctx.desc}</div>
                       </div>
                     </div>
                   </button>
@@ -174,10 +174,10 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
           {step === 3 && (
             <div className="animate-fade-in">
               <div className="text-center mb-6">
-                <h2 className="text-xl font-bold text-white mb-2">
+                <h2 className="text-xl font-bold text-dark-900 dark:text-white mb-2">
                   Meta diária de estudo
                 </h2>
-                <p className="text-dark-400 text-sm">
+                <p className="text-dark-500 dark:text-dark-400 text-sm">
                   Consistência é mais importante que intensidade
                 </p>
               </div>
@@ -190,16 +190,16 @@ function Onboarding({ onComplete }: { onComplete: (data: OnboardingData) => void
                     className={`w-full p-4 rounded-lg border-2 flex items-center justify-between
                               transition-all ${
                       dailyGoal === mins
-                        ? 'border-primary-500 bg-primary-500/10'
-                        : 'border-dark-700 hover:border-dark-600'
+                        ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10'
+                        : 'border-dark-200 dark:border-dark-700 hover:border-dark-300 dark:hover:border-dark-600'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Clock className="w-5 h-5 text-dark-400" />
-                      <span className="text-white font-medium">{mins} minutos/dia</span>
+                      <Clock className="w-5 h-5 text-dark-500 dark:text-dark-400" />
+                      <span className="text-dark-900 dark:text-white font-medium">{mins} minutos/dia</span>
                     </div>
                     {mins === 30 && (
-                      <span className="text-xs bg-accent-500/20 text-accent-400 px-2 py-1 rounded">
+                      <span className="text-xs bg-accent-100 dark:bg-accent-500/20 text-accent-600 dark:text-accent-400 px-2 py-1 rounded">
                         Recomendado
                       </span>
                     )}
@@ -244,7 +244,7 @@ function ThemeSelector() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg transition-colors
-                   flex items-center gap-1"
+                   flex items-center gap-1 text-dark-600 dark:text-dark-300"
         title={`Tema: ${currentTheme.label}`}
       >
         <CurrentIcon className="w-5 h-5" />
@@ -262,7 +262,7 @@ function ThemeSelector() {
                          border border-dark-200 dark:border-dark-700 rounded-xl shadow-xl
                          overflow-hidden z-50 animate-fade-in">
             <div className="p-2">
-              <div className="text-xs font-medium text-dark-500 px-3 py-2">
+              <div className="text-xs font-medium text-dark-500 dark:text-dark-400 px-3 py-2">
                 Aparência
               </div>
               {themes.map((theme) => {
@@ -279,12 +279,12 @@ function ThemeSelector() {
                               transition-colors ${
                       isSelected
                         ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                        : 'hover:bg-dark-100 dark:hover:bg-dark-800'
+                        : 'hover:bg-dark-100 dark:hover:bg-dark-800 text-dark-700 dark:text-dark-200'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
                     <div className="flex-1 text-left">
-                      <div className="text-sm font-medium">{theme.label}</div>
+                      <div className="text-sm font-medium text-dark-900 dark:text-dark-100">{theme.label}</div>
                       <div className="text-xs text-dark-500">{theme.desc}</div>
                     </div>
                     {isSelected && <Check className="w-4 h-4 text-primary-500" />}
@@ -322,7 +322,7 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
       <div className="flex items-center gap-4">
         <button
           onClick={toggleSidebar}
-          className="lg:hidden p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg"
+          className="lg:hidden p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg text-dark-600 dark:text-dark-300"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -385,7 +385,7 @@ function Header({ profile, toggleSidebar }: { profile: UserProfile; toggleSideba
 
       {/* Right: Actions */}
       <div className="flex items-center gap-2">
-        <button className="relative p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg">
+        <button className="relative p-2 hover:bg-dark-100 dark:hover:bg-dark-800 rounded-lg text-dark-600 dark:text-dark-300">
           <Bell className="w-5 h-5" />
           {unreadCount > 0 && (
             <span className="absolute top-1 right-1 w-4 h-4 bg-primary-500 text-white
