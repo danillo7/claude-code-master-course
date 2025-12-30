@@ -244,7 +244,7 @@ export function CourseSelector({ profile, onSelectCourse }: CourseSelectorProps)
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+    <div className="pb-12">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Background Gradient */}
@@ -280,6 +280,7 @@ export function CourseSelector({ profile, onSelectCourse }: CourseSelectorProps)
             >
               Escolha um curso para continuar sua jornada no TOP 1% de produtividade com IA
             </motion.p>
+
           </div>
 
           {/* Stats Summary */}

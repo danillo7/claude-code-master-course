@@ -246,6 +246,130 @@ Cada comando cria um **Block** independente:
 // ============================================================================
 
 const module02Lessons: Lesson[] = [
+  createLesson('w02', 'w02-00-your-shortcuts', '🎯 SEUS Atalhos Personalizados',
+    'Todos os atalhos configurados no SEU Warp (prefs.yaml real).',
+    `# Seus Atalhos Pessoais - Dr. Danillo Costa
+
+Estes são os atalhos REAIS extraídos do seu \`~/.warp/prefs.yaml\`.
+
+## 📚 Referência de Teclas (macOS)
+
+\`\`\`
+⌘ = Command    ⌥ = Option    ⌃ = Control    ⇧ = Shift
+\`\`\`
+
+---
+
+## ⭐ TOP 10 ESSENCIAIS (Decorar!)
+
+| # | Atalho | Ação | Frequência |
+|---|--------|------|------------|
+| 1 | **⌃ + R** | Buscar histórico/workflows | 🔥🔥🔥 |
+| 2 | **⌘ + K** | Limpar terminal | 🔥🔥🔥 |
+| 3 | **⌘ + P** | Command Palette | 🔥🔥🔥 |
+| 4 | **⌘ + I** | Warp AI inline | 🔥🔥 |
+| 5 | **⌘ + D** | Split vertical | 🔥🔥 |
+| 6 | **⌘ + T** | Nova aba | 🔥🔥 |
+| 7 | **⌘ + ↑/↓** | Navegar blocks | 🔥🔥 |
+| 8 | **⌥ + ←/→** | Pular palavras | 🔥🔥 |
+| 9 | **⌘ + .** | Cancelar comando (SIGINT) | 🔥 |
+| 10 | **⇧ + Enter** | Nova linha (multiline) | 🔥 |
+
+---
+
+## 🧭 NAVEGAÇÃO
+
+| Atalho | Ação |
+|--------|------|
+| ⌘ + ↑ | Block anterior |
+| ⌘ + ↓ | Próximo block |
+| ⌘ + [ | Pane anterior |
+| ⌘ + ] | Próximo pane |
+| ⌘ + 1-9 | Ir para aba N |
+| ⌘ + W | Fechar aba |
+| ⌘ + ⇧ + [ | Aba anterior |
+| ⌘ + ⇧ + ] | Próxima aba |
+
+---
+
+## ✂️ SPLITS
+
+| Atalho | Ação |
+|--------|------|
+| ⌘ + D | Split vertical |
+| ⇧ + ⌘ + D | Split horizontal |
+| ⌘ + W | Fechar pane |
+
+---
+
+## ✏️ EDIÇÃO
+
+| Atalho | Ação |
+|--------|------|
+| ⌥ + Click | Posicionar cursor |
+| ⌥ + ←/→ | Pular palavra |
+| ⌘ + ←/→ | Início/fim da linha |
+| ⌘ + Backspace | Deletar até início |
+| ⌥ + Backspace | Deletar palavra |
+
+---
+
+## ▶️ EXECUÇÃO
+
+| Atalho | Ação |
+|--------|------|
+| ⌘ + Enter | Executar comando |
+| ⌘ + . | Cancelar (SIGINT) |
+| ⇧ + Enter | Nova linha |
+
+---
+
+## 📋 COPIAR/COLAR
+
+| Atalho | Ação |
+|--------|------|
+| ⌘ + C | Copiar |
+| ⌘ + V | Colar |
+| ⌘ + ⇧ + C | Copiar output do block |
+
+---
+
+## 🤖 WARP AI
+
+| Atalho | Ação |
+|--------|------|
+| ⌘ + I | Ativar AI inline |
+| ⌃ + \` | AI chat panel |
+
+---
+
+## 💎 Build Plan Features (Seu Plano)
+
+✅ 1,500 AI Credits/month
+✅ Ambient Agents (beta)
+✅ Unlimited Warp Drive objects
+✅ 40 Indexed Codebases
+✅ BYOK (OpenAI/Anthropic)
+✅ GitHub, Slack, Linear integrations
+✅ Session Sharing
+✅ Team Features
+
+---
+
+## 🎯 Dica: Imprima Esta Página!
+
+Cole estes atalhos ao lado do monitor por uma semana.
+Após isso, estarão na memória muscular.
+`,
+    {
+      xp: 50,
+      duration: 8,
+      difficulty: 'beginner',
+      tags: ['atalhos', 'personalizado', 'referência'],
+      isNew: true,
+    }
+  ),
+
   createLesson('w02', 'w02-01-shortcuts-essential', 'TOP 10 Atalhos Obrigatórios',
     'Os 10 atalhos que você DEVE decorar para máxima produtividade.',
     `# TOP 10 Atalhos do Warp
@@ -585,6 +709,182 @@ Warp AI vê seu histórico recente. Se você executou vários comandos git, ele 
 // ============================================================================
 
 const module04Lessons: Lesson[] = [
+  createLesson('w04', 'w04-00-your-workflows', '🚀 SEUS 57 Workflows Reais',
+    'Catálogo completo de TODOS os seus workflows configurados.',
+    `# Seus Workflows - Dr. Danillo Costa
+
+Você tem **57 workflows** organizados em **6 arquivos YAML**. Aqui está o catálogo completo!
+
+---
+
+## 📁 Estrutura dos Arquivos
+
+\`\`\`
+~/.warp/workflows/
+├── claude-code.yaml        # 6 workflows
+├── git-workflows.yaml      # 8 workflows
+├── devops-workflows.yaml   # 9 workflows
+├── productivity-workflows.yaml  # 10 workflows
+├── stack-synergies.yaml    # 23 workflows
+└── ambient-agents.yaml     # (Ambient Agents beta)
+\`\`\`
+
+---
+
+## 🤖 CLAUDE CODE (6 workflows)
+
+| Workflow | Comando | Descrição |
+|----------|---------|-----------|
+| \`claude-spot\` | \`cc-spot\` | Abrir SPOT AI |
+| \`claude-curso\` | \`cc-curso\` | Abrir Curso Claude |
+| \`claude-sandbox\` | \`cc-sandbox\` | Abrir sandbox |
+| \`claude-new\` | \`claude --new\` | Nova sessão limpa |
+| \`claude-continue\` | \`claude --continue\` | Continuar última |
+| \`claude-list\` | \`cc-list\` | Listar projetos |
+
+**Acesso rápido:** \`⌃ + R\` → "claude"
+
+---
+
+## 📊 GIT (8 workflows)
+
+| Workflow | Comando | Descrição |
+|----------|---------|-----------|
+| \`git-status-full\` | \`git status && git log -5\` | Status + commits |
+| \`git-sync\` | \`git fetch --all && git status\` | Sincronizar |
+| \`git-log-graph\` | \`git log --graph -20\` | Histórico visual |
+| \`git-uncommit\` | \`git reset --soft HEAD~1\` | Desfazer commit |
+| \`git-amend\` | \`git commit --amend\` | Alterar último |
+| \`git-stash-save\` | \`git stash push -m '{{msg}}'\` | Guardar WIP |
+| \`git-stash-pop\` | \`git stash pop\` | Recuperar stash |
+| \`git-branch-clean\` | Deleta branches mergeadas | Limpeza |
+
+**Acesso rápido:** \`⌃ + R\` → "git"
+
+---
+
+## 🔧 DEVOPS (9 workflows)
+
+| Workflow | Comando | Descrição |
+|----------|---------|-----------|
+| \`port-check\` | \`lsof -i :{{port}}\` | Ver porta |
+| \`port-kill\` | \`kill -9 $(lsof -ti:{{port}})\` | Matar porta |
+| \`docker-cleanup\` | Prune total | Limpar Docker |
+| \`docker-ps\` | Formato limpo | Listar containers |
+| \`docker-logs\` | \`docker logs -f {{container}}\` | Ver logs |
+| \`ai-stack-start\` | Script start | Iniciar stack |
+| \`ai-stack-health\` | Health check | Verificar saúde |
+| \`ai-stack-stop\` | Script stop | Parar stack |
+
+**Acesso rápido:** \`⌃ + R\` → "docker" ou "port"
+
+---
+
+## ⚡ PRODUTIVIDADE (10 workflows)
+
+| Workflow | Comando | Descrição |
+|----------|---------|-----------|
+| \`icloud-go\` | \`cd ~/iCloud\` | Ir para iCloud |
+| \`dev-go\` | \`cd ~/Developer\` | Ir para Developer |
+| \`find-large\` | \`fd -S +{{size}}M\` | Arquivos grandes |
+| \`find-recent\` | \`fd --changed-within {{time}}\` | Arquivos recentes |
+| \`disk-usage\` | \`du -sh | sort -hr\` | Uso de disco |
+| \`backup-check\` | \`tmutil latestbackup\` | Time Machine |
+| \`weather\` | \`wttr.in/{{city}}\` | Ver clima |
+| \`ip-public\` | \`curl ifconfig.me\` | IP público |
+| \`agenda-hoje\` | \`gcalcli agenda\` | Agenda do dia |
+
+**Acesso rápido:** \`⌃ + R\` → "find" ou "agenda"
+
+---
+
+## 🚀 STACK SYNERGIES (23 workflows)
+
+### AI Stack
+| Workflow | Descrição |
+|----------|-----------|
+| \`ai-stack-start\` | 🚀 Iniciar Graphiti, Neo4j, Ollama |
+| \`ai-stack-stop\` | 🛑 Parar stack |
+| \`ai-stack-health\` | 💚 Health check completo |
+| \`neo4j-ui\` | 🔗 Abrir Neo4j Browser |
+| \`langfuse-ui\` | 📊 Abrir Langfuse |
+| \`graphiti-logs\` | 📋 Logs do Graphiti MCP |
+
+### Ollama (Local LLM)
+| Workflow | Descrição |
+|----------|-----------|
+| \`ollama-models\` | 🦙 Listar modelos |
+| \`ollama-pull\` | 📥 Baixar modelo |
+
+### Claude Code Projects
+| Workflow | Descrição |
+|----------|-----------|
+| \`cc-spot\` | 🤖 SPOT AI Council |
+| \`cc-curso\` | 📚 Curso Claude |
+| \`cc-sandbox\` | 🧪 Sandbox |
+| \`cc-new\` | ✨ Novo projeto |
+
+### Memory & MCP
+| Workflow | Descrição |
+|----------|-----------|
+| \`memory-view\` | 🧠 Ver Memory MCP |
+| \`memory-search\` | 🔍 Buscar no Memory |
+| \`mcp-status\` | 🔌 Status MCPs |
+
+### Dashboard & Status
+| Workflow | Descrição |
+|----------|-----------|
+| \`stack-dashboard\` | 📊 Dashboard completo |
+| \`backup-status\` | 💾 Status backup 3-2-1 |
+| \`dev-projects\` | 📁 Listar projetos |
+| \`icloud-stats\` | ☁️ Stats iCloud |
+| \`quick-sync\` | 🔄 Sync rápido |
+
+### Google Calendar
+| Workflow | Descrição |
+|----------|-----------|
+| \`gcal-hoje\` | 📅 Agenda de hoje |
+| \`gcal-semana\` | 📅 Calendário semana |
+| \`gcal-adicionar\` | ➕ Adicionar evento |
+
+---
+
+## ⚡ Workflows Favoritos (Mais Usados)
+
+\`\`\`bash
+# Morning routine
+⌃ + R → "stack-dashboard"  # Ver status de tudo
+⌃ + R → "gcal-hoje"        # Agenda do dia
+⌃ + R → "cc-spot"          # Abrir projeto principal
+
+# Durante desenvolvimento
+⌃ + R → "git-status-full"  # Status completo
+⌃ + R → "docker-logs"      # Ver logs
+⌃ + R → "port-check"       # Verificar porta
+
+# Final do dia
+⌃ + R → "quick-sync"       # Verificar pendências
+⌃ + R → "backup-status"    # Confirmar backups
+\`\`\`
+
+---
+
+## 💡 Dica Pro
+
+Use tags para encontrar workflows relacionados:
+- \`⌃ + R\` → "#git" → Vê todos com tag git
+- \`⌃ + R\` → "#docker" → Vê todos com tag docker
+- \`⌃ + R\` → "#stack" → Vê todos do AI stack
+`,
+    {
+      xp: 80,
+      duration: 15,
+      difficulty: 'beginner',
+      tags: ['workflows', 'catálogo', 'personalizado'],
+      isNew: true,
+    }
+  ),
+
   createLesson('w04', 'w04-01-workflows-intro', 'Introdução aos Workflows',
     'Entenda o que são Workflows e como eles multiplicam sua produtividade.',
     `# Workflows do Warp

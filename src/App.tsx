@@ -15,10 +15,70 @@ import {
   Moon, Sun, BookOpen, Trophy, Flame, Bell, Search, Menu,
   CheckCircle2, Circle, Lock, Play, Clock, Star, Target,
   ArrowRight, Bookmark, FileText, BarChart3, Monitor, Check,
-  LogOut, Mail, Calendar, Home
+  LogOut, Mail, Calendar, Home, Newspaper, LayoutGrid
 } from 'lucide-react';
 import { NewsTicker, TrendsSection } from './components/NewsAndTrends';
+import { AINewsIntelligenceHub } from './components/AINewsIntelligenceHub';
 import './index.css';
+
+// ============================================================================
+// VIEW TYPES & PORTAL AREAS
+// ============================================================================
+
+type PortalArea = 'portal' | 'course' | 'news' | 'market-intel' | 'timeline';
+
+interface PortalAreaConfig {
+  id: PortalArea;
+  label: string;
+  shortLabel: string;
+  description: string;
+  icon: React.ComponentType<{ className?: string }>;
+  gradient: string;
+  color: string;
+  badge?: string;
+}
+
+const PORTAL_AREAS: PortalAreaConfig[] = [
+  {
+    id: 'course',
+    label: 'Learning Hub',
+    shortLabel: 'Cursos',
+    description: 'Claude Code & Warp Terminal',
+    icon: BookOpen,
+    gradient: 'from-indigo-500 to-violet-500',
+    color: 'indigo'
+  },
+  {
+    id: 'news',
+    label: 'AI News & Trends',
+    shortLabel: 'Notícias',
+    description: 'Breaking news e tendências',
+    icon: Newspaper,
+    gradient: 'from-emerald-500 to-teal-500',
+    color: 'emerald',
+    badge: 'LIVE'
+  },
+  {
+    id: 'market-intel',
+    label: 'Market Intelligence',
+    shortLabel: 'Intel',
+    description: 'Chess Game & análise competitiva',
+    icon: BarChart3,
+    gradient: 'from-orange-500 to-amber-500',
+    color: 'orange',
+    badge: 'PRO'
+  },
+  {
+    id: 'timeline',
+    label: '2025 Timeline',
+    shortLabel: 'Timeline',
+    description: 'Eventos e marcos do ano',
+    icon: Calendar,
+    gradient: 'from-purple-500 to-pink-500',
+    color: 'purple',
+    badge: 'NEW'
+  }
+];
 
 // ============================================================================
 // ICON MAP
@@ -28,6 +88,315 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Rocket, Terminal, Settings, Zap, Plug, Anchor, Users, Package,
   Code, Sparkles, Award, Hammer
 };
+
+// ============================================================================
+// GLOBAL CONTEXT SWITCHER (Dropdown para trocar de área)
+// ============================================================================
+
+interface GlobalContextSwitcherProps {
+  currentArea: PortalArea;
+  currentCourseId?: CourseId | null;
+  onAreaChange: (area: PortalArea) => void;
+  onBackToPortal: () => void;
+}
+
+function GlobalContextSwitcher({ currentArea, currentCourseId, onAreaChange, onBackToPortal }: GlobalContextSwitcherProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Get current area config or course info
+  const currentConfig = PORTAL_AREAS.find(a => a.id === currentArea);
+  const courseInfo = currentCourseId ? getCourseInfo(currentCourseId) : null;
+
+  const displayLabel = courseInfo ? courseInfo.title : currentConfig?.label || 'Portal';
+  const displayIcon = courseInfo
+    ? (courseInfo.icon === 'Terminal' ? Terminal : Zap)
+    : (currentConfig?.icon || LayoutGrid);
+  const DisplayIcon = displayIcon;
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700
+                   rounded-xl transition-all border border-slate-200 dark:border-slate-700"
+      >
+        <DisplayIcon className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+        <span className="font-medium text-slate-900 dark:text-white text-sm max-w-[150px] truncate">
+          {displayLabel}
+        </span>
+        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      {isOpen && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+          <div className="absolute left-0 top-full mt-2 w-72 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700
+                         rounded-xl shadow-xl z-50 overflow-hidden animate-fade-in">
+            {/* Back to Portal */}
+            <button
+              onClick={() => { onBackToPortal(); setIsOpen(false); }}
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800
+                        border-b border-slate-200 dark:border-slate-700 transition-colors"
+            >
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center">
+                <LayoutGrid className="w-5 h-5 text-white" />
+              </div>
+              <div className="text-left">
+                <div className="font-semibold text-slate-900 dark:text-white">Portal Home</div>
+                <div className="text-xs text-slate-500">Voltar à tela inicial</div>
+              </div>
+            </button>
+
+            {/* Areas */}
+            <div className="p-2">
+              <div className="text-xs font-medium text-slate-500 px-2 py-1.5 uppercase tracking-wider">
+                Áreas de Conhecimento
+              </div>
+              {PORTAL_AREAS.map((area) => {
+                const Icon = area.icon;
+                const isActive = currentArea === area.id && !currentCourseId;
+
+                return (
+                  <button
+                    key={area.id}
+                    onClick={() => { onAreaChange(area.id); setIsOpen(false); }}
+                    className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+                      isActive
+                        ? 'bg-slate-100 dark:bg-slate-800'
+                        : 'hover:bg-slate-50 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    <div className={`w-8 h-8 bg-gradient-to-br ${area.gradient} rounded-lg flex items-center justify-center`}>
+                      <Icon className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="flex-1 text-left">
+                      <div className="font-medium text-slate-900 dark:text-white text-sm">{area.label}</div>
+                      <div className="text-xs text-slate-500">{area.description}</div>
+                    </div>
+                    {area.badge && (
+                      <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+                        area.badge === 'LIVE' ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400' :
+                        area.badge === 'PRO' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400' :
+                        'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
+                      }`}>
+                        {area.badge}
+                      </span>
+                    )}
+                    {isActive && <CheckCircle2 className="w-4 h-4 text-indigo-500" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ============================================================================
+// PORTAL HOME COMPONENT (Tela inicial com cards)
+// ============================================================================
+
+interface PortalHomeProps {
+  profile: UserProfile;
+  onSelectArea: (area: PortalArea) => void;
+  onSelectCourse: (courseId: CourseId) => void;
+}
+
+function PortalHome({ profile, onSelectArea, onSelectCourse }: PortalHomeProps) {
+  const stats = useCourseStore((s) => s.stats);
+  const level = getLevelFromXp(stats.totalXp);
+  const { greeting } = useGreetingAndWeather();
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+      {/* Header */}
+      <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-6xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            {/* Logo & Greeting */}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-violet-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                  {greeting.greeting}, <span className="text-indigo-500">{profile.name.split(' ')[0]}</span>! {greeting.emoji}
+                </h1>
+                <p className="text-slate-500 dark:text-slate-400">
+                  AI Master Portal • TOP 1% Learning Platform
+                </p>
+              </div>
+            </div>
+
+            {/* Stats */}
+            <div className="hidden md:flex items-center gap-4">
+              <div className="flex items-center gap-2 px-3 py-2 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                <span className="text-xl">{level.icon}</span>
+                <div>
+                  <div className="font-bold text-slate-900 dark:text-white">{stats.totalXp} XP</div>
+                  <div className="text-xs text-slate-500">{level.name}</div>
+                </div>
+              </div>
+              {stats.streak.current > 0 && (
+                <div className="flex items-center gap-2 px-3 py-2 bg-orange-50 dark:bg-orange-900/20 rounded-xl">
+                  <Flame className="w-5 h-5 text-orange-500" />
+                  <div>
+                    <div className="font-bold text-orange-600 dark:text-orange-400">{stats.streak.current}</div>
+                    <div className="text-xs text-orange-500/70">dias</div>
+                  </div>
+                </div>
+              )}
+              <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-emerald-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                {profile.name.charAt(0).toUpperCase()}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Section: Áreas de Conhecimento */}
+        <div className="mb-8">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+            <LayoutGrid className="w-5 h-5 text-indigo-500" />
+            Áreas de Conhecimento
+          </h2>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {PORTAL_AREAS.map((area) => {
+              const Icon = area.icon;
+              return (
+                <button
+                  key={area.id}
+                  onClick={() => onSelectArea(area.id)}
+                  className="group relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800
+                           hover:shadow-xl hover:scale-[1.02] transition-all duration-300 text-left"
+                >
+                  {/* Gradient overlay on hover */}
+                  <div className={`absolute inset-0 bg-gradient-to-br ${area.gradient} opacity-0 group-hover:opacity-10 transition-opacity`} />
+
+                  <div className="p-5">
+                    {/* Icon & Badge */}
+                    <div className="flex items-start justify-between mb-3">
+                      <div className={`w-12 h-12 bg-gradient-to-br ${area.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
+                        <Icon className="w-6 h-6 text-white" />
+                      </div>
+                      {area.badge && (
+                        <span className={`px-2 py-1 rounded-lg text-xs font-bold ${
+                          area.badge === 'LIVE' ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 animate-pulse' :
+                          area.badge === 'PRO' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400' :
+                          'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400'
+                        }`}>
+                          {area.badge}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Title & Description */}
+                    <h3 className="font-bold text-slate-900 dark:text-white mb-1">{area.label}</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">{area.description}</p>
+
+                    {/* Arrow */}
+                    <div className="mt-4 flex items-center gap-2 text-sm font-medium text-slate-400 group-hover:text-indigo-500 transition-colors">
+                      <span>Explorar</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Section: Cursos em Destaque */}
+        <div>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+            <BookOpen className="w-5 h-5 text-indigo-500" />
+            Cursos em Destaque
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Claude Code Course Card */}
+            <button
+              onClick={() => onSelectCourse('claude-code')}
+              className="group relative overflow-hidden rounded-2xl text-left"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-500" />
+              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+              <div className="relative p-6 text-white">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold flex items-center gap-1">
+                    <Star className="w-3 h-3" /> Destaque
+                  </span>
+                </div>
+                <div className="flex items-start gap-4 mb-3">
+                  <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
+                    <Terminal className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold">Claude Code Master</h3>
+                    <p className="text-white/80 text-sm">Domine o CLI da Anthropic</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 text-sm text-white/70">
+                  <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" /> 80 lições</span>
+                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 15h</span>
+                </div>
+                <div className="mt-4 flex items-center gap-2 text-sm font-semibold">
+                  <Play className="w-4 h-4" /> Começar agora
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </button>
+
+            {/* Warp Course Card */}
+            <button
+              onClick={() => onSelectCourse('warp-terminal')}
+              className="group relative overflow-hidden rounded-2xl text-left"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500" />
+              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 30%, white 1px, transparent 1px)', backgroundSize: '20px 20px' }} />
+              <div className="relative p-6 text-white">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="px-2 py-0.5 bg-white/20 rounded-full text-xs font-semibold flex items-center gap-1">
+                    <Sparkles className="w-3 h-3" /> Novo
+                  </span>
+                </div>
+                <div className="flex items-start gap-4 mb-3">
+                  <div className="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center">
+                    <Zap className="w-7 h-7" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold">Warp Terminal Mastery</h3>
+                    <p className="text-white/80 text-sm">O Terminal AI-Native do TOP 1%</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 text-sm text-white/70">
+                  <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" /> 45 lições</span>
+                  <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> 8h</span>
+                </div>
+                <div className="mt-4 flex items-center gap-2 text-sm font-semibold">
+                  <Play className="w-4 h-4" /> Começar agora
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="border-t border-slate-200 dark:border-slate-800 py-6 mt-8">
+        <div className="max-w-6xl mx-auto px-4 text-center text-sm text-slate-500">
+          <p>AI Master Portal • Criado por <span className="font-medium">Dr. Danillo Costa</span> • Filosofia <span className="text-indigo-500 font-medium">AI FIRST</span></p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ============================================================================
 // ONBOARDING COMPONENT
@@ -469,6 +838,7 @@ function Header({ profile, toggleSidebar, onLogout, currentCourseId, onBackToPor
             <span className="text-sm font-medium">Portal</span>
           </button>
         )}
+
 
         {/* Course Title when in course */}
         {courseInfo && (
@@ -1127,6 +1497,7 @@ function Dashboard({ onSelectLesson, courseModules }: DashboardProps) {
 
 function App() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [currentArea, setCurrentArea] = useState<PortalArea>('portal');
   const [currentCourseId, setCurrentCourseId] = useState<CourseId | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [currentModule, setCurrentModule] = useState<string | null>(null);
@@ -1144,9 +1515,18 @@ function App() {
     }
   }, []);
 
+  // Handle area selection from portal
+  const handleSelectArea = (area: PortalArea) => {
+    setCurrentArea(area);
+    if (area === 'course') {
+      // Just show the course selector, don't select a course yet
+    }
+  };
+
   // Handle course selection
   const handleSelectCourse = (courseId: CourseId) => {
     setCurrentCourseId(courseId);
+    setCurrentArea('course');
     selectCourse(courseId);
     setCurrentModule(null);
     setCurrentLesson(null);
@@ -1154,10 +1534,26 @@ function App() {
 
   // Handle back to portal
   const handleBackToPortal = () => {
+    setCurrentArea('portal');
     setCurrentCourseId(null);
     exitCourse();
     setCurrentModule(null);
     setCurrentLesson(null);
+  };
+
+  // Handle area change from context switcher
+  const handleAreaChange = (area: PortalArea) => {
+    if (area === 'course' && !currentCourseId) {
+      // If switching to course area without a selected course, go to portal
+      setCurrentArea('portal');
+    } else {
+      setCurrentArea(area);
+    }
+    // Clear course state if switching away from course
+    if (area !== 'course') {
+      setCurrentCourseId(null);
+      exitCourse();
+    }
   };
 
   // Apply theme with system preference detection
@@ -1213,18 +1609,78 @@ function App() {
     return <Onboarding onComplete={handleOnboarding} />;
   }
 
-  // Show course selector if no course is selected
-  if (!currentCourseId) {
+  // Show Portal Home
+  if (currentArea === 'portal') {
     return (
-      <CourseSelector
+      <PortalHome
         profile={profile}
+        onSelectArea={handleSelectArea}
         onSelectCourse={handleSelectCourse}
       />
     );
   }
 
-  // Get modules for current course
-  const courseModules = getModulesForCourse(currentCourseId);
+  // Show specific area content (news, market-intel, timeline)
+  if (currentArea === 'news' || currentArea === 'market-intel' || currentArea === 'timeline') {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+        {/* Header with Context Switcher */}
+        <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <GlobalContextSwitcher
+              currentArea={currentArea}
+              currentCourseId={null}
+              onAreaChange={handleAreaChange}
+              onBackToPortal={handleBackToPortal}
+            />
+            <div className="flex items-center gap-3">
+              <ThemeSelector />
+              <UserMenu profile={profile} onLogout={handleLogout} />
+            </div>
+          </div>
+        </div>
+
+        {/* Area Content */}
+        <AINewsIntelligenceHub
+          onClose={handleBackToPortal}
+          embedded={true}
+          initialSection={currentArea === 'news' ? 'news' : currentArea === 'timeline' ? 'timeline' : 'trends'}
+        />
+      </div>
+    );
+  }
+
+  // Show Course Selector if area is 'course' but no course selected
+  if (currentArea === 'course' && !currentCourseId) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+        {/* Header with Context Switcher */}
+        <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <GlobalContextSwitcher
+              currentArea={currentArea}
+              currentCourseId={null}
+              onAreaChange={handleAreaChange}
+              onBackToPortal={handleBackToPortal}
+            />
+            <div className="flex items-center gap-3">
+              <ThemeSelector />
+              <UserMenu profile={profile} onLogout={handleLogout} />
+            </div>
+          </div>
+        </div>
+
+        {/* Course Selector */}
+        <CourseSelector
+          profile={profile}
+          onSelectCourse={handleSelectCourse}
+        />
+      </div>
+    );
+  }
+
+  // Get modules for current course (currentCourseId is non-null at this point)
+  const courseModules = getModulesForCourse(currentCourseId!);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
