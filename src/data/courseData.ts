@@ -43,6 +43,497 @@ function createLesson(
 }
 
 // ============================================================================
+// MODULE 00: MINDSET - A MENTALIDADE DOS TOP 1%
+// ============================================================================
+
+const module00Lessons: Lesson[] = [
+  createLesson('00', '00-01-paradigm-shift', 'A Mudança de Paradigma',
+    'Entenda a transformação fundamental: de executor de código para orquestrador de IA.',
+    `# A Grande Mudança de Paradigma
+
+## De Executor para Orquestrador
+
+O maior salto mental que um desenvolvedor pode fazer não é aprender uma nova linguagem ou framework. É **mudar fundamentalmente seu papel**:
+
+\`\`\`
+ANTES (Desenvolvedor Tradicional):
+├── Você escreve cada linha de código
+├── Você debugga manualmente
+├── Você pesquisa Stack Overflow
+└── Você é o executor
+
+DEPOIS (Desenvolvedor AI-First):
+├── Você define O QUE precisa ser feito
+├── Você valida e refina outputs da IA
+├── Você orquestra múltiplos agentes
+└── Você é o maestro
+\`\`\`
+
+## O Novo Papel do Desenvolvedor
+
+> "O desenvolvedor do futuro não será medido por quantas linhas de código escreve, mas por quão bem ele orquestra agentes de IA para resolver problemas complexos."
+
+### Habilidades que Importam Agora
+
+| Antes | Agora |
+|-------|-------|
+| Memorizar sintaxe | Definir contexto claro |
+| Debuggar linha a linha | Verificar outputs de IA |
+| Escrever tudo do zero | Orquestrar e refinar |
+| Trabalhar sozinho | Liderar equipes de agentes |
+
+## Por que Isso Importa?
+
+Estudos mostram que desenvolvedores AI-First são **10x mais produtivos** não porque trabalham mais rápido, mas porque:
+
+1. **Delegam tarefas repetitivas** para IA
+2. **Focam em decisões de alto nível** que requerem julgamento humano
+3. **Iteram rapidamente** com feedback de IA
+4. **Escalam seu impacto** usando múltiplos agentes
+
+## Sua Jornada Começa Aqui
+
+Este curso vai transformar sua mentalidade de:
+- ❌ "Eu preciso escrever tudo isso"
+- ✅ "Como posso orquestrar IA para resolver isso?"
+
+A mudança de paradigma não é opcional - é survival. Os desenvolvedores que não se adaptarem serão substituídos não pela IA, mas por desenvolvedores que sabem usar IA.
+`,
+    {
+      xp: 50,
+      duration: 15,
+      difficulty: 'beginner',
+      isNew: true,
+      tags: ['mindset', 'paradigma', 'ai-first', 'fundamentos'],
+      quizzes: [
+        {
+          id: 'q-00-01-1',
+          question: 'Qual é a principal mudança de paradigma para desenvolvedores AI-First?',
+          options: [
+            'Aprender mais linguagens de programação',
+            'Transformar-se de executor de código para orquestrador de IA',
+            'Trabalhar mais horas por dia',
+            'Memorizar mais comandos e sintaxes'
+          ],
+          correctIndex: 1,
+          explanation: 'O desenvolvedor AI-First não escreve cada linha de código - ele define o que precisa ser feito e orquestra agentes de IA para executar, focando em decisões de alto nível.',
+          xp: 15
+        }
+      ]
+    }
+  ),
+
+  createLesson('00', '00-02-ai-first-principles', 'Os 10 Princípios AI-FIRST',
+    'Domine os 10 princípios que separam os TOP 1% dos desenvolvedores comuns.',
+    `# Os 10 Princípios AI-FIRST dos Top 1%
+
+Estes princípios foram destilados de observações de centenas de desenvolvedores de elite. São os **fundamentos inegociáveis** de quem realmente domina IA no desenvolvimento.
+
+## Princípio 1: Delegação Máxima 🎯
+
+> "Se a IA pode fazer, a IA faz."
+
+Não é preguiça - é **alavancagem**. Cada tarefa delegada para IA libera seu cérebro para decisões que realmente importam.
+
+\`\`\`
+❌ ERRADO: "Vou escrever esse CRUD na mão"
+✅ CERTO: "Claude, crie um CRUD completo para User com validação"
+\`\`\`
+
+## Princípio 2: Context is King 👑
+
+> "A qualidade do output é diretamente proporcional à qualidade do contexto."
+
+CLAUDE.md não é opcional. É a diferença entre outputs genéricos e outputs que parecem ter sido feitos por você.
+
+## Princípio 3: Big Prompts Philosophy 📝
+
+> "Um prompt de 200 palavras bem estruturado vale mais que 10 prompts de 20 palavras."
+
+TOP 1% investem tempo no prompt inicial. Os 90% ficam corrigindo outputs ruins de prompts vagos.
+
+## Princípio 4: Verify, Don't Trust 🔍
+
+> "Confiar cegamente na IA é tão perigoso quanto ignorá-la."
+
+Sempre revise outputs críticos. A IA é poderosa, mas não infalível.
+
+## Princípio 5: Iteração Rápida 🔄
+
+> "Prefira 5 iterações de 1 minuto a 1 tentativa de 5 minutos pensando."
+
+O custo de um prompt é praticamente zero. Use isso a seu favor.
+
+## Princípio 6: Safety Nets Automáticos 🛡️
+
+> "Backups, checkpoints e /undo são seus melhores amigos."
+
+Desenvolvedores TOP 1% nunca têm medo de experimentar porque sempre podem voltar atrás.
+
+## Princípio 7: Multi-Agent Thinking 🤖
+
+> "Um agente faz tarefas. Múltiplos agentes resolvem problemas."
+
+Subagents, parallel processing, especialização - pense em termos de **orquestração**.
+
+## Princípio 8: Observabilidade Total 📊
+
+> "O que não é medido não é melhorado."
+
+Langfuse, logs, métricas - os TOP 1% sabem exatamente o que está funcionando.
+
+## Princípio 9: Knowledge Graphs 🧠
+
+> "Memória persistente é superpoder."
+
+Graphiti, Memory MCP - a IA que lembra contexto é exponencialmente mais útil.
+
+## Princípio 10: Continuous Learning 📚
+
+> "A IA de ontem é obsoleta amanhã."
+
+Os TOP 1% dedicam tempo toda semana para aprender novas técnicas e ferramentas.
+
+---
+
+## Checklist de Aplicação
+
+- [ ] Delego tarefas repetitivas para IA?
+- [ ] Meu CLAUDE.md está completo e atualizado?
+- [ ] Invisto tempo em prompts bem estruturados?
+- [ ] Verifico outputs críticos antes de usar?
+- [ ] Itero rapidamente em vez de planejar demais?
+- [ ] Tenho backups e checkpoints configurados?
+- [ ] Uso subagents para tarefas especializadas?
+- [ ] Monitoro métricas dos meus outputs de IA?
+- [ ] Uso memória persistente entre sessões?
+- [ ] Dedico tempo para aprender novas técnicas?
+`,
+    {
+      xp: 100,
+      duration: 25,
+      difficulty: 'beginner',
+      isNew: true,
+      tags: ['princípios', 'ai-first', 'top-1%', 'fundamentos'],
+      quizzes: [
+        {
+          id: 'q-00-02-1',
+          question: 'Qual princípio afirma que "A qualidade do output é proporcional à qualidade do contexto"?',
+          options: [
+            'Delegação Máxima',
+            'Context is King',
+            'Big Prompts Philosophy',
+            'Verify, Don\'t Trust'
+          ],
+          correctIndex: 1,
+          explanation: 'O princípio "Context is King" enfatiza que CLAUDE.md e contexto bem definido são a diferença entre outputs genéricos e outputs personalizados.',
+          xp: 15
+        },
+        {
+          id: 'q-00-02-2',
+          question: 'O que significa "Big Prompts Philosophy"?',
+          options: [
+            'Enviar o máximo de prompts possível',
+            'Investir em prompts bem estruturados ao invés de vários prompts vagos',
+            'Usar apenas prompts longos, nunca curtos',
+            'Copiar prompts de outros desenvolvedores'
+          ],
+          correctIndex: 1,
+          explanation: 'Big Prompts Philosophy significa investir tempo em um prompt inicial bem estruturado, ao invés de ficar corrigindo outputs ruins de prompts vagos.',
+          xp: 15
+        }
+      ]
+    }
+  ),
+
+  createLesson('00', '00-03-four-eras', 'As 4 Eras do Desenvolvedor',
+    'Entenda a evolução histórica e por que a Era AI-First exige uma nova mentalidade.',
+    `# A Evolução das 4 Eras do Desenvolvedor
+
+A história do desenvolvimento de software pode ser dividida em 4 eras distintas. Entender de onde viemos ajuda a entender para onde vamos.
+
+## Era 1: Artesanal (1960-1990) 🔨
+
+**Características:**
+- Programação em baixo nível (Assembly, C)
+- Cada projeto era único, feito do zero
+- Poucos frameworks, muita reinvenção da roda
+- Desenvolvedores eram "gênios solitários"
+
+**Mentalidade da época:**
+> "Um bom programador é aquele que escreve código eficiente na mão."
+
+---
+
+## Era 2: Frameworks (1990-2010) 🏗️
+
+**Características:**
+- Surgimento de Java, .NET, Ruby on Rails
+- Padrões de design (GoF, MVC)
+- DRY (Don't Repeat Yourself) vira mantra
+- Componentização e reuso de código
+
+**Mentalidade da época:**
+> "Um bom programador é aquele que conhece os melhores frameworks."
+
+---
+
+## Era 3: Cloud/DevOps (2010-2022) ☁️
+
+**Características:**
+- Microserviços, containers, Kubernetes
+- CI/CD, infraestrutura como código
+- AWS, GCP, Azure dominam
+- O desenvolvedor vira também "ops"
+
+**Mentalidade da época:**
+> "Um bom programador é aquele que sabe deployar e escalar."
+
+---
+
+## Era 4: AI-First (2022-Atual) 🤖
+
+**Características:**
+- IA como copiloto e executor
+- Agentes autônomos e orquestração
+- Context Engineering como disciplina
+- O desenvolvedor vira orquestrador
+
+**Mentalidade da era atual:**
+> "Um bom programador é aquele que sabe orquestrar IA para resolver problemas."
+
+---
+
+## Comparativo Visual
+
+\`\`\`
+ERA 1 (Artesanal):     [Dev] → [Código] → [Produto]
+ERA 2 (Frameworks):    [Dev] → [Framework] → [Código] → [Produto]
+ERA 3 (Cloud):         [Dev] → [Plataforma] → [Deploy] → [Produto]
+ERA 4 (AI-First):      [Dev] → [IA/Agentes] → [Produto]
+\`\`\`
+
+## O Que Cada Era Exigia
+
+| Era | Habilidade Core | Ferramenta Principal |
+|-----|-----------------|---------------------|
+| Artesanal | Algoritmos | Editor de texto |
+| Frameworks | Padrões de Design | IDE |
+| Cloud | Infraestrutura | Terminal + Cloud Console |
+| AI-First | Orquestração de IA | Claude Code + MCPs |
+
+## Por Que Isso Importa Pra Você
+
+Desenvolvedores que ainda operam com mentalidade da Era 3 (ou anterior) estão em **desvantagem competitiva**. Não é sobre abandonar conhecimentos anteriores - é sobre **adicionar a camada AI-First** em cima de tudo.
+
+> "O desenvolvedor do futuro usa IA não como muleta, mas como multiplicador de força."
+
+---
+
+## Exercício de Reflexão
+
+Em qual era você opera hoje? Marque as que se aplicam:
+
+- [ ] Ainda escrevo todo código na mão sem assistência de IA
+- [ ] Uso GitHub Copilot mas apenas para autocomplete básico
+- [ ] Tenho Claude Code instalado mas uso esporadicamente
+- [ ] Delego ativamente tarefas para IA e foco em orquestração
+- [ ] Uso múltiplos agentes e tenho workflow AI-First estruturado
+`,
+    {
+      xp: 75,
+      duration: 20,
+      difficulty: 'beginner',
+      isNew: true,
+      tags: ['história', 'evolução', 'eras', 'ai-first'],
+      quizzes: [
+        {
+          id: 'q-00-03-1',
+          question: 'Qual é a principal característica da Era AI-First (2022-atual)?',
+          options: [
+            'Programação em baixo nível com Assembly',
+            'Uso de frameworks como Rails e Django',
+            'Microserviços e Kubernetes',
+            'IA como copiloto e orquestração de agentes'
+          ],
+          correctIndex: 3,
+          explanation: 'A Era AI-First é caracterizada pelo uso de IA como copiloto e executor, agentes autônomos, Context Engineering e o desenvolvedor como orquestrador.',
+          xp: 15
+        }
+      ]
+    }
+  ),
+
+  createLesson('00', '00-04-five-traps', 'Por que 90% Ficam Estagnados',
+    'Identifique e evite as 5 armadilhas que prendem a maioria dos desenvolvedores.',
+    `# Por que 90% dos Desenvolvedores Ficam Estagnados
+
+Após observar centenas de desenvolvedores tentando adotar IA, identificamos **5 armadilhas** que impedem 90% deles de evoluir para o nível TOP 1%.
+
+## Armadilha 1: O Autocompletar 🔄
+
+**O que é:**
+Usar IA apenas como "autocomplete glorificado" - aceitar sugestões linha a linha sem visão de contexto.
+
+**Por que é problemático:**
+- Você ainda pensa em termos de linhas de código
+- Não aproveita a capacidade de gerar arquivos completos
+- Fica preso no modo "executor"
+
+**Solução:**
+> Peça features completas, não linhas de código. "Crie o sistema de autenticação completo" > "Complete essa linha".
+
+---
+
+## Armadilha 2: Contexto Zero 📭
+
+**O que é:**
+Não configurar CLAUDE.md, não dar contexto do projeto, esperar que a IA adivinhe tudo.
+
+**Por que é problemático:**
+- Outputs genéricos que não servem
+- Retrabalho constante para adaptar
+- Frustração com "IA burra"
+
+**Solução:**
+> Invista 30 minutos configurando CLAUDE.md completo. O ROI é exponencial.
+
+---
+
+## Armadilha 3: Agente Único 🤖
+
+**O que é:**
+Usar apenas um fluxo linear: você → Claude → output. Sem subagents, sem paralelismo, sem especialização.
+
+**Por que é problemático:**
+- Não escala para projetos complexos
+- Sobrecarrega contexto único
+- Perde especialização de agentes
+
+**Solução:**
+> Use subagents: Explorer para entender código, Plan para arquitetar, code-reviewer para revisar.
+
+---
+
+## Armadilha 4: Não-Verificação 🙈
+
+**O que é:**
+Aceitar todo output de IA sem verificar, confiar cegamente.
+
+**Por que é problemático:**
+- Bugs sutis passam despercebidos
+- Código inseguro entra em produção
+- Você perde o controle do que está sendo feito
+
+**Solução:**
+> Sempre revise código crítico. Use /review, peça explicações, questione decisões.
+
+---
+
+## Armadilha 5: Setup Único ⚙️
+
+**O que é:**
+Configurar uma vez e nunca mais evoluir. Mesmos prompts de meses atrás, mesmo CLAUDE.md básico.
+
+**Por que é problemático:**
+- IA evolui toda semana
+- Novas features não são aproveitadas
+- Você estagna enquanto outros avançam
+
+**Solução:**
+> Dedique 1h por semana para aprender algo novo. Atualize seu CLAUDE.md mensalmente.
+
+---
+
+## Auto-Diagnóstico: Em Quantas Você Está?
+
+| Armadilha | Você Faz Isso? | Severidade |
+|-----------|----------------|------------|
+| 1. Autocompletar | ☐ Sim ☐ Não | 🔴 Alta |
+| 2. Contexto Zero | ☐ Sim ☐ Não | 🔴 Alta |
+| 3. Agente Único | ☐ Sim ☐ Não | 🟡 Média |
+| 4. Não-Verificação | ☐ Sim ☐ Não | 🔴 Alta |
+| 5. Setup Único | ☐ Sim ☐ Não | 🟡 Média |
+
+## Resultado do Diagnóstico
+
+- **0 armadilhas:** Você está no TOP 1%! 🏆
+- **1-2 armadilhas:** Quase lá, ajustes simples 🎯
+- **3-4 armadilhas:** Potencial não aproveitado 📈
+- **5 armadilhas:** Hora de repensar sua abordagem 🚨
+
+---
+
+## Plano de Escape
+
+### Semana 1: Resolva Armadilhas 1 e 2
+- Configure CLAUDE.md completo
+- Pratique fazer pedidos de features completas
+
+### Semana 2: Resolva Armadilha 3
+- Aprenda sobre subagents
+- Use Explorer, Plan e code-reviewer
+
+### Semana 3: Resolva Armadilha 4
+- Implemente rotina de verificação
+- Use hooks de pre-commit
+
+### Semana 4: Resolva Armadilha 5
+- Agende 1h/semana para aprendizado
+- Atualize seu setup
+`,
+    {
+      xp: 100,
+      duration: 25,
+      difficulty: 'beginner',
+      isNew: true,
+      tags: ['armadilhas', 'diagnóstico', 'evolução', 'mindset'],
+      quizzes: [
+        {
+          id: 'q-00-04-1',
+          question: 'Qual armadilha descreve usar IA apenas como "autocomplete glorificado"?',
+          options: [
+            'Contexto Zero',
+            'O Autocompletar',
+            'Agente Único',
+            'Não-Verificação'
+          ],
+          correctIndex: 1,
+          explanation: 'A armadilha "O Autocompletar" é usar IA apenas para completar linhas ao invés de pedir features completas e pensar em termos de orquestração.',
+          xp: 15
+        },
+        {
+          id: 'q-00-04-2',
+          question: 'Qual é a solução para a armadilha "Contexto Zero"?',
+          options: [
+            'Usar mais subagents',
+            'Investir tempo configurando CLAUDE.md completo',
+            'Verificar todo código gerado',
+            'Atualizar setup semanalmente'
+          ],
+          correctIndex: 1,
+          explanation: 'A solução para Contexto Zero é investir 30 minutos configurando um CLAUDE.md completo, pois o ROI é exponencial em termos de qualidade de outputs.',
+          xp: 15
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-00-04-1',
+          title: 'Auto-Avaliação de Mindset',
+          description: 'Complete o diagnóstico das 5 armadilhas e crie um plano de escape personalizado para as armadilhas que se aplicam a você.',
+          context: 'general',
+          contextDescription: 'Aplicável a qualquer desenvolvedor',
+          difficulty: 'beginner',
+          xpBonus: 50,
+          hints: ['Seja honesto no diagnóstico', 'Foque em uma armadilha por semana'],
+          validation: 'Compartilhe seu plano de escape no fórum do curso'
+        }
+      ]
+    }
+  ),
+];
+
+// ============================================================================
 // MODULE 01: FUNDAMENTALS
 // ============================================================================
 
@@ -1254,6 +1745,23 @@ Neste projeto, você construirá uma API REST completa para gestão de tarefas.
 
 export const courseModules: Module[] = [
   {
+    id: '00',
+    courseId: 'claude-code',
+    number: 0,
+    title: 'Mindset TOP 1%',
+    slug: 'mindset',
+    description: 'A mentalidade que separa os desenvolvedores de elite - princípios AI-First fundamentais',
+    icon: 'Brain',
+    color: 'gold',
+    lessons: module00Lessons,
+    totalXp: module00Lessons.reduce((acc, l) => acc + l.xp, 0),
+    estimatedHours: 1.5,
+    prerequisites: [],
+    version: '1.0.0',
+    dateUpdated: new Date().toISOString().split('T')[0],
+    isNew: true,
+  },
+  {
     id: '01',
     courseId: 'claude-code',
     number: 1,
@@ -1265,7 +1773,7 @@ export const courseModules: Module[] = [
     lessons: module01Lessons,
     totalXp: module01Lessons.reduce((acc, l) => acc + l.xp, 0),
     estimatedHours: 2,
-    prerequisites: [],
+    prerequisites: ['00'],
     version: '1.0.0',
     dateUpdated: new Date().toISOString().split('T')[0],
   },
