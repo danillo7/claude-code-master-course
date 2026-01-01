@@ -6122,14 +6122,1023 @@ Plugins são extensões distribuíveis que adicionam funcionalidades ao Claude C
 
 const module09Lessons: Lesson[] = [
   createLesson('09', '09-01-vscode-integration', '01. Integração com VS Code',
-    'Configure Claude Code para trabalhar com VS Code.',
-    `# VS Code Integration
+    'Configure Claude Code para funcionar perfeitamente com VS Code.',
+    `# Integração com VS Code
 
-A integração com VS Code traz Claude para seu editor preferido.
+O VS Code é o editor mais popular entre desenvolvedores. Veja como maximizar Claude Code nele.
 
-[Conteúdo detalhado aqui...]
+## Extensão Oficial
+
+\`\`\`bash
+# Instalar extensão via CLI
+code --install-extension anthropic.claude-code
+\`\`\`
+
+Ou pesquise "Claude Code" no marketplace do VS Code.
+
+## Configurações Recomendadas
+
+No \`settings.json\` do VS Code:
+
+\`\`\`json
+{
+  // Claude Code Integration
+  "claude-code.enabled": true,
+  "claude-code.model": "sonnet",
+  "claude-code.autoComplete": true,
+
+  // Terminal integrado
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.fontSize": 14,
+
+  // Editor otimizado para IA
+  "editor.inlineSuggest.enabled": true,
+  "editor.suggest.showStatusBar": true,
+
+  // Git integrado
+  "git.autofetch": true,
+  "git.confirmSync": false
+}
+\`\`\`
+
+## Keybindings TOP 1%
+
+\`\`\`json
+{
+  // Abrir Claude Code no terminal
+  { "key": "cmd+shift+c", "command": "workbench.action.terminal.new" },
+
+  // Quick fix com Claude
+  { "key": "cmd+.", "command": "claude.quickFix" },
+
+  // Explain seleção
+  { "key": "cmd+shift+e", "command": "claude.explainSelection" }
+}
+\`\`\`
+
+## Workflow Integrado
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│                    VS CODE                               │
+│  ┌─────────────────┐  ┌────────────────────────────┐   │
+│  │   EDITOR        │  │      TERMINAL              │   │
+│  │                 │  │                            │   │
+│  │  código.ts      │  │  $ claude                  │   │
+│  │  ───────────    │  │  > Refatore a função X    │   │
+│  │  function X()   │  │                            │   │
+│  │    ...          │  │  [Claude edita o arquivo]  │   │
+│  │                 │  │                            │   │
+│  └─────────────────┘  └────────────────────────────┘   │
+│                                                         │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │  SOURCE CONTROL (Git) │ PROBLEMS │ OUTPUT       │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Dicas TOP 1%
+
+| Dica | Descrição |
+|------|-----------|
+| **Split terminal** | Claude em um lado, testes no outro |
+| **Git inline** | Veja mudanças em tempo real |
+| **Multi-cursor** | Selecione múltiplos trechos para Claude |
+| **Workspace trust** | Permita Claude editar livremente |
+
+## Tasks.json para Automação
+
+\`\`\`json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Claude: Review",
+      "type": "shell",
+      "command": "claude 'revise este arquivo' < \${file}"
+    },
+    {
+      "label": "Claude: Tests",
+      "type": "shell",
+      "command": "claude 'gere testes para' < \${file}"
+    }
+  ]
+}
+\`\`\`
 `,
-    { xp: 60, duration: 20, difficulty: 'intermediate', tags: ['vscode', 'ide', 'integração'] }
+    {
+      xp: 80,
+      duration: 25,
+      difficulty: 'intermediate',
+      tags: ['vscode', 'ide', 'integração', 'editor'],
+      quizzes: [
+        {
+          id: 'q-09-01-1',
+          question: 'Qual configuração ativa sugestões inline no VS Code?',
+          options: ['editor.autoComplete', 'editor.inlineSuggest.enabled', 'claude.suggestions', 'vscode.inline'],
+          correctIndex: 1,
+          explanation: 'editor.inlineSuggest.enabled: true ativa as sugestões inline que funcionam bem com Claude Code.',
+        },
+      ],
+    }
+  ),
+
+  createLesson('09', '09-02-terminal-workflows', '02. Terminal Workflows',
+    'Domine o terminal para máxima produtividade com Claude.',
+    `# Terminal Workflows TOP 1%
+
+O terminal é onde Claude Code brilha. Aprenda a maximizar essa integração.
+
+## Shells Recomendados
+
+| Shell | Vantagens | Instalação |
+|-------|-----------|------------|
+| **Zsh** | Plugins, temas, completions | Default no macOS |
+| **Fish** | Auto-sugestões, syntax highlighting | \`brew install fish\` |
+| **Bash** | Universal, scripts compatíveis | Default Linux |
+
+## Configuração Zsh + Oh My Zsh
+
+\`\`\`bash
+# Instalar Oh My Zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Plugins essenciais no ~/.zshrc
+plugins=(
+  git
+  z
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  docker
+  npm
+)
+
+# Alias para Claude
+alias c="claude"
+alias cq="claude --quiet"
+alias cr="claude 'revise este código'"
+\`\`\`
+
+## Ferramentas Modernas de Terminal
+
+\`\`\`bash
+# Substitutos modernos para comandos clássicos
+brew install eza      # ls moderno com ícones
+brew install bat      # cat com syntax highlighting
+brew install fd       # find mais rápido
+brew install ripgrep  # grep mais rápido
+brew install fzf      # fuzzy finder
+brew install zoxide   # cd inteligente
+
+# Aliases no ~/.zshrc
+alias ls="eza --icons"
+alias cat="bat"
+alias find="fd"
+alias grep="rg"
+\`\`\`
+
+## Fluxo de Trabalho Otimizado
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│                 TERMINAL WORKFLOW                        │
+│                                                          │
+│  1. NAVEGAÇÃO (zoxide + fzf)                            │
+│     $ z projeto     → Vai para ~/Dev/projeto            │
+│     $ fzf           → Busca fuzzy em arquivos           │
+│                                                          │
+│  2. EXPLORAÇÃO (eza + bat + rg)                         │
+│     $ eza -la       → Lista com detalhes e ícones       │
+│     $ bat arquivo   → Visualiza com syntax highlight    │
+│     $ rg "padrão"   → Busca super rápida               │
+│                                                          │
+│  3. CLAUDE CODE                                          │
+│     $ claude        → Inicia sessão interativa          │
+│     $ c "query"     → Query rápida via alias            │
+│                                                          │
+│  4. GIT (integrado)                                      │
+│     $ git status    → Ver mudanças do Claude           │
+│     $ git diff      → Ver exatamente o que mudou        │
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Pipes e Redirecionamento
+
+\`\`\`bash
+# Enviar arquivo para Claude
+cat arquivo.ts | claude "explique este código"
+
+# Salvar output de Claude
+claude "gere um README" > README.md
+
+# Combinar com outros comandos
+rg "TODO" | claude "categorize estes TODOs por prioridade"
+
+# Processar múltiplos arquivos
+find . -name "*.ts" | head -5 | xargs -I {} claude "revise {}"
+\`\`\`
+
+## Tmux para Multi-tasking
+
+\`\`\`bash
+# Instalar tmux
+brew install tmux
+
+# Layout produtivo
+# ┌─────────────────┬─────────────────┐
+# │     CLAUDE      │     EDITOR      │
+# │    (terminal)   │   (vim/code)    │
+# ├─────────────────┴─────────────────┤
+# │             LOGS/TESTES           │
+# └───────────────────────────────────┘
+
+# Criar esse layout
+tmux new-session -d -s dev
+tmux split-window -h
+tmux split-window -v
+tmux select-pane -t 0
+\`\`\`
+
+## Scripts de Produtividade
+
+\`\`\`bash
+#!/bin/bash
+# ~/bin/claude-review
+# Revisa todos os arquivos modificados
+
+git diff --name-only | while read file; do
+  echo "📝 Revisando: $file"
+  claude "revise este arquivo para qualidade" < "$file"
+done
+\`\`\`
+
+## Starship Prompt (Opcional)
+
+\`\`\`bash
+# Prompt bonito e informativo
+brew install starship
+
+# Adicionar ao ~/.zshrc
+eval "$(starship init zsh)"
+\`\`\`
+`,
+    {
+      xp: 100,
+      duration: 35,
+      difficulty: 'intermediate',
+      tags: ['terminal', 'zsh', 'workflow', 'produtividade'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-09-02-1',
+          question: 'Qual comando é o substituto moderno do grep com melhor performance?',
+          options: ['fd', 'rg (ripgrep)', 'eza', 'bat'],
+          correctIndex: 1,
+          explanation: 'ripgrep (rg) é o substituto moderno do grep, com performance muito superior e syntax highlighting.',
+        },
+        {
+          id: 'q-09-02-2',
+          question: 'Como enviar um arquivo para Claude via pipe?',
+          options: ['claude < arquivo', 'cat arquivo | claude "query"', 'claude --file arquivo', 'Todas as anteriores'],
+          correctIndex: 1,
+          explanation: 'cat arquivo | claude "query" usa pipe para enviar o conteúdo do arquivo como input para Claude.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-09-02-1',
+          title: 'Configure seu Terminal TOP 1%',
+          description: 'Instale: eza, bat, ripgrep, fzf, zoxide. Configure aliases no ~/.zshrc para usar com Claude.',
+          context: 'general',
+          contextDescription: 'Setup de terminal moderno',
+          difficulty: 'intermediate',
+          xpBonus: 50,
+          hints: ['brew install eza bat ripgrep fzf zoxide', 'Adicione aliases ao ~/.zshrc', 'Teste cada ferramenta antes de integrar'],
+        }
+      ],
+    }
+  ),
+
+  createLesson('09', '09-03-jetbrains', '03. JetBrains IDEs',
+    'Integre Claude Code com IntelliJ, PyCharm, WebStorm e mais.',
+    `# JetBrains IDEs Integration
+
+Se você usa IntelliJ, PyCharm, WebStorm ou outro IDE JetBrains, veja como integrar Claude.
+
+## Plugin Oficial
+
+\`\`\`
+1. File → Settings → Plugins
+2. Pesquisar "Claude Code"
+3. Install
+4. Restart IDE
+\`\`\`
+
+## Configuração
+
+\`\`\`
+Settings → Tools → Claude Code
+├── Model: sonnet (default)
+├── API Key: [configurar]
+├── Auto-suggest: enabled
+└── Keyboard shortcuts: customize
+\`\`\`
+
+## Atalhos Recomendados
+
+| Ação | Atalho Sugerido |
+|------|-----------------|
+| Abrir Claude | \`Ctrl+Shift+C\` |
+| Quick Fix com Claude | \`Alt+Enter\` → Claude |
+| Explain Selection | \`Ctrl+Shift+E\` |
+| Generate Tests | \`Ctrl+Shift+T\` → Claude |
+
+## Terminal Integrado
+
+JetBrains tem terminal integrado excelente:
+
+\`\`\`
+View → Tool Windows → Terminal
+ou
+Alt + F12
+\`\`\`
+
+No terminal integrado, rode Claude normalmente:
+
+\`\`\`bash
+claude "refatore a classe UserService"
+\`\`\`
+
+## Run Configurations
+
+Crie Run Configurations para tarefas comuns:
+
+\`\`\`xml
+<!-- .idea/runConfigurations/Claude_Review.xml -->
+<component name="ProjectRunConfigurationManager">
+  <configuration name="Claude Review" type="ShConfigurationType">
+    <option name="SCRIPT_TEXT" value="claude 'revise este projeto'" />
+    <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+  </configuration>
+</component>
+\`\`\`
+
+## Live Templates
+
+Crie templates para prompts comuns:
+
+\`\`\`
+Editor → Live Templates → Adicionar:
+
+Abbreviation: clr
+Template: // TODO: claude refactor - $REASON$
+
+Abbreviation: clt
+Template: // TODO: claude test - $DESCRIPTION$
+
+Abbreviation: cle
+Template: // TODO: claude explain - $WHAT$
+\`\`\`
+
+## Integração com Git
+
+JetBrains tem a melhor integração Git visual:
+
+\`\`\`
+1. Claude faz mudanças via terminal
+2. Git → Commit (Ctrl+K)
+3. Veja diff visual de todas mudanças
+4. Revise antes de commitar
+\`\`\`
+
+## Dicas por IDE
+
+### IntelliJ IDEA (Java/Kotlin)
+
+\`\`\`bash
+# Claude entende bem anotações Java
+claude "adicione @NotNull e @Nullable apropriadamente"
+claude "converta para Kotlin idiomático"
+\`\`\`
+
+### PyCharm (Python)
+
+\`\`\`bash
+# Claude entende type hints
+claude "adicione type hints completos"
+claude "converta para async/await"
+\`\`\`
+
+### WebStorm (JavaScript/TypeScript)
+
+\`\`\`bash
+# Claude é excelente com TS
+claude "adicione tipos TypeScript estritos"
+claude "migre para React hooks"
+\`\`\`
+
+## Workflow Recomendado
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│                   JETBRAINS IDE                          │
+│                                                          │
+│  ┌───────────────────────┬─────────────────────────┐   │
+│  │      EDITOR           │     PROJECT TREE        │   │
+│  │                       │     (Alt+1)             │   │
+│  │   [código]            │     📁 src/             │   │
+│  │                       │        📄 file.ts       │   │
+│  └───────────────────────┴─────────────────────────┘   │
+│                                                          │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │  TERMINAL (Alt+F12)                              │   │
+│  │  $ claude "implemente feature X"                 │   │
+│  └─────────────────────────────────────────────────┘   │
+│                                                          │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │  VERSION CONTROL (Alt+9) │ STRUCTURE │ PROBLEMS  │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+`,
+    {
+      xp: 90,
+      duration: 30,
+      difficulty: 'intermediate',
+      tags: ['jetbrains', 'intellij', 'pycharm', 'webstorm', 'ide'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-09-03-1',
+          question: 'Qual atalho abre o terminal integrado em JetBrains IDEs?',
+          options: ['Ctrl+T', 'Alt+F12', 'Ctrl+Shift+T', 'Alt+T'],
+          correctIndex: 1,
+          explanation: 'Alt+F12 abre o terminal integrado em todos os IDEs JetBrains.',
+        },
+      ],
+    }
+  ),
+
+  createLesson('09', '09-04-vim-neovim', '04. Vim e Neovim',
+    'Integre Claude Code com Vim/Neovim para o workflow mais rápido.',
+    `# Vim e Neovim Integration
+
+Para desenvolvedores que preferem Vim/Neovim, a integração com Claude é poderosa.
+
+## Por Que Vim + Claude?
+
+\`\`\`
+VELOCIDADE MÁXIMA:
+- Vim: edição mais rápida possível
+- Claude: geração mais inteligente possível
+- Juntos: produtividade TOP 1%
+\`\`\`
+
+## Método 1: Terminal Split
+
+\`\`\`bash
+# Vim em um pane, Claude em outro
+tmux split-window -h 'claude'
+\`\`\`
+
+\`\`\`
+┌─────────────────┬─────────────────┐
+│      VIM        │     CLAUDE      │
+│                 │                 │
+│  [editando]     │  $ claude       │
+│                 │  > refatore     │
+│                 │                 │
+└─────────────────┴─────────────────┘
+\`\`\`
+
+## Método 2: Comandos Vim
+
+No seu \`~/.vimrc\` ou \`init.vim\`:
+
+\`\`\`vim
+" Enviar seleção visual para Claude
+vnoremap <leader>ce :w !claude "explique este código"<CR>
+
+" Refatorar arquivo atual
+nnoremap <leader>cr :!claude "refatore" < %<CR>
+
+" Gerar testes
+nnoremap <leader>ct :!claude "gere testes para" < % > %:r.test.ts<CR>
+
+" Quick ask (prompt interativo)
+nnoremap <leader>cq :!claude ""<Left>
+\`\`\`
+
+## Método 3: Plugin para Neovim (Lua)
+
+\`\`\`lua
+-- ~/.config/nvim/lua/claude.lua
+
+local M = {}
+
+-- Enviar buffer para Claude
+function M.send_buffer(prompt)
+  local content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\\n")
+  local cmd = string.format('echo %q | claude %q', content, prompt)
+  vim.fn.system(cmd)
+end
+
+-- Keymaps
+vim.keymap.set('n', '<leader>ce', function()
+  M.send_buffer("explique este código")
+end, { desc = "Claude: Explain" })
+
+vim.keymap.set('n', '<leader>cr', function()
+  M.send_buffer("refatore para melhor qualidade")
+end, { desc = "Claude: Refactor" })
+
+vim.keymap.set('n', '<leader>ct', function()
+  M.send_buffer("gere testes unitários")
+end, { desc = "Claude: Tests" })
+
+return M
+\`\`\`
+
+## Integração com Telescope (Neovim)
+
+\`\`\`lua
+-- Picker customizado para prompts Claude
+require('telescope').setup{
+  extensions = {
+    claude_prompts = {
+      prompts = {
+        { name = "Explain", cmd = "explique" },
+        { name = "Refactor", cmd = "refatore" },
+        { name = "Tests", cmd = "gere testes" },
+        { name = "Docs", cmd = "documente" },
+      }
+    }
+  }
+}
+
+-- Keymap para abrir picker
+vim.keymap.set('n', '<leader>cp', ':Telescope claude_prompts<CR>')
+\`\`\`
+
+## Workflow Vim + Claude
+
+\`\`\`
+1. ABRIR arquivo no Vim
+   $ vim arquivo.ts
+
+2. ANALISAR com Claude (split terminal)
+   :!claude "analise este código" < %
+
+3. EDITAR baseado nas sugestões
+   (comandos vim normais)
+
+4. REFATORAR com Claude
+   :!claude "refatore a função X" < %
+
+5. VERIFICAR mudanças
+   :!git diff
+
+6. COMMITAR
+   :!git commit -am "feat: melhorias"
+\`\`\`
+
+## Dicas TOP 1%
+
+| Dica | Comando |
+|------|---------|
+| **Seleção visual → Claude** | \`:'<,'>!claude "query"\` |
+| **Substituir com output** | \`:r !claude "gere código"\` |
+| **Diff lado a lado** | \`:vert diffsplit arquivo.bak\` |
+| **Undo profundo** | \`:earlier 5m\` (volta 5 min) |
+
+## LSP + Claude
+
+\`\`\`lua
+-- nvim-lspconfig com Claude como fallback
+vim.keymap.set('n', 'gd', function()
+  local ok = pcall(vim.lsp.buf.definition)
+  if not ok then
+    vim.cmd('!claude "onde está definido o símbolo sob o cursor?"')
+  end
+end)
+\`\`\`
+
+## Macros para Produtividade
+
+\`\`\`vim
+" Macro: Adicionar tipo TypeScript na linha
+let @t = '0f:lclaude "qual o tipo correto?"\\<CR>'
+
+" Macro: Documentar função
+let @d = '[[Oclaude "documente esta função"\\<CR>'
+\`\`\`
+`,
+    {
+      xp: 110,
+      duration: 35,
+      difficulty: 'advanced',
+      tags: ['vim', 'neovim', 'terminal', 'produtividade'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-09-04-1',
+          question: 'Qual comando Vim envia o buffer atual para um comando externo?',
+          options: [':!comando', ':w !comando', ':r !comando', ':e !comando'],
+          correctIndex: 1,
+          explanation: ':w !comando escreve o buffer como input para o comando. :!comando apenas executa.',
+        },
+        {
+          id: 'q-09-04-2',
+          question: 'Para inserir output de Claude no buffer Vim, use:',
+          options: [':!claude', ':w !claude', ':r !claude', 'Nenhuma'],
+          correctIndex: 2,
+          explanation: ':r !claude lê (read) o output do comando e insere no buffer atual.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-09-04-1',
+          title: 'Configure Vim + Claude',
+          description: 'Adicione 3 keymaps no seu vimrc: um para explain, um para refactor, um para tests. Teste com um arquivo real.',
+          context: 'general',
+          contextDescription: 'Integração Vim',
+          difficulty: 'advanced',
+          xpBonus: 70,
+          hints: ['Use vnoremap para seleção visual', 'Use nnoremap para modo normal', 'O comando :w ! envia o buffer'],
+        }
+      ],
+    }
+  ),
+
+  createLesson('09', '09-05-warp-terminal', '05. Warp e Terminais Modernos',
+    'Use terminais de nova geração como Warp para máxima produtividade.',
+    `# Warp e Terminais Modernos
+
+Terminais modernos como Warp trazem features que multiplicam sua produtividade com Claude.
+
+## Por Que Warp?
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│                    WARP TERMINAL                         │
+│                                                          │
+│  ✅ Blocks (comandos agrupados)                         │
+│  ✅ AI integrado (Warp AI)                              │
+│  ✅ Autocomplete inteligente                            │
+│  ✅ Workflows salvos                                     │
+│  ✅ Compartilhamento de sessão                          │
+│  ✅ Busca em histórico visual                           │
+│  ✅ Edição inline de comandos                           │
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Instalação
+
+\`\`\`bash
+# macOS
+brew install --cask warp
+
+# Ou download direto
+# https://www.warp.dev/
+\`\`\`
+
+## Warp + Claude Code
+
+### Blocks
+
+Cada comando é um "block" que você pode:
+- Copiar inteiro
+- Reexecutar
+- Compartilhar
+- Pesquisar
+
+\`\`\`
+┌─────────────────────────────────────────┐
+│ Block 1: claude "analise o projeto"     │
+│ > Análise completa do projeto...        │
+│ > [output longo]                        │
+│ ┌─────────────────────────────────────┐ │
+│ │ Copy │ Retry │ Share │ Bookmark    │ │
+│ └─────────────────────────────────────┘ │
+└─────────────────────────────────────────┘
+\`\`\`
+
+### Workflows Salvos
+
+\`\`\`yaml
+# ~/.warp/workflows/claude-review.yaml
+name: Claude Code Review
+command: |
+  git diff --staged | claude "revise estas mudanças"
+description: Review mudanças staged com Claude
+\`\`\`
+
+Acesse com: \`Ctrl+Shift+R\` → pesquisar workflow
+
+### Warp AI + Claude Code
+
+Warp tem IA integrada. Use AMBOS:
+
+\`\`\`
+Warp AI: Ajuda com comandos shell
+Claude Code: Ajuda com código/projetos
+
+COMBO:
+1. Warp AI: "como encontrar arquivos .ts modificados hoje?"
+   → find . -name "*.ts" -mtime -1
+
+2. Claude Code: "refatore estes arquivos"
+   → [refatoração inteligente]
+\`\`\`
+
+## Outras Opções de Terminal
+
+### iTerm2 (macOS)
+
+\`\`\`bash
+brew install --cask iterm2
+
+# Features úteis:
+# - Split panes
+# - Profiles
+# - Triggers (automação)
+# - tmux integration
+\`\`\`
+
+### Alacritty (Cross-platform)
+
+\`\`\`bash
+brew install --cask alacritty
+
+# Ultra rápido (GPU-accelerated)
+# Configuração via YAML
+# Mínimo de features, máximo de performance
+\`\`\`
+
+### Kitty
+
+\`\`\`bash
+brew install --cask kitty
+
+# GPU-accelerated
+# Tabs e windows
+# Extensível com Python
+# Excelente para imagens no terminal
+\`\`\`
+
+## Comparativo
+
+| Terminal | Velocidade | Features | IA |
+|----------|------------|----------|---|
+| **Warp** | Rápido | Muitas | Sim |
+| **iTerm2** | Médio | Muitas | Não |
+| **Alacritty** | Ultra-rápido | Mínimas | Não |
+| **Kitty** | Rápido | Médias | Não |
+| **Terminal.app** | Lento | Básicas | Não |
+
+## Configuração Universal
+
+Independente do terminal, configure:
+
+\`\`\`bash
+# ~/.zshrc ou ~/.bashrc
+
+# PATH com ferramentas modernas
+export PATH="$HOME/.local/bin:$PATH"
+
+# Aliases universais
+alias c="claude"
+alias cq="claude --quiet"
+
+# Histórico melhor
+HISTSIZE=50000
+SAVEHIST=50000
+setopt SHARE_HISTORY
+\`\`\`
+
+## Dicas de Produtividade
+
+| Dica | Descrição |
+|------|-----------|
+| **Múltiplos panes** | Claude em um, código em outro |
+| **Histórico pesquisável** | Ctrl+R ou fzf para buscar |
+| **Bookmarks** | Salve comandos Claude úteis |
+| **Profiles** | Config diferente por projeto |
+`,
+    {
+      xp: 80,
+      duration: 25,
+      difficulty: 'intermediate',
+      tags: ['warp', 'terminal', 'iterm', 'alacritty', 'produtividade'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-09-05-1',
+          question: 'Qual feature do Warp agrupa comandos e seus outputs?',
+          options: ['Tabs', 'Blocks', 'Profiles', 'Workflows'],
+          correctIndex: 1,
+          explanation: 'Blocks no Warp agrupam cada comando com seu output, permitindo copiar, reexecutar ou compartilhar facilmente.',
+        },
+      ],
+    }
+  ),
+
+  createLesson('09', '09-06-ide-challenge', '06. Challenge: Setup IDE TOP 1%',
+    'Configure seu ambiente de desenvolvimento ideal com Claude Code.',
+    `# Challenge: Setup IDE TOP 1%
+
+Hora de criar seu ambiente de desenvolvimento definitivo integrando todas as ferramentas.
+
+## Objetivo
+
+Configurar um setup completo que inclua:
+1. Editor/IDE principal configurado
+2. Terminal otimizado
+3. Ferramentas modernas instaladas
+4. Integração Claude perfeita
+5. Documentação do seu setup
+
+## Seu Stack Personalizado
+
+Escolha seu caminho:
+
+\`\`\`
+PATH A: VS Code + Terminal Integrado
+PATH B: JetBrains + Terminal Split
+PATH C: Vim/Neovim + Tmux
+PATH D: Híbrido (mistura de todos)
+\`\`\`
+
+## Checklist de Configuração
+
+### 1. Terminal Moderno
+
+\`\`\`bash
+# Instalar ferramentas essenciais
+brew install eza bat ripgrep fd fzf zoxide starship
+
+# Configurar aliases em ~/.zshrc
+alias ls="eza --icons"
+alias cat="bat"
+alias find="fd"
+alias grep="rg"
+alias c="claude"
+
+# Ativar zoxide
+eval "$(zoxide init zsh)"
+
+# Ativar starship
+eval "$(starship init zsh)"
+\`\`\`
+
+### 2. Editor Configurado
+
+**VS Code:**
+\`\`\`json
+{
+  "editor.inlineSuggest.enabled": true,
+  "terminal.integrated.fontSize": 14,
+  "workbench.colorTheme": "One Dark Pro"
+}
+\`\`\`
+
+**Vim/Neovim:**
+\`\`\`vim
+" ~/.vimrc
+set number relativenumber
+set tabstop=2 shiftwidth=2 expandtab
+nnoremap <leader>cr :!claude "refatore" < %<CR>
+\`\`\`
+
+### 3. Git Hooks para Claude
+
+\`\`\`bash
+# .git/hooks/pre-commit
+#!/bin/bash
+echo "🤖 Claude analyzing staged changes..."
+git diff --cached --name-only | while read file; do
+  if [[ "$file" == *.ts ]] || [[ "$file" == *.tsx ]]; then
+    claude "quick review for issues" < "$file"
+  fi
+done
+\`\`\`
+
+### 4. Workflow Documentado
+
+Crie um arquivo \`MY-SETUP.md\`:
+
+\`\`\`markdown
+# Meu Setup TOP 1%
+
+## Editor
+- [x] VS Code / IntelliJ / Neovim
+- [x] Extensão Claude instalada
+- [x] Keybindings configurados
+
+## Terminal
+- [x] Warp / iTerm2 / Alacritty
+- [x] Zsh + Oh My Zsh
+- [x] Ferramentas modernas (eza, bat, rg, fd, fzf)
+- [x] Aliases configurados
+
+## Claude Code
+- [x] Instalado globalmente
+- [x] CLAUDE.md no projeto
+- [x] Skills customizadas
+- [x] MCPs essenciais
+
+## Workflow Diário
+1. Abrir terminal no projeto
+2. \`z projeto\` para navegar
+3. \`c\` para iniciar Claude
+4. Iterar: pedir → revisar → commitar
+
+## Comandos Mais Usados
+- \`c "refatore"\` - Refatoração rápida
+- \`c "teste"\` - Gerar testes
+- \`c "explique"\` - Entender código
+\`\`\`
+
+## Critérios de Avaliação
+
+| Critério | Pontos |
+|----------|:------:|
+| Terminal com ferramentas modernas | 20 |
+| Editor configurado para Claude | 20 |
+| Aliases e atalhos funcionando | 20 |
+| Workflow documentado | 20 |
+| Git hooks ou automação | 10 |
+| Setup reproduzível (script) | 10 |
+| **TOTAL** | **100** |
+
+## Bônus: Script de Setup
+
+Crie um script que reproduz todo seu setup:
+
+\`\`\`bash
+#!/bin/bash
+# setup-dev-environment.sh
+
+echo "🚀 Instalando ferramentas..."
+brew install eza bat ripgrep fd fzf zoxide starship
+
+echo "📝 Configurando zsh..."
+cat >> ~/.zshrc << 'EOF'
+alias ls="eza --icons"
+alias cat="bat"
+alias c="claude"
+eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+EOF
+
+echo "✅ Setup completo!"
+echo "Reinicie o terminal para aplicar."
+\`\`\`
+
+**+50 XP Bônus por script funcional!**
+
+## Entrega
+
+1. \`MY-SETUP.md\` documentando seu ambiente
+2. Capturas de tela do setup funcionando
+3. (Bônus) \`setup-dev-environment.sh\` script
+
+## Reflexão
+
+Ao completar este challenge, você terá:
+
+- ✅ Ambiente de desenvolvimento otimizado
+- ✅ Terminal moderno configurado
+- ✅ Integração Claude perfeita
+- ✅ Workflow documentado e reproduzível
+- ✅ Setup que pode compartilhar com outros
+
+**Você agora tem o ambiente que os TOP 1% usam!**
+`,
+    {
+      xp: 200,
+      duration: 60,
+      difficulty: 'advanced',
+      tags: ['challenge', 'setup', 'ide', 'terminal', 'produtividade', 'top-1-percent'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-09-06-final',
+          title: 'Setup IDE TOP 1% Completo',
+          description: 'Configure seu ambiente completo: terminal moderno, editor otimizado, ferramentas instaladas, workflow documentado.',
+          context: 'general',
+          contextDescription: 'Challenge final do módulo IDE',
+          difficulty: 'advanced',
+          xpBonus: 100,
+          hints: [
+            'Comece pelo terminal - é a base de tudo',
+            'Instale eza, bat, ripgrep, fd, fzf primeiro',
+            'Configure aliases no ~/.zshrc',
+            'Documente tudo no MY-SETUP.md'
+          ]
+        }
+      ]
+    }
   ),
 ];
 
@@ -6961,13 +7970,14 @@ export const courseModules: Module[] = [
     number: 9,
     title: '09. Integrações IDE',
     slug: 'integracoes-ide',
-    description: 'VS Code, JetBrains, Vim e mais',
+    description: 'VS Code, JetBrains, Vim, Warp e Terminal Workflows',
     icon: 'Code',
     color: 'teal',
     lessons: module09Lessons,
     totalXp: module09Lessons.reduce((acc, l) => acc + l.xp, 0),
-    estimatedHours: 2,
+    estimatedHours: 5,
     prerequisites: ['02'],
+    isNew: true,
     version: '1.0.0',
     dateUpdated: new Date().toISOString().split('T')[0],
   },
