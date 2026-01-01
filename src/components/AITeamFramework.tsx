@@ -4,8 +4,15 @@ import {
   Users, Brain, Target, Code2, Shield, FileSearch, Database,
   Lightbulb, AlertTriangle, GitBranch, FileCode, TestTube,
   Rocket, BarChart3, Zap, ChevronDown, ChevronUp, Star,
-  CheckCircle2, ArrowRight, Layers, Settings, Trophy
+  CheckCircle2, ArrowRight, Layers, Settings, Trophy,
+  FolderKanban, Workflow
 } from 'lucide-react';
+
+// Import new framework components
+import { ProjectsTab } from './AITeamFramework/projects/ProjectsTab';
+import { WorkflowTab } from './AITeamFramework/workflow/WorkflowTab';
+import { HistoryTimeline } from './AITeamFramework/history/HistoryTimeline';
+import { useProjectStore } from '../store/useProjectStore';
 
 interface AITeamFrameworkProps {
   onClose?: () => void;
@@ -167,9 +174,13 @@ const ORCHESTRATION_RULES = [
   { trigger: 'Bug crítico', team: ['senior-dev', 'qa', 'devops'], icon: AlertTriangle }
 ];
 
+type TabId = 'projects' | 'workflow' | 'team' | 'orchestration' | 'metrics';
+
 export const AITeamFramework: React.FC<AITeamFrameworkProps> = () => {
   const [expandedSpecialist, setExpandedSpecialist] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'team' | 'orchestration' | 'metrics'>('team');
+  const [activeTab, setActiveTab] = useState<TabId>('projects');
+  const { getActiveProject, historyPanelOpen, toggleHistoryPanel } = useProjectStore();
+  const activeProject = getActiveProject();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
@@ -198,17 +209,19 @@ export const AITeamFramework: React.FC<AITeamFrameworkProps> = () => {
           </p>
         </motion.div>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center gap-2 mb-8">
+        {/* Tab Navigation - Enhanced with New Tabs */}
+        <div className="flex justify-center gap-2 mb-8 flex-wrap">
           {[
+            { id: 'projects', label: 'Projects', icon: FolderKanban, isNew: true },
+            { id: 'workflow', label: 'Workflow', icon: Workflow, isNew: true },
             { id: 'team', label: 'Especialistas', icon: Users },
             { id: 'orchestration', label: 'Orquestração', icon: Target },
             { id: 'metrics', label: 'Métricas', icon: BarChart3 }
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
+              onClick={() => setActiveTab(tab.id as TabId)}
+              className={`relative flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
                 activeTab === tab.id
                   ? 'bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/25'
                   : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50'
@@ -216,11 +229,64 @@ export const AITeamFramework: React.FC<AITeamFrameworkProps> = () => {
             >
               <tab.icon className="w-5 h-5" />
               {tab.label}
+              {'isNew' in tab && tab.isNew && (
+                <span className="absolute -top-1 -right-1 px-1.5 py-0.5 bg-emerald-500 text-white text-[10px] font-bold rounded-full">
+                  NEW
+                </span>
+              )}
             </button>
           ))}
         </div>
 
         <AnimatePresence mode="wait">
+          {/* Projects Tab - NEW */}
+          {activeTab === 'projects' && (
+            <motion.div
+              key="projects"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <ProjectsTab />
+            </motion.div>
+          )}
+
+          {/* Workflow Tab - NEW */}
+          {activeTab === 'workflow' && (
+            <motion.div
+              key="workflow"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="relative"
+            >
+              <WorkflowTab />
+
+              {/* History Panel Slide-over */}
+              <AnimatePresence>
+                {historyPanelOpen && activeProject && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 300 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 300 }}
+                    className="fixed right-0 top-0 h-full w-full max-w-md bg-slate-900 border-l border-slate-700 shadow-2xl z-50 overflow-y-auto"
+                  >
+                    <div className="p-4">
+                      <button
+                        onClick={toggleHistoryPanel}
+                        className="mb-4 flex items-center gap-2 text-sm text-slate-400 hover:text-white"
+                      >
+                        <ArrowRight className="w-4 h-4 rotate-180" />
+                        Close History
+                      </button>
+                      <HistoryTimeline project={activeProject} />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          )}
+
           {/* Team Tab */}
           {activeTab === 'team' && (
             <motion.div
@@ -451,7 +517,10 @@ export const AITeamFramework: React.FC<AITeamFrameworkProps> = () => {
           transition={{ delay: 0.5 }}
           className="mt-12 text-center text-slate-500 text-sm"
         >
-          <p>AI Team Framework v1.0 - Powered by Claude Code</p>
+          <p>AI Team Framework v2.0 - Powered by Claude Code</p>
+          <p className="text-xs mt-1 text-slate-600">
+            Projects • 8-Phase Workflow • Git-like History • PRD Templates
+          </p>
         </motion.div>
       </div>
     </div>
