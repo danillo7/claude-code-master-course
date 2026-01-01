@@ -1075,6 +1075,740 @@ git commit -m "$MESSAGE"
       ]
     }
   ),
+
+  createLesson('02', '02-10-plan-mode', 'Plan Mode: O Segredo dos TOP 1%',
+    'Domine o modo de planejamento para arquitetar soluções antes de implementar.',
+    `# Plan Mode: Pense Antes de Agir
+
+## O que é Plan Mode?
+
+Plan Mode é um comando que transforma Claude de executor em arquiteto. Em vez de implementar diretamente, Claude primeiro planeja a abordagem.
+
+\`\`\`bash
+# Ativar Plan Mode
+claude --plan "Implementar autenticação OAuth"
+
+# Ou durante a conversa
+> /plan
+\`\`\`
+
+## Quando Usar Plan Mode?
+
+| Cenário | Plan Mode? |
+|---------|:----------:|
+| Bug simples e localizado | ❌ |
+| Feature nova em projeto existente | ✅ |
+| Refatoração de múltiplos arquivos | ✅ |
+| Mudança arquitetural | ✅✅ |
+| Debugging complexo | ✅ |
+
+## O Ciclo Plan → Execute
+
+\`\`\`
+┌─────────────────────────────────────────┐
+│ 1. PLAN MODE                            │
+│    - Analisar requisitos                │
+│    - Identificar arquivos afetados      │
+│    - Propor abordagem                   │
+│    - Listar riscos e trade-offs         │
+└────────────────┬────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────┐
+│ 2. VOCÊ REVISA                          │
+│    - Aprovar plano                      │
+│    - Ajustar abordagem                  │
+│    - Adicionar constraints              │
+└────────────────┬────────────────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────────────┐
+│ 3. EXECUTE MODE                         │
+│    - Implementar conforme plano         │
+│    - Seguir ordem definida              │
+│    - Reportar progresso                 │
+└─────────────────────────────────────────┘
+\`\`\`
+
+## Exemplo Real
+
+\`\`\`bash
+> claude --plan "Adicionar dark mode ao app"
+
+📋 PLANO PROPOSTO:
+
+1. Arquivos a modificar:
+   - src/styles/theme.ts (criar)
+   - src/components/ThemeProvider.tsx (criar)
+   - src/App.tsx (modificar)
+   - tailwind.config.js (modificar)
+
+2. Abordagem:
+   - Usar Tailwind dark: classes
+   - Contexto React para toggle
+   - Persistir preferência em localStorage
+   - Respeitar prefers-color-scheme
+
+3. Riscos:
+   - Componentes com cores hardcoded
+   - Imagens sem variante dark
+
+Aprovar? [y/n/editar]
+\`\`\`
+
+## Comandos de Plan Mode
+
+| Comando | Ação |
+|---------|------|
+| \`/plan\` | Entrar em Plan Mode |
+| \`/exit-plan\` | Sair e executar |
+| \`/revise\` | Revisar plano |
+| \`--plan "..."\` | Iniciar já em plan mode |
+
+## TOP 1% Pattern: Plan First
+
+\`\`\`
+AMADOR:
+"Adiciona autenticação" → Claude implementa direto → bugs, retrabalho
+
+PRO (TOP 1%):
+"Planeja autenticação" → Revisa plano → Ajusta → Executa → Sucesso
+\`\`\`
+
+**Regra de Ouro:** Para qualquer tarefa > 30 min, use Plan Mode primeiro.
+`,
+    {
+      xp: 100,
+      duration: 20,
+      difficulty: 'intermediate',
+      tags: ['plan-mode', 'arquitetura', 'top-1-percent'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'Quando você NÃO deveria usar Plan Mode?',
+          options: [
+            'Implementando feature nova complexa',
+            'Corrigindo um typo no README',
+            'Fazendo refatoração de múltiplos arquivos',
+            'Mudando a arquitetura do projeto'
+          ],
+          correctAnswer: 1,
+          explanation: 'Para tarefas simples e localizadas (como corrigir um typo), Plan Mode é overkill. Use direto.'
+        },
+        {
+          question: 'Qual é a principal vantagem do Plan Mode?',
+          options: [
+            'O código fica mais rápido',
+            'Você revisa a abordagem ANTES de implementar',
+            'Claude usa menos tokens',
+            'Funciona offline'
+          ],
+          correctAnswer: 1,
+          explanation: 'Plan Mode permite revisar e ajustar a estratégia antes de escrever código, evitando retrabalho.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('02', '02-11-checkpoints', 'Checkpoints e /rewind',
+    'Navegue pelo histórico de mudanças e volte no tempo quando necessário.',
+    `# Checkpoints: Seu Ctrl+Z Turbinado
+
+## O Problema
+
+Você está no meio de uma implementação complexa e Claude faz uma mudança que quebra tudo. O que fazer?
+
+❌ Desfazer manualmente (trabalhoso)
+❌ Recomeçar do zero (perda de tempo)
+✅ Usar Checkpoints (inteligente)
+
+## Como Funcionam Checkpoints
+
+Claude Code cria automaticamente checkpoints a cada mudança significativa:
+
+\`\`\`
+Checkpoint #1 → Criou AuthService
+Checkpoint #2 → Adicionou login()
+Checkpoint #3 → Adicionou logout()
+Checkpoint #4 → Refatorou para hooks ← AQUI DEU RUIM
+\`\`\`
+
+## Comandos de Navegação
+
+| Comando | Ação |
+|---------|------|
+| \`/rewind\` | Ver lista de checkpoints |
+| \`/rewind 3\` | Voltar para checkpoint #3 |
+| \`/diff\` | Ver diferença atual |
+| \`/history\` | Histórico de mudanças |
+
+## Exemplo Prático
+
+\`\`\`bash
+> /rewind
+
+📍 CHECKPOINTS DISPONÍVEIS:
+
+#4 [15:32] Refatorou AuthService para hooks
+#3 [15:28] Adicionou método logout()
+#2 [15:25] Adicionou método login()
+#1 [15:20] Criou AuthService inicial
+
+Voltar para qual? [1-4/cancel]
+
+> 3
+
+✅ Revertido para checkpoint #3
+   Arquivos restaurados: src/services/AuthService.ts
+\`\`\`
+
+## Quando Usar /rewind
+
+\`\`\`
+✅ USE quando:
+- Refatoração quebrou algo
+- Quer testar abordagem diferente
+- Claude entendeu errado o pedido
+- Mudança causou bugs inesperados
+
+❌ EVITE quando:
+- Você fez commits git no meio
+- Outros arquivos dependem das mudanças
+- Já passou muito tempo (sessão longa)
+\`\`\`
+
+## Checkpoints vs Git
+
+| Aspecto | Checkpoints | Git |
+|---------|-------------|-----|
+| Escopo | Sessão Claude | Projeto todo |
+| Granularidade | Cada ação | Seus commits |
+| Persistência | Até fechar | Permanente |
+| Uso ideal | Experimentação | Histórico oficial |
+
+## TOP 1% Pattern: Checkpoint Strategy
+
+\`\`\`
+ANTES de mudança arriscada:
+
+1. Confirmar que checkpoint foi criado
+2. Testar mudança
+3. Se OK → Seguir
+4. Se RUIM → /rewind
+
+DICA: Verbalize "crie um checkpoint antes" para mudanças críticas
+\`\`\`
+
+## Combinando com Plan Mode
+
+\`\`\`bash
+> /plan "Refatorar todo o módulo de auth"
+
+[Claude apresenta plano em 5 etapas]
+
+> Execute etapa 1
+
+[Checkpoint #1 criado automaticamente]
+
+> Execute etapa 2
+
+[Se der errado: /rewind 1]
+\`\`\`
+`,
+    {
+      xp: 80,
+      duration: 15,
+      difficulty: 'intermediate',
+      tags: ['checkpoints', 'rewind', 'navegacao', 'undo'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'Qual comando você usa para voltar ao estado anterior?',
+          options: [
+            '/undo',
+            '/back',
+            '/rewind',
+            '/restore'
+          ],
+          correctAnswer: 2,
+          explanation: 'O comando /rewind permite navegar pelos checkpoints e voltar a estados anteriores.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('02', '02-12-best-of-n', 'Padrão Best of N',
+    'Gere múltiplas soluções e escolha a melhor - técnica dos especialistas.',
+    `# Best of N: Múltiplas Soluções, Melhor Escolha
+
+## O Conceito
+
+Em vez de aceitar a primeira solução, peça N alternativas e escolha a melhor:
+
+\`\`\`
+Solução 1 → Funcional mas verbosa
+Solução 2 → Elegante mas complexa
+Solução 3 → Simples e performática ← ESCOLHIDA
+\`\`\`
+
+## Por que Funciona?
+
+LLMs são probabilísticos. A primeira resposta nem sempre é a melhor. Ao gerar múltiplas:
+- Explora diferentes abordagens
+- Revela trade-offs
+- Você toma decisão informada
+
+## Como Aplicar
+
+### Método 1: Pedido Explícito
+\`\`\`bash
+> "Dê 3 abordagens diferentes para implementar cache"
+
+📋 ABORDAGEM 1: In-Memory Map
+- Prós: Simples, zero dependências
+- Contras: Não persiste, limite de memória
+
+📋 ABORDAGEM 2: Redis
+- Prós: Distribuído, persistente
+- Contras: Dependência externa, config
+
+📋 ABORDAGEM 3: LocalStorage + Service Worker
+- Prós: Offline-first, nativo
+- Contras: Só browser, limite 5MB
+\`\`\`
+
+### Método 2: Iteração Rápida
+\`\`\`bash
+> "Implemente validação de email"
+[Claude implementa versão 1]
+
+> "Dê uma alternativa mais robusta"
+[Claude implementa versão 2]
+
+> "Agora uma versão mais simples"
+[Claude implementa versão 3]
+
+> "Use a versão 2 mas com a simplicidade da 3"
+[Claude combina o melhor]
+\`\`\`
+
+### Método 3: Competição
+\`\`\`bash
+> "Se você fosse 3 desenvolvedores diferentes, como cada um implementaria isso?"
+
+👨‍💻 JUNIOR:
+[Solução funcional básica]
+
+👩‍💻 SENIOR:
+[Solução com patterns]
+
+🧙‍♂️ PRINCIPAL:
+[Solução arquitetural elegante]
+\`\`\`
+
+## Quando Usar Best of N
+
+| Cenário | N Sugerido |
+|---------|:----------:|
+| Feature simples | 1 (normal) |
+| Decisão arquitetural | 3 |
+| Código crítico/core | 3-5 |
+| Otimização performance | 5 |
+| Algoritmo complexo | 3 |
+
+## TOP 1% Pattern: Decision Matrix
+
+\`\`\`bash
+> "Compare as 3 soluções em uma tabela:
+   - Complexidade
+   - Performance
+   - Manutenibilidade
+   - Casos de uso ideais"
+
+| Critério | Sol. 1 | Sol. 2 | Sol. 3 |
+|----------|--------|--------|--------|
+| Complex. | Baixa  | Alta   | Média  |
+| Perform. | Média  | Alta   | Alta   |
+| Manuten. | Alta   | Média  | Alta   |
+| Ideal    | MVP    | Scale  | Balance|
+
+→ Recomendação: Solução 3 para maioria dos casos
+\`\`\`
+
+## Combinando Técnicas
+
+\`\`\`
+1. Plan Mode → Define abordagem geral
+2. Best of N → Explora implementações
+3. Checkpoint → Testa a escolhida
+4. Rewind se necessário → Tenta outra
+
+RESULTADO: Solução otimizada com baixo risco
+\`\`\`
+
+**Regra de Ouro:** Para decisões importantes, nunca aceite a primeira resposta.
+`,
+    {
+      xp: 90,
+      duration: 18,
+      difficulty: 'advanced',
+      tags: ['best-of-n', 'multiplas-solucoes', 'decisao', 'top-1-percent'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'Por que a técnica Best of N funciona?',
+          options: [
+            'LLMs são determinísticos',
+            'A primeira resposta é sempre errada',
+            'LLMs são probabilísticos e explorar alternativas revela trade-offs',
+            'É mais rápido que pedir uma vez'
+          ],
+          correctAnswer: 2,
+          explanation: 'LLMs são probabilísticos, então gerar múltiplas soluções explora diferentes caminhos e revela trade-offs para decisão informada.'
+        },
+        {
+          question: 'Para uma decisão arquitetural, quantas alternativas você deveria pedir?',
+          options: [
+            '1 (a primeira é suficiente)',
+            '2 (para comparar)',
+            '3 (padrão recomendado)',
+            '10+ (quanto mais melhor)'
+          ],
+          correctAnswer: 2,
+          explanation: 'Para decisões arquiteturais, 3 alternativas é o sweet spot - suficiente para comparar sem overwhelm.'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-02-12-1',
+          title: 'Decision Matrix na Prática',
+          description: 'Peça 3 soluções para um problema real e crie uma decision matrix para escolher',
+          context: 'personal',
+          contextDescription: 'Use em qualquer projeto seu',
+          difficulty: 'intermediate',
+          xpBonus: 60,
+          hints: ['Escolha um problema real do seu projeto', 'Peça análise em tabela', 'Documente a decisão'],
+        }
+      ]
+    }
+  ),
+
+  createLesson('02', '02-13-project-architecture', 'Arquitetura de Projetos com Claude',
+    'Domine como estruturar e navegar projetos complexos com Claude Code.',
+    `# Arquitetura de Projetos com Claude Code
+
+Aprenda a trabalhar com projetos de qualquer tamanho com eficiência máxima.
+
+## O Problema da Escala
+
+\`\`\`
+Projeto Pequeno (< 20 arquivos)    Projeto Enterprise (500+ arquivos)
+         ↓                                    ↓
+   Claude vê tudo                    Claude precisa de guia
+   Contexto cabíveis                 Contexto estratégico
+\`\`\`
+
+## Estratégias por Tamanho de Projeto
+
+### Pequeno (< 50 arquivos)
+- ✅ Claude pode explorar livremente
+- ✅ Contexto cabe em uma sessão
+- ⚡ Estratégia: Deixe Claude usar Explorer
+
+### Médio (50-200 arquivos)
+- ⚠️ Precisa de direcionamento
+- 📁 Use CLAUDE.md por pasta
+- ⚡ Estratégia: Aponte para áreas relevantes
+
+### Grande (200+ arquivos)
+- 🎯 Contexto cirúrgico é essencial
+- 📋 Master Context Documents
+- ⚡ Estratégia: Subagents especializados + CLAUDE.md robusto
+
+## Anatomia de um Projeto Bem Estruturado
+
+\`\`\`
+project/
+├── CLAUDE.md              ← Visão geral, convenções
+├── src/
+│   ├── CLAUDE.md          ← Arquitetura do código
+│   ├── api/
+│   │   └── CLAUDE.md      ← Padrões de API
+│   ├── components/
+│   │   └── CLAUDE.md      ← Design system
+│   └── services/
+│       └── CLAUDE.md      ← Padrões de serviço
+├── tests/
+│   └── CLAUDE.md          ← Padrões de teste
+└── docs/
+    └── architecture.md    ← Para @include
+\`\`\`
+
+## Técnicas TOP 1%
+
+### 1. Onboarding Document
+Crie um documento que Claude possa ler para entender o projeto:
+
+\`\`\`markdown
+# PROJECT-GUIDE.md
+
+## Visão Geral
+Este é um e-commerce B2B com foco em...
+
+## Stack
+- Frontend: Next.js 14, TailwindCSS
+- Backend: FastAPI, PostgreSQL
+- Deploy: Vercel + Railway
+
+## Arquitetura Chave
+- /src/app → Rotas Next.js
+- /src/lib → Utilitários compartilhados
+- /api → Backend FastAPI
+
+## Decisões Arquiteturais
+1. Usamos Server Components por padrão
+2. Estado global via Zustand (não Redux)
+3. Validação com Zod em ambos lados
+\`\`\`
+
+### 2. Navigation Hints
+No CLAUDE.md raiz, dê dicas de navegação:
+
+\`\`\`markdown
+## Onde Encontrar O Quê
+
+| Funcionalidade | Localização |
+|----------------|-------------|
+| Autenticação | /src/lib/auth/ |
+| Checkout | /src/app/checkout/ + /api/orders/ |
+| Notificações | /src/services/notifications/ |
+| Testes E2E | /tests/e2e/ |
+\`\`\`
+
+### 3. Dependency Map
+Para projetos complexos, mapeie dependências:
+
+\`\`\`
+CheckoutPage
+    └── useCart (hook)
+          └── CartService
+                └── OrderAPI
+                      └── PaymentGateway
+\`\`\`
+
+## Comandos Úteis para Navegação
+
+| Comando | Quando Usar |
+|---------|-------------|
+| \`/init\` | Primeira exploração do projeto |
+| Explorer subagent | Mapear estrutura |
+| \`tree src -L 2\` | Visualizar hierarquia |
+| Plan Mode | Antes de mudanças grandes |
+
+## Anti-Padrões a Evitar
+
+| ❌ Evite | ✅ Prefira |
+|----------|-----------|
+| "Mude o sistema de auth" (vago) | "Mude /src/lib/auth/session.ts para usar JWT" |
+| Deixar Claude explorar 500 arquivos | Apontar para os 5-10 relevantes |
+| Um CLAUDE.md gigante | CLAUDE.md por área |
+`,
+    {
+      xp: 110,
+      duration: 35,
+      difficulty: 'advanced',
+      tags: ['arquitetura', 'projetos-grandes', 'navegacao', 'top-1-percent'],
+      isNew: true,
+      quiz: [
+        {
+          id: 'q-02-13-1',
+          question: 'Para projetos com 200+ arquivos, qual estratégia é mais eficiente?',
+          options: ['Deixar Claude explorar tudo livremente', 'Usar contexto cirúrgico + CLAUDE.md por pasta', 'Ler todos os arquivos em uma sessão', 'Não usar Claude para projetos grandes'],
+          correctAnswer: 1,
+          explanation: 'Projetos grandes requerem contexto cirúrgico - apontar para os arquivos relevantes e usar CLAUDE.md por área para guiar a navegação.',
+        },
+        {
+          id: 'q-02-13-2',
+          question: 'O que deve conter um "Onboarding Document" para Claude?',
+          options: ['Apenas o código mais importante', 'Visão geral, stack, arquitetura e decisões técnicas', 'Lista de todos os arquivos', 'Histórico de commits'],
+          correctAnswer: 1,
+          explanation: 'O Onboarding Document dá contexto estratégico: visão geral do projeto, stack tecnológico, arquitetura principal e decisões que guiam o desenvolvimento.',
+        },
+      ],
+    }
+  ),
+
+  createLesson('02', '02-14-multifile-editing', 'Multi-file Editing Avançado',
+    'Técnicas para editar múltiplos arquivos de forma coordenada e eficiente.',
+    `# Multi-file Editing: O Superpoder do Claude Code
+
+Aprenda a coordenar edições em múltiplos arquivos como um profissional.
+
+## O Desafio
+
+\`\`\`
+Uma feature nova pode tocar:
+├── 3 componentes
+├── 2 serviços
+├── 1 hook
+├── 4 testes
+├── 2 tipos
+└── 1 migração
+
+= 13 arquivos para manter consistentes!
+\`\`\`
+
+## Estratégias de Multi-file Editing
+
+### 1. Atomic Changes (Mudanças Atômicas)
+\`\`\`
+PEDIDO: "Renomeie userId para customerId em todo o projeto"
+
+Claude deve:
+1. Encontrar todos os arquivos que usam userId
+2. Verificar tipos/interfaces relacionados
+3. Atualizar tudo em sequência lógica
+4. Validar que nada quebrou
+\`\`\`
+
+### 2. Feature-based Editing
+\`\`\`
+PEDIDO: "Adicione campo de telefone ao usuário"
+
+Ordem de edição:
+1. types/user.ts        → Adiciona campo no tipo
+2. api/users.ts         → Atualiza endpoint
+3. db/migrations/       → Cria migration
+4. components/UserForm  → Adiciona input
+5. tests/user.test.ts   → Atualiza testes
+\`\`\`
+
+### 3. Refactoring Coordenado
+\`\`\`
+PEDIDO: "Extraia a lógica de validação para um módulo separado"
+
+Claude:
+1. Cria novo arquivo /lib/validation.ts
+2. Move funções de validação
+3. Atualiza imports em todos os consumidores
+4. Verifica que tudo compila
+\`\`\`
+
+## Técnicas Avançadas
+
+### TodoWrite para Tracking
+Claude usa TodoWrite internamente para rastrear:
+
+\`\`\`
+[x] Atualizar types/user.ts
+[x] Atualizar api/users.ts
+[ ] Atualizar components/UserForm
+[ ] Atualizar tests
+\`\`\`
+
+### O Padrão "Verify After Each"
+\`\`\`
+Para cada arquivo editado:
+1. Edita arquivo
+2. Verifica tipos (se TypeScript)
+3. Se erro, corrige antes de prosseguir
+4. Só avança se consistente
+\`\`\`
+
+### Checkpoints Estratégicos
+\`\`\`
+Antes de multi-file edit grande:
+1. Commit do estado atual
+2. Executa as mudanças
+3. Se falhar: git checkout . para reverter
+4. Se sucesso: commit atômico
+\`\`\`
+
+## Comandos para Multi-file
+
+| Técnica | Comando/Ação |
+|---------|--------------|
+| Listar arquivos afetados | "Primeiro, liste todos os arquivos que precisam mudar" |
+| Ordem de edição | "Qual a ordem correta de edição para manter consistência?" |
+| Validação | "Após cada edição, verifique se o TypeScript compila" |
+| Rollback | "Se der erro, reverta as últimas 3 edições" |
+
+## Caso Prático: Adicionar Nova Entidade
+
+\`\`\`markdown
+PEDIDO: "Adicione uma entidade 'Product' completa ao sistema"
+
+Claude cria (em ordem):
+
+1. src/types/product.ts
+   → interface Product { id, name, price, ... }
+
+2. src/api/products.ts
+   → CRUD endpoints
+
+3. src/services/productService.ts
+   → Lógica de negócio
+
+4. src/hooks/useProducts.ts
+   → React hook
+
+5. src/components/ProductCard.tsx
+   → Componente de exibição
+
+6. src/components/ProductForm.tsx
+   → Formulário de criação/edição
+
+7. tests/products.test.ts
+   → Testes unitários
+
+8. Atualiza index exports em cada pasta
+\`\`\`
+
+## Anti-Padrões
+
+| ❌ Evite | ✅ Prefira |
+|----------|-----------|
+| Editar arquivos aleatoriamente | Seguir ordem de dependências |
+| Não verificar entre edições | Validar após cada mudança |
+| Mudanças que quebram temporariamente | Mudanças atômicas que compilam |
+| Editar sem planejar | Plan Mode antes de multi-file |
+`,
+    {
+      xp: 100,
+      duration: 30,
+      difficulty: 'advanced',
+      tags: ['multi-file', 'refactoring', 'coordenacao', 'atomicidade'],
+      isNew: true,
+      quiz: [
+        {
+          id: 'q-02-14-1',
+          question: 'Qual a ordem correta para adicionar um novo campo a uma entidade?',
+          options: ['Componente → API → Tipo', 'Tipo → API → Componente', 'Teste → Tipo → API', 'Qualquer ordem funciona'],
+          correctAnswer: 1,
+          explanation: 'A ordem correta é: Tipo (define o contrato) → API (implementa) → Componente (consome). Isso garante que cada camada tem o que precisa quando for editada.',
+        },
+        {
+          id: 'q-02-14-2',
+          question: 'O que é uma "mudança atômica" em multi-file editing?',
+          options: ['Editar apenas arquivos pequenos', 'Editar todos os arquivos relacionados de forma que o projeto sempre compile', 'Editar um arquivo por vez com pausa', 'Fazer backup antes de cada edição'],
+          correctAnswer: 1,
+          explanation: 'Mudança atômica significa que todas as edições relacionadas são feitas juntas, mantendo o projeto em estado consistente. Nunca quebra temporariamente.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-02-14-1',
+          title: 'Multi-file Refactoring Challenge',
+          description: 'Peça ao Claude para extrair um serviço de validação de 3 arquivos diferentes para um módulo centralizado. Observe a ordem e consistência.',
+          context: 'personal',
+          contextDescription: 'Use um projeto seu com validações duplicadas',
+          difficulty: 'advanced',
+          xpBonus: 80,
+          hints: ['Comece pedindo para listar onde há validação duplicada', 'Peça um plano de extração antes de executar', 'Verifique se tudo compila ao final'],
+        }
+      ]
+    }
+  ),
 ];
 
 // ============================================================================
@@ -2489,6 +3223,421 @@ Subagents são **agentes especializados** que Claude pode invocar para tarefas e
       duration: 30,
       difficulty: 'advanced',
       tags: ['subagents', 'especialização', 'paralelismo'],
+    }
+  ),
+
+  createLesson('07', '07-02-multi-agent-orchestration', 'Orquestração Multi-Agente',
+    'Aprenda a coordenar múltiplos subagents para resolver problemas complexos.',
+    `# Orquestração Multi-Agente
+
+Domine a arte de coordenar múltiplos agentes trabalhando em harmonia.
+
+## O Poder da Orquestração
+
+\`\`\`
+┌────────────────────────────────────────────────────┐
+│                  ORQUESTRADOR                       │
+│                       │                             │
+│     ┌─────────────────┼─────────────────┐          │
+│     ▼                 ▼                 ▼          │
+│ ┌───────┐       ┌───────┐       ┌───────┐         │
+│ │Agente │       │Agente │       │Agente │         │
+│ │  A    │◄─────►│   B   │◄─────►│   C   │         │
+│ └───────┘       └───────┘       └───────┘         │
+│     │                 │                 │          │
+│     ▼                 ▼                 ▼          │
+│ [Resultado A]   [Resultado B]   [Resultado C]      │
+│     └─────────────────┼─────────────────┘          │
+│                       ▼                             │
+│              [SÍNTESE FINAL]                        │
+└────────────────────────────────────────────────────┘
+\`\`\`
+
+## Tipos de Orquestração
+
+### 1. Sequencial
+\`\`\`
+Agente A → Agente B → Agente C → Resultado Final
+\`\`\`
+- Cada agente depende do anterior
+- Usado para pipelines de transformação
+
+### 2. Paralela
+\`\`\`
+     ┌─ Agente A ─┐
+     │            │
+Tarefa ─ Agente B ─┴→ Síntese
+     │            │
+     └─ Agente C ─┘
+\`\`\`
+- Agentes independentes executam simultaneamente
+- **5-10x mais rápido** para tarefas divisíveis
+
+### 3. Hierárquica
+\`\`\`
+        Líder
+       /     \\
+   Coordenador  Coordenador
+    /    \\        /    \\
+  A1     A2      B1     B2
+\`\`\`
+- Delegação em níveis
+- Para projetos de grande escala
+
+## Caso Prático: Refatoração Multi-Arquivo
+
+\`\`\`bash
+# O que você pede:
+"Refatore todos os services para usar o novo padrão de error handling"
+
+# Claude orquestra internamente:
+1. Explorer Subagent → Encontra todos os services
+2. Plan Subagent → Define estratégia de refatoração
+3. Code Subagents (paralelos) → Refatoram cada arquivo
+4. Reviewer Subagent → Valida consistência
+5. Síntese → Apresenta resultado unificado
+\`\`\`
+
+## Boas Práticas
+
+| Prática | Descrição |
+|---------|-----------|
+| **Contexto mínimo** | Passar apenas o necessário para cada subagent |
+| **Resultados tipados** | Definir formato esperado de cada agente |
+| **Timeouts** | Limitar tempo de execução por agente |
+| **Fallbacks** | Ter plano B se um agente falhar |
+`,
+    {
+      xp: 120,
+      duration: 35,
+      difficulty: 'advanced',
+      tags: ['subagents', 'orquestração', 'multi-agent', 'top-1-percent'],
+      isNew: true,
+      quiz: [
+        {
+          id: 'q-07-02-1',
+          question: 'Qual tipo de orquestração é mais rápido para tarefas divisíveis?',
+          options: ['Sequencial', 'Paralela', 'Hierárquica', 'Todas têm o mesmo tempo'],
+          correctAnswer: 1,
+          explanation: 'Orquestração paralela pode ser 5-10x mais rápida porque múltiplos agentes trabalham simultaneamente em partes independentes da tarefa.',
+        },
+        {
+          id: 'q-07-02-2',
+          question: 'Por que devemos passar "contexto mínimo" para cada subagent?',
+          options: ['Para economizar tokens e focar o agente na tarefa específica', 'Porque subagents não aceitam contexto grande', 'Para esconder informações sensíveis', 'Não há motivo real'],
+          correctAnswer: 0,
+          explanation: 'Contexto mínimo reduz custos de tokens e mantém o subagent focado na sua tarefa específica, evitando distrações ou confusão.',
+        },
+      ],
+    }
+  ),
+
+  createLesson('07', '07-03-master-clone-lead-specialist', 'Padrões: Master-Clone vs Lead-Specialist',
+    'Entenda os dois padrões fundamentais de arquitetura multi-agente.',
+    `# Master-Clone vs Lead-Specialist
+
+Os dois padrões arquiteturais mais importantes para sistemas multi-agente.
+
+## Padrão 1: Master-Clone
+
+\`\`\`
+┌─────────────────────────────────────────┐
+│              MASTER                      │
+│         (Define template)                │
+│              │                           │
+│   ┌──────────┼──────────┐               │
+│   ▼          ▼          ▼               │
+│ Clone 1   Clone 2   Clone 3             │
+│ (mesma     (mesma     (mesma            │
+│  tarefa)    tarefa)    tarefa)          │
+│   │          │          │               │
+│   ▼          ▼          ▼               │
+│ Arquivo 1 Arquivo 2 Arquivo 3           │
+└─────────────────────────────────────────┘
+\`\`\`
+
+### Quando Usar Master-Clone
+- ✅ Tarefas **idênticas** em múltiplos arquivos
+- ✅ Aplicar mesmo padrão em vários lugares
+- ✅ Batch processing homogêneo
+- ✅ Testes em paralelo
+
+### Exemplo Real
+\`\`\`
+"Adicione tratamento de erro try-catch em todos os controllers"
+
+Master define:
+- Padrão de try-catch a usar
+- Formato do erro
+- Logging esperado
+
+Clones executam:
+- Cada um modifica um controller
+- Mesma lógica, diferentes arquivos
+\`\`\`
+
+---
+
+## Padrão 2: Lead-Specialist
+
+\`\`\`
+┌─────────────────────────────────────────┐
+│               LEAD                       │
+│         (Coordena time)                  │
+│              │                           │
+│   ┌──────────┼──────────┐               │
+│   ▼          ▼          ▼               │
+│ Security  Backend   Frontend            │
+│ Specialist Specialist Specialist        │
+│ (analisa   (implementa (cria           │
+│  vuln)      API)       UI)             │
+│   │          │          │               │
+│   ▼          ▼          ▼               │
+│ Report    Código    Componentes         │
+└─────────────────────────────────────────┘
+\`\`\`
+
+### Quando Usar Lead-Specialist
+- ✅ Tarefas **heterogêneas** que requerem expertise diferente
+- ✅ Problemas multi-disciplinares
+- ✅ Feature completa (back + front + testes)
+- ✅ Análise de diferentes perspectivas
+
+### Exemplo Real
+\`\`\`
+"Implemente sistema de autenticação completo"
+
+Lead coordena:
+- Security Specialist → Analisa vulnerabilidades, define padrões
+- Backend Specialist → Implementa API, JWT, sessions
+- Frontend Specialist → Cria formulários, validações
+- Test Specialist → Cria testes unitários e E2E
+
+Cada especialista tem seu próprio contexto e expertise.
+\`\`\`
+
+---
+
+## Comparativo
+
+| Aspecto | Master-Clone | Lead-Specialist |
+|---------|--------------|-----------------|
+| **Tarefas** | Homogêneas | Heterogêneas |
+| **Contexto** | Idêntico para todos | Específico por especialista |
+| **Coordenação** | Simples | Complexa |
+| **Síntese** | Merge direto | Integração necessária |
+| **Caso de uso** | Refatoração em massa | Feature completa |
+
+## Híbrido: Lead com Clones
+
+\`\`\`
+          Lead
+            │
+    ┌───────┼───────┐
+    ▼       ▼       ▼
+Backend  Frontend  Tests
+    │               │
+ ┌──┴──┐         ┌──┴──┐
+Clone Clone   Clone Clone
+(API) (API)  (unit) (e2e)
+\`\`\`
+
+Na prática, você pode combinar os padrões!
+`,
+    {
+      xp: 100,
+      duration: 30,
+      difficulty: 'advanced',
+      tags: ['subagents', 'arquitetura', 'patterns', 'master-clone', 'lead-specialist'],
+      isNew: true,
+      quiz: [
+        {
+          id: 'q-07-03-1',
+          question: 'Qual padrão é ideal para "adicionar logging em 50 arquivos"?',
+          options: ['Lead-Specialist (cada arquivo precisa análise diferente)', 'Master-Clone (mesma tarefa replicada)', 'Nenhum (fazer manualmente)', 'Depende do tamanho do arquivo'],
+          correctAnswer: 1,
+          explanation: 'Master-Clone é perfeito para tarefas homogêneas. O Master define o padrão de logging e os Clones aplicam em paralelo em cada arquivo.',
+        },
+        {
+          id: 'q-07-03-2',
+          question: 'Para "implementar checkout com pagamento", qual padrão usar?',
+          options: ['Master-Clone', 'Lead-Specialist', 'Sequencial simples', 'Nenhum padrão'],
+          correctAnswer: 1,
+          explanation: 'Lead-Specialist pois requer expertise heterogênea: backend (API de pagamento), frontend (UX), security (validações), tests (cobertura).',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-07-03-1',
+          title: 'Arquitete um Sistema Multi-Agente',
+          description: 'Projete a arquitetura de agentes para: "Migrar 100 componentes React de Class para Function components"',
+          context: 'geral',
+          contextDescription: 'Migração em massa de código',
+          difficulty: 'advanced',
+          xpBonus: 80,
+          hints: ['Pense: a tarefa é homogênea ou heterogênea?', 'Cada componente recebe o mesmo tratamento?', 'Considere um híbrido: Lead para análise + Clones para execução'],
+        }
+      ],
+    }
+  ),
+
+  createLesson('07', '07-04-parallel-subagents', 'Parallel Subagents na Prática',
+    'Execute múltiplos subagents simultaneamente para máxima velocidade.',
+    `# Parallel Subagents na Prática
+
+Aprenda a executar subagents em paralelo para **10x mais velocidade**.
+
+## O Parâmetro Mágico
+
+\`\`\`typescript
+// Execução em background (paralela)
+Task tool: {
+  run_in_background: true,  // ← O segredo!
+  subagent_type: "Explore",
+  prompt: "Encontre todos os arquivos de teste"
+}
+\`\`\`
+
+## Anatomia da Execução Paralela
+
+\`\`\`
+Tempo →
+
+Sequencial:   [A────────][B────────][C────────]  = 30s
+
+Paralelo:     [A────────]
+              [B────────]  = 10s (3x mais rápido!)
+              [C────────]
+\`\`\`
+
+## Quando Usar Paralelo
+
+| ✅ Use Paralelo | ❌ Evite Paralelo |
+|----------------|-------------------|
+| Tarefas independentes | Tarefas dependentes |
+| Análise de múltiplos arquivos | Arquivos que se referenciam |
+| Buscas em diferentes diretórios | Operações sequenciais |
+| Validações isoladas | Writes no mesmo arquivo |
+
+## Exemplo Prático Completo
+
+\`\`\`
+PEDIDO: "Analise a performance de todos os endpoints da API"
+
+Claude paralleliza:
+
+[Background Task 1] → Explore: encontrar todos os endpoints
+[Background Task 2] → Analyze: ler métricas do Langfuse
+[Background Task 3] → Search: buscar N+1 queries no código
+
+Depois, com TaskOutput, recupera resultados e sintetiza.
+\`\`\`
+
+## O Padrão Fork-Join
+
+\`\`\`
+          FORK                    JOIN
+            │                       │
+    ┌───────┼───────┐              │
+    ▼       ▼       ▼              ▼
+ Task 1  Task 2  Task 3    ──► Síntese
+    │       │       │              │
+    └───────┴───────┴──────────────┘
+         (paralelo)           (aguarda todos)
+\`\`\`
+
+### Código Conceitual
+\`\`\`typescript
+// 1. FORK - Lança em paralelo
+const task1 = Task({ run_in_background: true, ... });
+const task2 = Task({ run_in_background: true, ... });
+const task3 = Task({ run_in_background: true, ... });
+
+// 2. JOIN - Aguarda todos
+const result1 = await TaskOutput({ task_id: task1.id });
+const result2 = await TaskOutput({ task_id: task2.id });
+const result3 = await TaskOutput({ task_id: task3.id });
+
+// 3. SINTETIZA
+return synthesize(result1, result2, result3);
+\`\`\`
+
+## Limites e Boas Práticas
+
+| Aspecto | Recomendação |
+|---------|--------------|
+| **Max paralelos** | 3-5 subagents simultâneos |
+| **Timeout** | 30s por subagent (ajustável) |
+| **Contexto** | Mínimo necessário por task |
+| **Fallback** | Plano B se algum falhar |
+
+## Otimizações TOP 1%
+
+### 1. Early Return
+\`\`\`
+Se Task 1 encontra a resposta → Cancela Task 2 e 3
+\`\`\`
+
+### 2. Progressive Results
+\`\`\`
+Mostra resultado de cada task conforme termina
+(não espera todos para começar a mostrar)
+\`\`\`
+
+### 3. Priorização
+\`\`\`
+Tasks críticas: timeout maior
+Tasks nice-to-have: timeout curto
+\`\`\`
+
+## Caso Real: Refatoração em Massa
+
+\`\`\`
+"Migre todos os 50 componentes para TypeScript"
+
+1. Explorer → Lista 50 componentes
+2. Divide em 5 batches de 10
+3. 5 Subagents paralelos, cada um migra 10 arquivos
+4. Reviewer valida no final
+
+Tempo sequencial: ~50 min
+Tempo paralelo: ~12 min (4x mais rápido)
+\`\`\`
+`,
+    {
+      xp: 130,
+      duration: 40,
+      difficulty: 'expert',
+      tags: ['subagents', 'parallel', 'performance', 'fork-join', 'top-1-percent'],
+      isNew: true,
+      quiz: [
+        {
+          id: 'q-07-04-1',
+          question: 'Qual parâmetro ativa a execução paralela de subagents?',
+          options: ['parallel: true', 'run_in_background: true', 'async: true', 'concurrent: true'],
+          correctAnswer: 1,
+          explanation: 'O parâmetro run_in_background: true faz o subagent executar em background, permitindo lançar múltiplos simultaneamente.',
+        },
+        {
+          id: 'q-07-04-2',
+          question: 'Quantos subagents paralelos são recomendados simultaneamente?',
+          options: ['1-2', '3-5', '10-15', 'Sem limite'],
+          correctAnswer: 1,
+          explanation: '3-5 subagents é o ideal. Mais que isso pode sobrecarregar o sistema e aumentar chance de erros sem ganho proporcional de velocidade.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-07-04-1',
+          title: 'Paralelize uma Análise de Codebase',
+          description: 'Projete como analisar um projeto com 200 arquivos usando parallel subagents. Defina: quantos batches, quantos paralelos, estratégia de síntese.',
+          context: 'geral',
+          contextDescription: 'Análise em larga escala',
+          difficulty: 'expert',
+          xpBonus: 100,
+          hints: ['Divida 200 arquivos em batches de ~40', '5 paralelos analisando 40 cada', 'Síntese progressiva: mostra resultados parciais'],
+        }
+      ],
     }
   ),
 ];
