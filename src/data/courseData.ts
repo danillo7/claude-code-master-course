@@ -7770,32 +7770,1184 @@ Claude:
 ];
 
 const module11Lessons: Lesson[] = [
+  // ==================== LESSON 11-01: Padrões de Prompting ====================
   createLesson('11', '11-01-prompting-patterns', '01. Padrões de Prompting',
     'Melhores práticas de prompting para resultados consistentes.',
-    `# Padrões de Prompting
+    `# Padrões de Prompting TOP 1%
 
-Prompting eficaz é uma habilidade fundamental para tirar o máximo do Claude.
+Prompting eficaz é a diferença entre resultados medianos e extraordinários.
 
-[Conteúdo detalhado aqui...]
+## O Framework CLEAR
+
+\`\`\`
+C - Context:    Forneça contexto relevante
+L - Language:   Use linguagem precisa
+E - Examples:   Inclua exemplos quando útil
+A - Action:     Seja específico sobre a ação
+R - Refinement: Itere e refine
+\`\`\`
+
+## Padrões Essenciais
+
+### 1. Persona Pattern
+
+\`\`\`bash
+# Definir persona para contexto especializado
+claude "Atue como um arquiteto de software sênior.
+Revise este código considerando:
+- Padrões de design
+- Escalabilidade
+- Manutenibilidade"
+\`\`\`
+
+### 2. Chain of Thought
+
+\`\`\`bash
+# Forçar raciocínio passo-a-passo
+claude "Analise este problema passo a passo:
+1. Identifique o problema principal
+2. Liste possíveis causas
+3. Proponha soluções
+4. Recomende a melhor opção"
+\`\`\`
+
+### 3. Few-Shot Pattern
+
+\`\`\`bash
+# Fornecer exemplos do output esperado
+claude "Converta funções para TypeScript:
+
+Exemplo input:
+function add(a, b) { return a + b; }
+
+Exemplo output:
+function add(a: number, b: number): number { return a + b; }
+
+Agora converta:
+function multiply(x, y) { return x * y; }"
+\`\`\`
+
+### 4. Constraint Pattern
+
+\`\`\`bash
+# Definir limites claros
+claude "Refatore este código com as seguintes restrições:
+- Máximo 20 linhas por função
+- Sem dependências externas
+- Compatível com Node 18+"
+\`\`\`
+
+### 5. Template Pattern
+
+\`\`\`bash
+# Estrutura consistente
+claude "Gere documentação no formato:
+## [Nome da Função]
+**Descrição:** [breve descrição]
+**Parâmetros:** [lista de params]
+**Retorno:** [tipo de retorno]
+**Exemplo:** [código de exemplo]"
+\`\`\`
+
+## Anti-Patterns a Evitar
+
+| Anti-Pattern | Por quê evitar | Alternativa |
+|--------------|----------------|-------------|
+| Prompts vagos | Resultados imprevisíveis | Seja específico |
+| Sem contexto | Claude precisa adivinhar | Forneça background |
+| Instruções conflitantes | Confunde o modelo | Uma direção clara |
+| Output muito grande | Perde foco | Divida em partes |
+| Sem exemplos | Formato inconsistente | Few-shot quando possível |
+
+## Prompt Engineering Avançado
+
+### Meta-Prompting
+
+\`\`\`bash
+# Claude ajuda a criar prompts
+claude "Crie um prompt otimizado para:
+Objetivo: Gerar testes unitários
+Linguagem: TypeScript
+Framework: Jest
+Deve cobrir: edge cases, happy path, error handling"
+\`\`\`
+
+### Self-Consistency
+
+\`\`\`bash
+# Múltiplas perspectivas
+claude "Analise esta arquitetura de 3 formas:
+1. Como desenvolvedor junior (simplicidade)
+2. Como arquiteto sênior (escalabilidade)
+3. Como DevOps (operabilidade)
+Depois, sintetize as melhores ideias."
+\`\`\`
+
+## Checklist de Qualidade
+
+- [ ] Contexto suficiente fornecido?
+- [ ] Ação claramente definida?
+- [ ] Formato de output especificado?
+- [ ] Restrições mencionadas?
+- [ ] Exemplos incluídos se necessário?
+
+> **Dica TOP 1%:** Salve seus melhores prompts em \`~/.claude/prompts/\` para reutilização!
 `,
-    { xp: 80, duration: 25, difficulty: 'intermediate', tags: ['prompting', 'best-practices'] }
+    {
+      xp: 90,
+      duration: 30,
+      difficulty: 'intermediate',
+      tags: ['prompting', 'best-practices', 'patterns'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-11-01-1',
+          question: 'O que significa o "C" no framework CLEAR?',
+          options: ['Command', 'Context', 'Code', 'Claude'],
+          correctIndex: 1,
+          explanation: 'C = Context. Fornecer contexto relevante é fundamental para bons resultados.',
+        },
+        {
+          id: 'q-11-01-2',
+          question: 'Qual padrão força o Claude a explicar seu raciocínio?',
+          options: ['Persona Pattern', 'Few-Shot Pattern', 'Chain of Thought', 'Template Pattern'],
+          correctIndex: 2,
+          explanation: 'Chain of Thought força raciocínio passo-a-passo, melhorando a qualidade das análises.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-11-01-1',
+          title: 'Prompt Library',
+          description: 'Crie uma biblioteca de 5 prompts reutilizáveis para seu workflow diário',
+          context: 'general' as const,
+          contextDescription: 'Aplicável a qualquer projeto de desenvolvimento',
+          difficulty: 'intermediate' as const,
+          xpBonus: 40,
+          hints: ['Considere: code review, debugging, documentação, testes, refatoração'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 11-02: Code Review com Claude ====================
+  createLesson('11', '11-02-code-review', '02. Code Review com Claude',
+    'Transforme code reviews em oportunidades de aprendizado e melhoria.',
+    `# Code Review com Claude
+
+Code review é onde a qualidade acontece. Claude pode ser seu melhor reviewer.
+
+## O Processo de Review TOP 1%
+
+\`\`\`
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│  Pre-Check  │────▶│   Review    │────▶│   Refine    │
+│  (Lint+TS)  │     │  (Claude)   │     │  (Iterate)  │
+└─────────────┘     └─────────────┘     └─────────────┘
+\`\`\`
+
+## Tipos de Review
+
+### 1. Quick Review (5 min)
+
+\`\`\`bash
+# Review rápido focado em issues óbvios
+claude "Quick review deste código:
+- Bugs óbvios?
+- Problemas de segurança?
+- Code smells?
+
+$(cat src/feature.ts)"
+\`\`\`
+
+### 2. Deep Review (15 min)
+
+\`\`\`bash
+# Review completo com múltiplas dimensões
+claude "Deep review considerando:
+
+1. **Corretude**: Faz o que deveria?
+2. **Performance**: Há otimizações possíveis?
+3. **Segurança**: Vulnerabilidades?
+4. **Manutenibilidade**: Fácil de entender/modificar?
+5. **Testabilidade**: Fácil de testar?
+
+Código:
+$(cat src/feature.ts)"
+\`\`\`
+
+### 3. Architecture Review
+
+\`\`\`bash
+# Review de decisões arquiteturais
+claude "Analise a arquitetura deste módulo:
+
+Estrutura atual:
+$(find src/module -type f -name '*.ts' | head -20)
+
+Principais arquivos:
+$(cat src/module/index.ts)
+
+Avalie:
+- Separação de responsabilidades
+- Acoplamento entre componentes
+- Padrões de design utilizados
+- Sugestões de melhoria"
+\`\`\`
+
+## Checklist de Review
+
+### Funcionalidade
+- [ ] O código faz o que a spec pede?
+- [ ] Edge cases tratados?
+- [ ] Error handling adequado?
+
+### Qualidade
+- [ ] Código limpo e legível?
+- [ ] Nomes significativos?
+- [ ] Funções pequenas e focadas?
+
+### Segurança
+- [ ] Inputs validados?
+- [ ] Sem secrets hardcoded?
+- [ ] SQL injection protegido?
+- [ ] XSS prevenido?
+
+### Performance
+- [ ] Queries otimizadas?
+- [ ] Sem loops desnecessários?
+- [ ] Caching quando apropriado?
+
+## Automação com Hooks
+
+\`\`\`json
+// settings.json - Auto-review em commits
+{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Bash",
+      "hooks": [{
+        "type": "command",
+        "command": "if [[ \\"$TOOL_INPUT\\" == *\\"git commit\\"* ]]; then echo 'Lembre de fazer review!'; fi"
+      }]
+    }]
+  }
+}
+\`\`\`
+
+## Template de Feedback
+
+\`\`\`markdown
+## Code Review: [Feature Name]
+
+### ✅ Pontos Positivos
+- [O que está bom]
+
+### ⚠️ Sugestões
+- [Melhorias opcionais]
+
+### 🚨 Crítico
+- [Deve ser corrigido antes do merge]
+
+### 📚 Aprendizados
+- [Padrões interessantes para compartilhar]
+\`\`\`
+
+> **Regra de ouro:** Critique o código, não a pessoa. Sugira, não ordene.
+`,
+    {
+      xp: 100,
+      duration: 35,
+      difficulty: 'intermediate',
+      tags: ['code-review', 'quality', 'best-practices'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-11-02-1',
+          question: 'Qual tipo de review é mais apropriado para um hotfix urgente?',
+          options: ['Architecture Review', 'Deep Review', 'Quick Review', 'Nenhum review'],
+          correctIndex: 2,
+          explanation: 'Quick Review é ideal para hotfixes - rápido mas ainda verifica bugs óbvios e segurança.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-11-02-1',
+          title: 'Review Template',
+          description: 'Crie um template de code review personalizado para seu projeto',
+          context: 'general' as const,
+          contextDescription: 'Aplicável a projetos de qualquer linguagem',
+          difficulty: 'intermediate' as const,
+          xpBonus: 50,
+          hints: ['Inclua seções para: segurança, performance, estilo, testes'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 11-03: Debugging Avançado ====================
+  createLesson('11', '11-03-debugging', '03. Debugging Avançado',
+    'Técnicas de debugging que economizam horas de frustração.',
+    `# Debugging Avançado com Claude
+
+Bugs são inevitáveis. A diferença está em quão rápido você os encontra.
+
+## O Processo de Debug TOP 1%
+
+\`\`\`
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│ Reproduce│───▶│ Isolate  │───▶│ Identify │───▶│   Fix    │
+│  (repro) │    │ (narrow) │    │  (root)  │    │ (verify) │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘
+\`\`\`
+
+## Técnicas de Debug
+
+### 1. Rubber Duck com Claude
+
+\`\`\`bash
+# Explique o problema para Claude "pensar alto"
+claude "Estou tendo um bug estranho:
+
+**Comportamento esperado:**
+O usuário deveria ver a lista atualizada após salvar.
+
+**Comportamento atual:**
+A lista só atualiza após refresh manual.
+
+**O que já tentei:**
+- Verificar se o save está funcionando (está)
+- Console.log no useEffect (não dispara)
+
+**Código relevante:**
+$(cat src/hooks/useItems.ts)
+
+Me ajude a debugar passo a passo."
+\`\`\`
+
+### 2. Binary Search Debug
+
+\`\`\`bash
+# Encontrar onde o bug foi introduzido
+git bisect start
+git bisect bad HEAD
+git bisect good v1.0.0
+
+# Claude ajuda a testar cada commit
+claude "Analise este commit e diga se pode ter introduzido
+um bug relacionado a atualização de estado:
+$(git show --stat)"
+\`\`\`
+
+### 3. Stack Trace Analysis
+
+\`\`\`bash
+# Claude interpreta stack traces
+claude "Analise este stack trace e identifique:
+1. Onde o erro originou
+2. A provável causa
+3. Como corrigir
+
+Stack trace:
+$(cat error.log)"
+\`\`\`
+
+### 4. Log Analysis
+
+\`\`\`bash
+# Análise de logs com patterns
+claude "Analise estes logs procurando:
+- Padrões de erro
+- Anomalias de timing
+- Sequência de eventos suspeita
+
+$(tail -100 app.log | grep -E 'ERROR|WARN|timeout')"
+\`\`\`
+
+## Debug por Tipo de Bug
+
+### Race Conditions
+
+\`\`\`bash
+claude "Suspeito de race condition neste código.
+Identifique potenciais problemas de concorrência:
+$(cat src/async-handler.ts)"
+\`\`\`
+
+### Memory Leaks
+
+\`\`\`bash
+claude "Analise este componente React para memory leaks:
+- Event listeners não removidos?
+- Subscriptions abertas?
+- Timers não limpos?
+
+$(cat src/components/Dashboard.tsx)"
+\`\`\`
+
+### Performance Issues
+
+\`\`\`bash
+claude "Este código está lento. Identifique:
+- Operações O(n²) ou pior
+- Renders desnecessários
+- Queries não otimizadas
+
+$(cat src/services/dataProcessor.ts)"
+\`\`\`
+
+## Ferramentas de Debug
+
+| Ferramenta | Uso | Quando usar |
+|------------|-----|-------------|
+| console.log | Quick debug | Problemas simples |
+| debugger | Breakpoints | Flow complexo |
+| React DevTools | Component state | React issues |
+| Network tab | API calls | Backend integration |
+| Performance tab | Bottlenecks | Lentidão |
+
+## Template de Bug Report
+
+\`\`\`markdown
+## Bug Report
+
+**Título:** [Descrição curta]
+
+**Ambiente:**
+- OS: [ex: macOS 14.2]
+- Node: [ex: 20.10.0]
+- Browser: [ex: Chrome 120]
+
+**Reprodução:**
+1. [Passo 1]
+2. [Passo 2]
+3. [Passo 3]
+
+**Esperado:** [O que deveria acontecer]
+
+**Atual:** [O que acontece]
+
+**Logs/Screenshots:** [Anexar]
+
+**Investigação inicial:** [O que você já tentou]
+\`\`\`
+
+> **Dica:** Sempre crie um caso de teste que reproduz o bug ANTES de tentar corrigir!
+`,
+    {
+      xp: 110,
+      duration: 40,
+      difficulty: 'advanced',
+      tags: ['debugging', 'troubleshooting', 'best-practices'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-11-03-1',
+          question: 'Qual técnica é melhor para encontrar quando um bug foi introduzido?',
+          options: ['Rubber Duck', 'Binary Search (git bisect)', 'Stack Trace Analysis', 'Log Analysis'],
+          correctIndex: 1,
+          explanation: 'Git bisect faz busca binária no histórico de commits para encontrar exatamente onde o bug começou.',
+        },
+        {
+          id: 'q-11-03-2',
+          question: 'O que você deve fazer ANTES de tentar corrigir um bug?',
+          options: ['Deletar o código problemático', 'Criar um teste que reproduz o bug', 'Reiniciar o computador', 'Ignorar e seguir em frente'],
+          correctIndex: 1,
+          explanation: 'Um teste que reproduz o bug garante que você saberá quando o fix funcionou e previne regressões.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-11-03-1',
+          title: 'Debug Session',
+          description: 'Documente uma sessão de debug real usando as técnicas aprendidas',
+          context: 'general' as const,
+          contextDescription: 'Use um bug real do seu projeto atual',
+          difficulty: 'advanced' as const,
+          xpBonus: 60,
+          hints: ['Use o template de bug report', 'Inclua todos os passos até a solução'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 11-04: Testing com IA ====================
+  createLesson('11', '11-04-testing', '04. Testing Assistido por IA',
+    'Gere testes abrangentes e descubra edge cases automaticamente.',
+    `# Testing Assistido por IA
+
+Testes são a rede de segurança do código. Claude ajuda a criar testes melhores e mais rápido.
+
+## Estratégia de Testing TOP 1%
+
+\`\`\`
+                    ┌─────────────┐
+                    │     E2E     │  ← Poucos, críticos
+                   ─┴─────────────┴─
+                  ┌─────────────────┐
+                  │   Integration   │  ← Moderados
+                 ─┴─────────────────┴─
+                ┌─────────────────────┐
+                │       Unit         │  ← Muitos, rápidos
+               ─┴─────────────────────┴─
+\`\`\`
+
+## Geração de Testes com Claude
+
+### Unit Tests
+
+\`\`\`bash
+# Gerar testes unitários completos
+claude "Gere testes unitários para esta função:
+
+$(cat src/utils/validator.ts)
+
+Requisitos:
+- Framework: Jest
+- Cobrir: happy path, edge cases, error cases
+- Mocking quando necessário
+- Descrições claras em português"
+\`\`\`
+
+### Integration Tests
+
+\`\`\`bash
+# Testes de integração
+claude "Crie testes de integração para este endpoint:
+
+Endpoint: POST /api/users
+Controller: $(cat src/controllers/userController.ts)
+Service: $(cat src/services/userService.ts)
+
+Testar:
+- Criação com sucesso
+- Validação de campos
+- Conflito de email
+- Erros de banco"
+\`\`\`
+
+### E2E Tests
+
+\`\`\`bash
+# Testes end-to-end com Playwright
+claude "Gere testes E2E com Playwright para o fluxo de login:
+
+Página: $(cat src/pages/Login.tsx)
+Passos:
+1. Navegar para /login
+2. Preencher credenciais
+3. Clicar em submit
+4. Verificar redirecionamento para /dashboard"
+\`\`\`
+
+## Descoberta de Edge Cases
+
+\`\`\`bash
+# Claude encontra casos que você não pensou
+claude "Analise esta função e liste TODOS os edge cases possíveis:
+
+$(cat src/utils/dateParser.ts)
+
+Considere:
+- Inputs inválidos
+- Limites (min/max)
+- Formatos inesperados
+- Timezone issues
+- Null/undefined
+- Tipos errados"
+\`\`\`
+
+## Test Patterns
+
+### AAA Pattern (Arrange, Act, Assert)
+
+\`\`\`typescript
+describe('UserService', () => {
+  it('should create user with valid data', async () => {
+    // Arrange
+    const userData = { name: 'João', email: 'joao@test.com' };
+
+    // Act
+    const user = await userService.create(userData);
+
+    // Assert
+    expect(user.id).toBeDefined();
+    expect(user.name).toBe(userData.name);
+  });
+});
+\`\`\`
+
+### Given-When-Then (BDD)
+
+\`\`\`typescript
+describe('Cart', () => {
+  describe('given an empty cart', () => {
+    describe('when adding a product', () => {
+      it('then cart should have 1 item', () => {
+        // ...
+      });
+    });
+  });
+});
+\`\`\`
+
+## Coverage Strategy
+
+| Tipo de código | Coverage alvo | Prioridade |
+|----------------|---------------|------------|
+| Business logic | 90%+ | Alta |
+| Utilities | 80%+ | Alta |
+| Controllers | 70%+ | Média |
+| UI Components | 60%+ | Média |
+| Config/Setup | 30%+ | Baixa |
+
+## Automação de Testes
+
+\`\`\`json
+// package.json
+{
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --reporters=default"
+  }
+}
+\`\`\`
+
+## Checklist de Qualidade de Testes
+
+- [ ] Testes são independentes?
+- [ ] Testes são determinísticos?
+- [ ] Nomes descrevem o comportamento?
+- [ ] Edge cases cobertos?
+- [ ] Mocks são simples e focados?
+- [ ] Coverage adequada para o tipo de código?
+
+> **Regra:** Testes devem ser tão importantes quanto o código de produção!
+`,
+    {
+      xp: 120,
+      duration: 45,
+      difficulty: 'advanced',
+      tags: ['testing', 'jest', 'quality', 'automation'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-11-04-1',
+          question: 'Na pirâmide de testes, qual tipo deve ter MAIS testes?',
+          options: ['E2E', 'Integration', 'Unit', 'Manual'],
+          correctIndex: 2,
+          explanation: 'Unit tests formam a base da pirâmide - muitos, rápidos e baratos de manter.',
+        },
+        {
+          id: 'q-11-04-2',
+          question: 'O que significa AAA em testes?',
+          options: ['Always Assert All', 'Arrange Act Assert', 'Assert After Action', 'All About Assertions'],
+          correctIndex: 1,
+          explanation: 'AAA = Arrange (preparar), Act (executar), Assert (verificar) - estrutura padrão de testes.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-11-04-1',
+          title: 'Test Suite Completa',
+          description: 'Use Claude para gerar uma suite de testes completa para um módulo existente',
+          context: 'general' as const,
+          contextDescription: 'Escolha um módulo crítico do seu projeto',
+          difficulty: 'advanced' as const,
+          xpBonus: 70,
+          hints: ['Inclua unit, integration e pelo menos um E2E', 'Busque 80%+ coverage'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 11-05: Documentação Automatizada ====================
+  createLesson('11', '11-05-documentation', '05. Documentação Automatizada',
+    'Gere e mantenha documentação de alta qualidade sem esforço.',
+    `# Documentação Automatizada com Claude
+
+Documentação desatualizada é pior que nenhuma. Automatize para manter sempre atual.
+
+## Tipos de Documentação
+
+| Tipo | Audiência | Atualização |
+|------|-----------|-------------|
+| README | Novos devs | A cada release |
+| API Docs | Consumidores | A cada mudança de API |
+| Code Comments | Devs internos | Junto com código |
+| Architecture | Tech leads | Mudanças estruturais |
+| Changelog | Todos | Cada PR/release |
+
+## Geração com Claude
+
+### README Completo
+
+\`\`\`bash
+# Gerar README profissional
+claude "Gere um README.md completo para este projeto:
+
+package.json: $(cat package.json)
+Estrutura: $(find src -type f -name '*.ts' | head -20)
+
+Incluir seções:
+- Badges (build, coverage, version)
+- Descrição e features
+- Quick start
+- Instalação detalhada
+- Uso/Exemplos
+- API reference (principais exports)
+- Contributing
+- License"
+\`\`\`
+
+### API Documentation
+
+\`\`\`bash
+# Documentar API automaticamente
+claude "Gere documentação OpenAPI/Swagger para:
+
+$(cat src/routes/index.ts)
+
+Para cada endpoint incluir:
+- Descrição
+- Parâmetros
+- Request body (se houver)
+- Responses possíveis
+- Exemplos"
+\`\`\`
+
+### JSDoc/TSDoc
+
+\`\`\`bash
+# Adicionar documentação ao código
+claude "Adicione JSDoc completo a estas funções:
+
+$(cat src/utils/helpers.ts)
+
+Incluir:
+- @description
+- @param com tipos e descrições
+- @returns
+- @throws
+- @example"
+\`\`\`
+
+## Documentação como Código
+
+### Markdown + Git
+
+\`\`\`bash
+# Estrutura de docs versionada
+docs/
+├── README.md           # Overview
+├── getting-started.md  # Quick start
+├── architecture/
+│   ├── overview.md
+│   └── decisions/      # ADRs
+├── api/
+│   └── reference.md
+└── guides/
+    ├── deployment.md
+    └── contributing.md
+\`\`\`
+
+### Architecture Decision Records (ADR)
+
+\`\`\`bash
+claude "Crie um ADR para esta decisão:
+
+Contexto: Precisamos de um sistema de filas
+Opções consideradas: Redis, RabbitMQ, SQS
+Decisão: Redis com BullMQ
+
+Formato ADR padrão com:
+- Status
+- Context
+- Decision
+- Consequences"
+\`\`\`
+
+## Automação de Changelog
+
+\`\`\`bash
+# Gerar changelog de commits
+claude "Gere um CHANGELOG.md a partir destes commits:
+
+$(git log --oneline --since='2024-01-01')
+
+Formato:
+## [Version] - Date
+### Added
+### Changed
+### Fixed
+### Removed"
+\`\`\`
+
+## Diagramas com Mermaid
+
+\`\`\`bash
+claude "Crie um diagrama Mermaid para este fluxo:
+
+$(cat src/services/orderService.ts)
+
+Tipo: Sequence diagram
+Mostrar: Interações entre User, API, OrderService, PaymentService, Database"
+\`\`\`
+
+Resultado:
+\`\`\`mermaid
+sequenceDiagram
+    User->>API: POST /orders
+    API->>OrderService: createOrder()
+    OrderService->>PaymentService: processPayment()
+    PaymentService-->>OrderService: paymentResult
+    OrderService->>Database: save(order)
+    Database-->>OrderService: savedOrder
+    OrderService-->>API: order
+    API-->>User: 201 Created
+\`\`\`
+
+## Checklist de Documentação
+
+- [ ] README atualizado?
+- [ ] Funções públicas documentadas?
+- [ ] Exemplos de uso incluídos?
+- [ ] Changelog mantido?
+- [ ] Diagramas atualizados?
+- [ ] Links funcionando?
+
+> **Dica TOP 1%:** Configure um hook para verificar se a documentação foi atualizada junto com mudanças de código!
+`,
+    {
+      xp: 100,
+      duration: 35,
+      difficulty: 'intermediate',
+      tags: ['documentation', 'readme', 'automation', 'best-practices'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-11-05-1',
+          question: 'O que é um ADR?',
+          options: ['Automated Documentation Report', 'Architecture Decision Record', 'API Documentation Reference', 'Advanced Developer Resource'],
+          correctIndex: 1,
+          explanation: 'ADR = Architecture Decision Record - documenta decisões arquiteturais importantes e seu contexto.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-11-05-1',
+          title: 'Documentation Suite',
+          description: 'Use Claude para gerar documentação completa para um projeto seu',
+          context: 'general' as const,
+          contextDescription: 'Escolha um projeto que precisa de melhor documentação',
+          difficulty: 'intermediate' as const,
+          xpBonus: 50,
+          hints: ['README, API docs, pelo menos 1 ADR, e um diagrama Mermaid'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 11-06: Challenge Workflow TOP 1% ====================
+  createLesson('11', '11-06-workflow-challenge', '06. Challenge: Workflow TOP 1%',
+    'Monte um workflow de desenvolvimento completo usando todas as best practices.',
+    `# Challenge: Workflow de Desenvolvimento TOP 1%
+
+Monte um workflow completo que incorpora todas as best practices aprendidas.
+
+## Objetivo
+
+Criar um sistema de desenvolvimento que garanta qualidade em todas as etapas.
+
+## Requisitos
+
+### 1. Prompting System (20 pontos)
+- [ ] Biblioteca de 5+ prompts reutilizáveis
+- [ ] Prompts categorizados (review, debug, test, doc)
+- [ ] Templates com variáveis
+
+### 2. Code Review Automation (20 pontos)
+- [ ] Hook de pre-commit com review
+- [ ] Checklist automático
+- [ ] Template de feedback
+
+### 3. Debug Toolkit (20 pontos)
+- [ ] Scripts de análise de logs
+- [ ] Template de bug report
+- [ ] Integração com git bisect
+
+### 4. Testing Pipeline (20 pontos)
+- [ ] Gerador de testes com Claude
+- [ ] Coverage mínima configurada
+- [ ] Testes em CI/CD
+
+### 5. Documentation System (20 pontos)
+- [ ] README template
+- [ ] JSDoc automático
+- [ ] Changelog generator
+
+## Template de Entrega
+
+\`\`\`markdown
+# Meu Workflow TOP 1%
+
+## 1. Prompting System
+\`\`\`
+~/.claude/prompts/
+├── review/
+│   ├── quick-review.md
+│   └── deep-review.md
+├── debug/
+│   └── bug-analysis.md
+├── test/
+│   └── generate-tests.md
+└── docs/
+    └── readme-generator.md
+\`\`\`
+
+## 2. Code Review
+[Configuração de hooks e templates]
+
+## 3. Debug Toolkit
+[Scripts e templates]
+
+## 4. Testing Pipeline
+[Configuração de CI/CD e geração]
+
+## 5. Documentation
+[Templates e automação]
+
+## Demonstração
+[GIF ou vídeo do workflow em ação]
+\`\`\`
+
+## Critérios de Avaliação
+
+| Critério | Pontos | Descrição |
+|----------|--------|-----------|
+| Completude | 40 | Todos os 5 componentes implementados |
+| Integração | 20 | Componentes funcionam juntos |
+| Automação | 20 | Mínima intervenção manual |
+| Documentação | 10 | Bem documentado |
+| Inovação | 10 | Soluções criativas |
+
+## Dicas
+
+1. **Comece simples** - Um componente de cada vez
+2. **Itere** - Melhore cada parte gradualmente
+3. **Automatize** - Se faz mais de 2x, automatize
+4. **Documente** - Seu "eu futuro" agradecerá
+5. **Compartilhe** - Workflows são melhores em equipe
+
+## Recursos
+
+- Prompt patterns: Lição 11-01
+- Code review: Lição 11-02
+- Debugging: Lição 11-03
+- Testing: Lição 11-04
+- Documentation: Lição 11-05
+
+> **Meta:** Ao final, você deve ter um workflow que pode ser replicado em qualquer projeto!
+`,
+    {
+      xp: 200,
+      duration: 90,
+      difficulty: 'expert',
+      tags: ['challenge', 'workflow', 'automation', 'best-practices'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-11-06-1',
+          title: 'Workflow Completo',
+          description: 'Implemente o workflow TOP 1% com todos os 5 componentes',
+          context: 'general' as const,
+          contextDescription: 'Aplique ao projeto mais importante do seu portfólio',
+          difficulty: 'expert' as const,
+          xpBonus: 100,
+          hints: ['Use o template fornecido', 'Documente cada decisão'],
+        },
+      ],
+    }
   ),
 ];
 
 const module12Lessons: Lesson[] = [
+  // ==================== LESSON 12-01: Projeto API REST ====================
   createLesson('12', '12-01-project-api-rest', '01. Projeto: API REST Completa',
     'Construa uma API REST do zero usando Claude Code.',
-    `# Projeto Prático: API REST
+    `# Projeto Prático: API REST Completa
 
-Neste projeto, você construirá uma API REST completa para gestão de tarefas.
+Construa uma API REST production-ready do zero usando Claude Code como seu pair programmer.
 
-[Conteúdo detalhado aqui...]
+## Objetivo do Projeto
+
+Criar uma API de gerenciamento de tarefas com:
+- CRUD completo
+- Autenticação JWT
+- Validação de dados
+- Documentação Swagger
+- Testes automatizados
+
+## Stack Tecnológica
+
+| Componente | Tecnologia |
+|------------|------------|
+| Runtime | Node.js 20+ |
+| Framework | Express ou Fastify |
+| Linguagem | TypeScript |
+| Banco | PostgreSQL |
+| ORM | Prisma |
+| Auth | JWT |
+| Docs | Swagger/OpenAPI |
+| Testes | Jest + Supertest |
+
+## Fase 1: Setup do Projeto (30 min)
+
+\`\`\`bash
+# Criar projeto com Claude
+claude "Crie a estrutura inicial para uma API REST:
+
+Stack: Node.js + TypeScript + Express + Prisma + PostgreSQL
+
+Estrutura:
+src/
+├── controllers/
+├── services/
+├── repositories/
+├── middleware/
+├── routes/
+├── utils/
+├── types/
+└── app.ts
+
+Incluir:
+- tsconfig.json configurado
+- package.json com scripts
+- .env.example
+- docker-compose.yml para PostgreSQL"
+\`\`\`
+
+## Fase 2: Modelo de Dados (20 min)
+
+\`\`\`bash
+claude "Crie o schema Prisma para um sistema de tarefas:
+
+Entidades:
+- User (id, email, password, name, createdAt)
+- Task (id, title, description, status, priority, dueDate, userId)
+- Tag (id, name, color)
+- TaskTag (taskId, tagId) - many-to-many
+
+Incluir:
+- Enums para status e priority
+- Índices necessários
+- Relações corretas"
+\`\`\`
+
+## Fase 3: Autenticação (40 min)
+
+\`\`\`bash
+claude "Implemente autenticação JWT:
+
+Endpoints:
+- POST /auth/register - criar usuário
+- POST /auth/login - obter token
+- POST /auth/refresh - renovar token
+- GET /auth/me - dados do usuário logado
+
+Requisitos:
+- Hash de senha com bcrypt
+- JWT com expiração
+- Refresh token
+- Middleware de autenticação
+- Tipos TypeScript completos"
+\`\`\`
+
+## Fase 4: CRUD de Tarefas (45 min)
+
+\`\`\`bash
+claude "Implemente CRUD completo de tarefas:
+
+Endpoints:
+- GET /tasks - listar (com filtros e paginação)
+- GET /tasks/:id - detalhe
+- POST /tasks - criar
+- PUT /tasks/:id - atualizar
+- DELETE /tasks/:id - remover
+- PATCH /tasks/:id/status - mudar status
+
+Requisitos:
+- Validação com Zod
+- Paginação
+- Filtros por status, priority, tag
+- Ordenação
+- Soft delete opcional"
+\`\`\`
+
+## Fase 5: Documentação (20 min)
+
+\`\`\`bash
+claude "Adicione documentação Swagger:
+
+- Descrição de todos endpoints
+- Schemas de request/response
+- Exemplos
+- Autenticação Bearer
+- Tags organizadas
+
+Usar: swagger-jsdoc + swagger-ui-express"
+\`\`\`
+
+## Fase 6: Testes (30 min)
+
+\`\`\`bash
+claude "Crie testes para a API:
+
+Unit tests:
+- Services de autenticação
+- Validadores
+
+Integration tests:
+- Endpoints de auth
+- CRUD de tasks
+- Filtros e paginação
+
+Requisitos:
+- Jest + Supertest
+- Banco de teste separado
+- Fixtures/factories
+- Coverage > 80%"
+\`\`\`
+
+## Checklist de Entrega
+
+- [ ] API rodando localmente
+- [ ] Todos endpoints funcionando
+- [ ] Swagger acessível em /docs
+- [ ] Testes passando
+- [ ] README com instruções
+- [ ] Docker compose funcionando
+
+## Critérios de Avaliação
+
+| Critério | Pontos |
+|----------|--------|
+| Funcionalidade | 40 |
+| Qualidade do código | 20 |
+| Documentação | 15 |
+| Testes | 15 |
+| Docker setup | 10 |
+
+> **Dica:** Use Claude para cada fase. Peça explicações quando não entender algo!
 `,
     {
-      xp: 200,
-      duration: 120,
+      xp: 250,
+      duration: 180,
       difficulty: 'advanced',
-      tags: ['projeto', 'api', 'hands-on'],
+      tags: ['projeto', 'api', 'rest', 'typescript', 'hands-on'],
+      isNew: true,
       challenges: [
         {
           id: 'ch-12-01-1',
@@ -7803,11 +8955,944 @@ Neste projeto, você construirá uma API REST completa para gestão de tarefas.
           description: 'Adapte a API para gerenciamento de processos jurídicos',
           context: 'costa_law',
           contextDescription: 'Sistema de gestão de processos e prazos',
-          difficulty: 'advanced',
+          difficulty: 'expert',
           xpBonus: 150,
-          hints: ['Considere campos específicos: número do processo, vara, etc.'],
-        }
-      ]
+          hints: ['Inclua campos: número do processo, vara, comarca, prazos'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 12-02: Projeto CLI Tool ====================
+  createLesson('12', '12-02-project-cli', '02. Projeto: CLI Tool Automatizado',
+    'Crie uma ferramenta de linha de comando profissional.',
+    `# Projeto: CLI Tool Automatizado
+
+Desenvolva uma CLI profissional que automatiza tarefas do seu workflow.
+
+## Objetivo
+
+Criar uma CLI para automação de desenvolvimento com:
+- Geração de código (scaffolding)
+- Execução de tarefas comuns
+- Configuração interativa
+- Output formatado e colorido
+
+## Stack
+
+| Componente | Tecnologia |
+|------------|------------|
+| Framework | Commander.js ou Yargs |
+| Prompts | Inquirer.js |
+| Output | Chalk + Ora |
+| Linguagem | TypeScript |
+| Build | tsup |
+
+## Funcionalidades da CLI
+
+### 1. Scaffold de Componentes
+
+\`\`\`bash
+mycli generate component Button
+# Gera: Button.tsx, Button.test.tsx, Button.stories.tsx
+\`\`\`
+
+### 2. Setup de Projeto
+
+\`\`\`bash
+mycli init
+# Configura: ESLint, Prettier, Husky, etc.
+\`\`\`
+
+### 3. Automações
+
+\`\`\`bash
+mycli db:migrate    # Roda migrations
+mycli test:watch    # Testes em watch mode
+mycli deploy:staging # Deploy para staging
+\`\`\`
+
+## Implementação com Claude
+
+### Setup Inicial
+
+\`\`\`bash
+claude "Crie a estrutura de uma CLI com:
+
+Nome: devtool
+Stack: TypeScript + Commander.js + Inquirer
+
+Estrutura:
+src/
+├── commands/
+│   ├── generate.ts
+│   ├── init.ts
+│   └── deploy.ts
+├── templates/
+│   └── component/
+├── utils/
+│   ├── logger.ts
+│   └── file.ts
+└── index.ts
+
+Incluir:
+- package.json com bin configurado
+- tsconfig para CLI
+- Build com tsup"
+\`\`\`
+
+### Comando Generate
+
+\`\`\`bash
+claude "Implemente o comando generate:
+
+\`\`\`bash
+devtool generate <type> <name> [options]
+\`\`\`
+
+Types: component, hook, service, test
+Options: --typescript, --with-test, --with-story
+
+Features:
+- Templates com variáveis
+- Detecção automática de pasta
+- Confirmação antes de sobrescrever
+- Output colorido com sucesso/erro"
+\`\`\`
+
+### Comando Init
+
+\`\`\`bash
+claude "Implemente o comando init interativo:
+
+Perguntas:
+1. Nome do projeto
+2. Framework (React, Vue, Node)
+3. TypeScript? (Y/n)
+4. Configurar ESLint? (Y/n)
+5. Configurar Prettier? (Y/n)
+6. Configurar Husky? (Y/n)
+
+Ações:
+- Criar arquivos de config
+- Adicionar scripts ao package.json
+- Instalar dependências
+- Mostrar progresso com spinner"
+\`\`\`
+
+## Testes da CLI
+
+\`\`\`bash
+claude "Crie testes para a CLI:
+
+- Testar parsing de argumentos
+- Testar geração de arquivos
+- Testar output
+- Mock de filesystem
+
+Framework: Jest + mock-fs"
+\`\`\`
+
+## Publicação no npm
+
+\`\`\`bash
+# Build
+npm run build
+
+# Test localmente
+npm link
+devtool --help
+
+# Publicar
+npm publish
+\`\`\`
+
+## Checklist
+
+- [ ] CLI instalável globalmente
+- [ ] Help text para todos comandos
+- [ ] Tratamento de erros gracioso
+- [ ] Output colorido e formatado
+- [ ] Testes cobrindo comandos principais
+- [ ] README com exemplos de uso
+
+> **Bônus:** Adicione auto-update e telemetria anônima!
+`,
+    {
+      xp: 220,
+      duration: 150,
+      difficulty: 'advanced',
+      tags: ['projeto', 'cli', 'automacao', 'typescript'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-12-02-1',
+          title: 'CLI para seu Workflow',
+          description: 'Adapte a CLI para automatizar tarefas específicas do seu dia-a-dia',
+          context: 'personal' as const,
+          contextDescription: 'Personalize para seu workflow único',
+          difficulty: 'advanced' as const,
+          xpBonus: 100,
+          hints: ['Identifique 3 tarefas repetitivas que você faz toda semana'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 12-03: Projeto Refatoração ====================
+  createLesson('12', '12-03-project-refactoring', '03. Projeto: Refatoração de Legacy Code',
+    'Modernize código legado com assistência de IA.',
+    `# Projeto: Refatoração de Legacy Code
+
+Transforme código legado em código moderno, limpo e testável.
+
+## O Desafio
+
+Você recebeu um projeto legado com:
+- JavaScript ES5 sem tipos
+- Callbacks aninhados (callback hell)
+- Funções monolíticas de 500+ linhas
+- Sem testes
+- Documentação desatualizada
+
+Sua missão: modernizá-lo com Claude.
+
+## Estratégia de Refatoração
+
+\`\`\`
+┌───────────────┐     ┌───────────────┐     ┌───────────────┐
+│   Analyze     │────▶│   Plan        │────▶│   Execute     │
+│   (Understand)│     │   (Strategy)  │     │   (Iterate)   │
+└───────────────┘     └───────────────┘     └───────────────┘
+        │                     │                     │
+        ▼                     ▼                     ▼
+   Map codebase         Define phases         Test after
+   Identify risks       Set priorities        each change
+   Find patterns        Create tasks          Document
+\`\`\`
+
+## Fase 1: Análise (1-2h)
+
+\`\`\`bash
+claude "Analise este código legado e crie um relatório:
+
+$(cat src/legacy/userManager.js)
+
+Identificar:
+1. Code smells presentes
+2. Complexidade ciclomática
+3. Acoplamento entre módulos
+4. Pontos de risco
+5. Prioridades de refatoração
+6. Estimativa de esforço"
+\`\`\`
+
+## Fase 2: Adicionar Testes (2-3h)
+
+\`\`\`bash
+# ANTES de refatorar, adicione testes que capturam comportamento atual
+claude "Crie testes de caracterização para este código:
+
+$(cat src/legacy/userManager.js)
+
+Objetivo: Capturar o comportamento ATUAL (mesmo com bugs)
+Isso garante que a refatoração não quebra nada.
+
+Framework: Jest
+Abordagem: Black-box testing"
+\`\`\`
+
+## Fase 3: Conversão para TypeScript (1-2h)
+
+\`\`\`bash
+claude "Converta este JavaScript para TypeScript:
+
+$(cat src/legacy/userManager.js)
+
+Requisitos:
+- Inferir tipos automaticamente
+- Criar interfaces para objetos
+- Manter compatibilidade
+- Adicionar strict mode
+- Marcar any's para revisão futura"
+\`\`\`
+
+## Fase 4: Eliminar Callback Hell (1h)
+
+\`\`\`bash
+claude "Converta callbacks para async/await:
+
+$(cat src/legacy/dataFetcher.js)
+
+Antes:
+function getData(id, callback) {
+  fetchUser(id, (err, user) => {
+    if (err) callback(err);
+    fetchOrders(user.id, (err, orders) => {
+      callback(null, { user, orders });
+    });
+  });
+}
+
+Depois:
+async function getData(id) {
+  const user = await fetchUser(id);
+  const orders = await fetchOrders(user.id);
+  return { user, orders };
+}"
+\`\`\`
+
+## Fase 5: Quebrar Funções Monolíticas (2h)
+
+\`\`\`bash
+claude "Refatore esta função de 500 linhas:
+
+$(cat src/legacy/processOrder.js)
+
+Aplicar:
+- Single Responsibility Principle
+- Extract Method
+- Funções de no máximo 20 linhas
+- Nomes descritivos
+- Separar: validação, processamento, persistência"
+\`\`\`
+
+## Fase 6: Aplicar Padrões Modernos (1-2h)
+
+\`\`\`bash
+claude "Aplique padrões modernos a este módulo:
+
+$(cat src/legacy/emailService.js)
+
+Considerar:
+- Dependency Injection
+- Repository Pattern
+- Factory Pattern
+- Error handling centralizado
+- Configuração via environment"
+\`\`\`
+
+## Métricas de Sucesso
+
+| Antes | Depois | Melhoria |
+|-------|--------|----------|
+| 0 tipos | 100% tipado | ✅ |
+| 0 testes | 80%+ coverage | ✅ |
+| Callbacks | async/await | ✅ |
+| Funções 500 LOC | < 20 LOC | ✅ |
+| Docs desatualizadas | JSDoc completo | ✅ |
+
+## Checklist
+
+- [ ] Testes de caracterização escritos
+- [ ] Código convertido para TypeScript
+- [ ] Callbacks eliminados
+- [ ] Funções pequenas e focadas
+- [ ] Padrões modernos aplicados
+- [ ] Documentação atualizada
+- [ ] Todos testes passando
+
+> **Regra de ouro:** Nunca refatore sem testes. Se não tem testes, adicione primeiro!
+`,
+    {
+      xp: 230,
+      duration: 180,
+      difficulty: 'expert',
+      tags: ['projeto', 'refatoracao', 'legacy', 'typescript'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-12-03-1',
+          title: 'Refatore seu Legado',
+          description: 'Aplique as técnicas em um código legado real do seu trabalho',
+          context: 'general' as const,
+          contextDescription: 'Use um projeto legado que você precisa manter',
+          difficulty: 'expert' as const,
+          xpBonus: 120,
+          hints: ['Comece pequeno - escolha um módulo isolado', 'Adicione testes ANTES de mudar'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 12-04: Projeto Documentação ====================
+  createLesson('12', '12-04-project-documentation', '04. Projeto: Sistema de Documentação',
+    'Crie um sistema de documentação automatizado e sempre atualizado.',
+    `# Projeto: Sistema de Documentação Automatizado
+
+Construa um sistema que mantém documentação sempre sincronizada com o código.
+
+## Objetivo
+
+Criar um sistema que:
+- Gera documentação do código automaticamente
+- Detecta quando docs estão desatualizadas
+- Publica em site estático
+- Integra com CI/CD
+
+## Arquitetura
+
+\`\`\`
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Source    │────▶│  Generator  │────▶│    Site     │
+│   Code      │     │  (Claude)   │     │   (Docs)    │
+└─────────────┘     └─────────────┘     └─────────────┘
+       │                   │                   │
+       │            ┌──────┴──────┐           │
+       │            │             │           │
+       ▼            ▼             ▼           ▼
+   JSDoc        TypeDoc       Mermaid    Docusaurus
+\`\`\`
+
+## Componentes
+
+### 1. Extrator de Documentação
+
+\`\`\`bash
+claude "Crie um script que extrai documentação do código:
+
+Input: Pasta src/
+Output: docs/api/
+
+Funcionalidades:
+- Parse de JSDoc/TSDoc
+- Extração de tipos TypeScript
+- Exemplos de uso dos testes
+- Links entre módulos relacionados"
+\`\`\`
+
+### 2. Gerador de Diagramas
+
+\`\`\`bash
+claude "Crie um gerador de diagramas Mermaid:
+
+Analisar código e gerar:
+- Diagrama de classes
+- Diagrama de sequência para flows principais
+- Diagrama de arquitetura
+- ERD do banco de dados
+
+Output: docs/diagrams/"
+\`\`\`
+
+### 3. Verificador de Freshness
+
+\`\`\`bash
+claude "Crie um verificador de documentação:
+
+Detectar:
+- Funções sem JSDoc
+- Docs desatualizadas (diff code vs docs)
+- Links quebrados
+- Exemplos que não compilam
+
+Output: relatório de problemas
+Integrar: pre-commit hook"
+\`\`\`
+
+### 4. Site com Docusaurus
+
+\`\`\`bash
+claude "Configure Docusaurus para a documentação:
+
+Estrutura:
+docs/
+├── intro.md
+├── getting-started/
+├── api/
+├── guides/
+└── diagrams/
+
+Features:
+- Versioning
+- Search
+- Dark mode
+- Algolia integration
+- Deploy automático"
+\`\`\`
+
+## Pipeline CI/CD
+
+\`\`\`yaml
+# .github/workflows/docs.yml
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'docs/**'
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate API docs
+        run: npm run docs:generate
+
+      - name: Check freshness
+        run: npm run docs:check
+
+      - name: Build site
+        run: npm run docs:build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: \${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build
+\`\`\`
+
+## Automação com Claude
+
+\`\`\`bash
+# Hook pre-commit que documenta automaticamente
+claude "Para cada arquivo modificado, atualize a documentação:
+
+Arquivo: $(git diff --name-only HEAD~1)
+
+Ações:
+1. Atualizar JSDoc se função mudou
+2. Atualizar README se export mudou
+3. Regenerar diagrama se estrutura mudou
+4. Avisar se breaking change"
+\`\`\`
+
+## Checklist
+
+- [ ] Extrator funcionando
+- [ ] Diagramas gerando corretamente
+- [ ] Site Docusaurus configurado
+- [ ] CI/CD publicando automaticamente
+- [ ] Pre-commit hook ativo
+- [ ] Search funcionando
+- [ ] Versioning configurado
+
+> **Meta:** Documentação que se atualiza sozinha = desenvolvedores felizes!
+`,
+    {
+      xp: 200,
+      duration: 150,
+      difficulty: 'advanced',
+      tags: ['projeto', 'documentacao', 'automacao', 'docusaurus'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-12-04-1',
+          title: 'Docs para seu Projeto',
+          description: 'Implemente o sistema de documentação em um projeto real',
+          context: 'general' as const,
+          contextDescription: 'Escolha um projeto open source ou do trabalho',
+          difficulty: 'advanced' as const,
+          xpBonus: 100,
+          hints: ['Comece com o extrator, depois adicione o site'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 12-05: Projeto CI/CD ====================
+  createLesson('12', '12-05-project-cicd', '05. Projeto: Pipeline CI/CD Completo',
+    'Configure um pipeline de CI/CD enterprise-grade.',
+    `# Projeto: Pipeline CI/CD Enterprise-Grade
+
+Configure um pipeline completo de integração e deploy contínuo.
+
+## Objetivo
+
+Criar um pipeline que:
+- Testa automaticamente a cada push
+- Faz análise de código (lint, types, security)
+- Gera preview deploys para PRs
+- Deploy automático para staging/production
+- Notifica equipe de status
+
+## Arquitetura do Pipeline
+
+\`\`\`
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│  Commit  │───▶│  Test    │───▶│  Build   │───▶│  Deploy  │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘
+                     │               │               │
+              ┌──────┴──────┐       │         ┌─────┴─────┐
+              │             │       │         │           │
+           Lint          Types   Docker   Staging    Prod
+           Tests         Security          (auto)    (manual)
+           Coverage
+\`\`\`
+
+## Jobs do Pipeline
+
+### 1. Quality Gate
+
+\`\`\`bash
+claude "Crie o job de quality gate:
+
+Checks:
+- ESLint sem erros
+- TypeScript sem erros
+- Prettier formatado
+- Testes passando
+- Coverage > 80%
+
+Se falhar: bloquear merge"
+\`\`\`
+
+### 2. Security Scan
+
+\`\`\`bash
+claude "Configure security scanning:
+
+Tools:
+- npm audit (dependências)
+- CodeQL (código)
+- Trivy (containers)
+- SAST scan
+
+Output: relatório de vulnerabilidades
+Ação: falhar se crítico, warning se médio"
+\`\`\`
+
+### 3. Build e Artifact
+
+\`\`\`bash
+claude "Configure build com artifacts:
+
+Steps:
+1. Install dependencies
+2. Run build
+3. Create Docker image
+4. Push to registry
+5. Save artifact for deploy
+
+Cache:
+- node_modules (hash de package-lock)
+- Docker layers"
+\`\`\`
+
+### 4. Preview Deploy
+
+\`\`\`bash
+claude "Configure preview deploys para PRs:
+
+Trigger: PR aberta/atualizada
+Ação:
+- Deploy em URL única (pr-123.preview.app)
+- Comentar URL na PR
+- Rodar smoke tests
+- Cleanup após merge"
+\`\`\`
+
+### 5. Production Deploy
+
+\`\`\`bash
+claude "Configure deploy para produção:
+
+Trigger: merge para main
+Strategy: Blue-Green deployment
+
+Steps:
+1. Deploy para blue (novo)
+2. Run health checks
+3. Run smoke tests
+4. Switch traffic (blue -> green)
+5. Keep green como rollback
+6. Notify equipe"
+\`\`\`
+
+## Workflow Completo
+
+\`\`\`yaml
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test -- --coverage
+      - uses: codecov/codecov-action@v3
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm audit --audit-level=high
+      - uses: github/codeql-action/analyze@v2
+
+  build:
+    needs: [quality, security]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: myapp:\${{ github.sha }}
+
+  deploy-preview:
+    if: github.event_name == 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to preview
+        run: # deploy logic
+      - name: Comment PR
+        uses: actions/github-script@v6
+
+  deploy-staging:
+    if: github.ref == 'refs/heads/develop'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy to staging
+        run: # deploy logic
+
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy to production
+        run: # deploy logic
+\`\`\`
+
+## Monitoramento
+
+- **Slack notifications:** status de builds
+- **Datadog/New Relic:** performance do pipeline
+- **GitHub Status checks:** PR requirements
+
+## Checklist
+
+- [ ] Quality gate configurado
+- [ ] Security scan ativo
+- [ ] Preview deploys funcionando
+- [ ] Deploy automático staging
+- [ ] Deploy manual/aprovado prod
+- [ ] Notifications configuradas
+- [ ] Rollback testado
+
+> **Dica:** Pipeline lento = developers frustrados. Otimize para < 10min!
+`,
+    {
+      xp: 240,
+      duration: 180,
+      difficulty: 'expert',
+      tags: ['projeto', 'cicd', 'devops', 'github-actions'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-12-05-1',
+          title: 'Pipeline para seu Projeto',
+          description: 'Implemente o pipeline CI/CD em um projeto real',
+          context: 'general' as const,
+          contextDescription: 'Use um projeto que precisa de automação de deploy',
+          difficulty: 'expert' as const,
+          xpBonus: 130,
+          hints: ['Comece com quality gate, depois adicione deploys'],
+        },
+      ],
+    }
+  ),
+
+  // ==================== LESSON 12-06: Capstone Project ====================
+  createLesson('12', '12-06-capstone', '06. Capstone: Projeto Enterprise',
+    'Projeto final integrando todas as habilidades do curso.',
+    `# Capstone: Projeto Enterprise
+
+Projeto final que integra TODAS as habilidades aprendidas no curso.
+
+## O Desafio
+
+Construir um sistema completo de ponta a ponta usando Claude Code como seu co-piloto.
+
+## Opções de Projeto
+
+### Opção A: SaaS Dashboard
+
+Sistema de analytics com:
+- Backend API (REST ou GraphQL)
+- Frontend React
+- Autenticação multi-tenant
+- Dashboard com gráficos
+- Exportação de relatórios
+
+### Opção B: Plataforma de Automação
+
+Sistema de workflows com:
+- Builder visual de workflows
+- Executor de tarefas
+- Integração com APIs externas
+- Scheduling
+- Logs e monitoramento
+
+### Opção C: Sistema de Gestão (sua escolha)
+
+Escolha um domínio relevante para você:
+- Gestão jurídica (Costa Law)
+- E-commerce
+- CRM
+- Project management
+- Outro (aprove com mentor)
+
+## Requisitos Obrigatórios
+
+### Arquitetura
+- [ ] Documentação de arquitetura (ADRs)
+- [ ] Diagramas (C4 model ou similar)
+- [ ] Setup com Docker Compose
+
+### Backend
+- [ ] API tipada (TypeScript)
+- [ ] Autenticação/autorização
+- [ ] Validação de dados
+- [ ] Error handling centralizado
+- [ ] Logging estruturado
+
+### Frontend
+- [ ] React + TypeScript
+- [ ] State management
+- [ ] Responsive design
+- [ ] Acessibilidade básica
+- [ ] Loading/error states
+
+### Qualidade
+- [ ] Testes (unit + integration)
+- [ ] Coverage > 70%
+- [ ] Linting configurado
+- [ ] CI/CD pipeline
+
+### Documentação
+- [ ] README completo
+- [ ] API documentation
+- [ ] Setup guide
+- [ ] Deployment guide
+
+## Timeline Sugerida
+
+| Semana | Foco | Entrega |
+|--------|------|---------|
+| 1 | Planejamento | PRD + Arquitetura |
+| 2 | Backend | API + Auth + Tests |
+| 3 | Frontend | UI + Integração |
+| 4 | Polish | CI/CD + Docs + Deploy |
+
+## Usando Claude Code
+
+\`\`\`bash
+# Semana 1: Planejamento
+claude "Ajude a criar um PRD para [seu projeto]:
+- Problema a resolver
+- Personas
+- User stories
+- MVP features
+- Arquitetura inicial"
+
+# Semana 2: Backend
+claude "Implemente [feature] com:
+- Endpoint REST
+- Validação
+- Testes
+- Documentação"
+
+# Semana 3: Frontend
+claude "Crie o componente [X] com:
+- Props tipadas
+- Estados (loading, error, success)
+- Testes
+- Storybook story"
+
+# Semana 4: Polish
+claude "Revise o projeto completo:
+- Code review geral
+- Otimizações
+- Documentação final
+- Checklist de deploy"
+\`\`\`
+
+## Critérios de Avaliação
+
+| Critério | Pontos | Descrição |
+|----------|--------|-----------|
+| Funcionalidade | 30 | Features funcionando |
+| Qualidade de código | 20 | Clean code, patterns |
+| Testes | 15 | Coverage, qualidade |
+| Documentação | 15 | Completa, clara |
+| DevOps | 10 | CI/CD, deploy |
+| Uso de Claude | 10 | Eficiência, prompts |
+
+## Entrega
+
+1. **Repositório GitHub**
+   - Código completo
+   - README detalhado
+   - CI/CD configurado
+
+2. **Demo**
+   - Vídeo de 5min mostrando o projeto
+   - Deploy funcionando (Vercel, Railway, etc.)
+
+3. **Retrospectiva**
+   - O que aprendeu
+   - Desafios enfrentados
+   - Como Claude ajudou
+
+## Certificação
+
+Ao completar o Capstone com nota >= 70%:
+
+\`\`\`
+┌────────────────────────────────────────────┐
+│                                            │
+│     CLAUDE CODE MASTER                     │
+│     CERTIFICATION                          │
+│                                            │
+│     [Seu Nome]                             │
+│     completou com sucesso o curso          │
+│     Claude Code TOP 1%                     │
+│                                            │
+│     Data: ___________                      │
+│                                            │
+└────────────────────────────────────────────┘
+\`\`\`
+
+> **Você chegou até aqui!** Parabéns por completar a jornada. Agora você faz parte do TOP 1% de desenvolvedores que dominam Claude Code!
+`,
+    {
+      xp: 500,
+      duration: 480,
+      difficulty: 'expert',
+      tags: ['capstone', 'projeto-final', 'enterprise', 'fullstack'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-12-06-1',
+          title: 'Capstone Completo',
+          description: 'Complete o projeto Capstone seguindo todos os requisitos',
+          context: 'general' as const,
+          contextDescription: 'Projeto que demonstra domínio completo do Claude Code',
+          difficulty: 'expert' as const,
+          xpBonus: 300,
+          hints: ['Planeje bem antes de codar', 'Use Claude em TODAS as etapas'],
+        },
+      ],
     }
   ),
 ];
@@ -8007,9 +10092,10 @@ export const courseModules: Module[] = [
     description: 'Padrões TOP 1% e workflows de produção',
     icon: 'Award',
     color: 'amber',
+    isNew: true,
     lessons: module11Lessons,
     totalXp: module11Lessons.reduce((acc, l) => acc + l.xp, 0),
-    estimatedHours: 3,
+    estimatedHours: 6,
     prerequisites: ['10'],
     version: '1.0.0',
     dateUpdated: new Date().toISOString().split('T')[0],
@@ -8023,9 +10109,10 @@ export const courseModules: Module[] = [
     description: 'Projetos hands-on do mundo real',
     icon: 'Hammer',
     color: 'red',
+    isNew: true,
     lessons: module12Lessons,
     totalXp: module12Lessons.reduce((acc, l) => acc + l.xp, 0),
-    estimatedHours: 10,
+    estimatedHours: 20,
     prerequisites: ['11'],
     version: '1.0.0',
     dateUpdated: new Date().toISOString().split('T')[0],
