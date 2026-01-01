@@ -6108,15 +6108,2089 @@ Ao completar este challenge, você terá:
 // ============================================================================
 
 const module08Lessons: Lesson[] = [
-  createLesson('08', '08-01-plugins-intro', '01. Introdução aos Plugins',
-    'Entenda o sistema de plugins do Claude Code.',
-    `# Plugins
+  // ============================================================================
+  // LIÇÃO 08-01: Introdução aos Plugins
+  // ============================================================================
+  createLesson('08', '08-01-plugins-intro', '01. Entendendo o Sistema de Plugins',
+    'Conheça a arquitetura de plugins do Claude Code e como eles estendem funcionalidades.',
+    `# Entendendo o Sistema de Plugins
 
-Plugins são extensões distribuíveis que adicionam funcionalidades ao Claude Code.
+Plugins são **extensões distribuíveis** que adicionam novas capacidades ao Claude Code. Diferente de Skills (que são locais), plugins podem ser compartilhados e instalados por qualquer usuário.
 
-[Conteúdo detalhado aqui...]
+## Arquitetura de Plugins
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│                    CLAUDE CODE CORE                     │
+├─────────────────────────────────────────────────────────┤
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐    │
+│  │ Plugin  │  │ Plugin  │  │ Plugin  │  │ Plugin  │    │
+│  │  Auth   │  │   DB    │  │   API   │  │ Custom  │    │
+│  └────┬────┘  └────┬────┘  └────┬────┘  └────┬────┘    │
+│       │            │            │            │          │
+│  ┌────▼────────────▼────────────▼────────────▼────┐    │
+│  │              PLUGIN RUNTIME                    │    │
+│  │  - Lifecycle Management                        │    │
+│  │  - Hook System                                 │    │
+│  │  - Context Injection                           │    │
+│  │  - Sandboxed Execution                         │    │
+│  └────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Skills vs Plugins vs MCPs
+
+| Aspecto | Skills | Plugins | MCPs |
+|---------|--------|---------|------|
+| **Escopo** | Usuário local | Distribuível | Protocolo padrão |
+| **Formato** | Markdown | Package | JSON-RPC |
+| **Instalação** | ~/.claude/skills/ | npm/registry | Configuração |
+| **Compartilhamento** | Manual | npm publish | Servidores |
+| **Complexidade** | Baixa | Média | Alta |
+| **Use case** | Workflows pessoais | Extensões comuns | Integrações enterprise |
+
+## Tipos de Plugins
+
+### 1. Command Plugins
+Adicionam novos comandos ao Claude Code:
+
+\`\`\`typescript
+// plugin-git-flow/index.ts
+export default {
+  name: 'git-flow',
+  commands: {
+    'feature': {
+      description: 'Create feature branch with convention',
+      handler: async (args, context) => {
+        const branchName = \`feature/\${args.name}\`;
+        await context.exec(\`git checkout -b \${branchName}\`);
+        return \`Created branch: \${branchName}\`;
+      }
+    }
+  }
+};
+\`\`\`
+
+### 2. Provider Plugins
+Integram com serviços externos:
+
+\`\`\`typescript
+// plugin-jira/index.ts
+export default {
+  name: 'jira-integration',
+  providers: {
+    'issues': {
+      fetch: async (query) => {
+        // Buscar issues do Jira
+        return await jiraClient.search(query);
+      }
+    }
+  }
+};
+\`\`\`
+
+### 3. Hook Plugins
+Interceptam eventos do Claude Code:
+
+\`\`\`typescript
+// plugin-security-scan/index.ts
+export default {
+  name: 'security-scan',
+  hooks: {
+    'pre-commit': async (files, context) => {
+      const results = await scanForSecrets(files);
+      if (results.length > 0) {
+        throw new Error('Secrets detected in commit!');
+      }
+    }
+  }
+};
+\`\`\`
+
+### 4. UI Plugins
+Adicionam elementos visuais:
+
+\`\`\`typescript
+// plugin-dashboard/index.ts
+export default {
+  name: 'project-dashboard',
+  ui: {
+    panels: [{
+      position: 'sidebar',
+      render: (context) => {
+        return DashboardComponent({ project: context.project });
+      }
+    }]
+  }
+};
+\`\`\`
+
+## Estrutura de um Plugin
+
+\`\`\`
+my-plugin/
+├── package.json          # Manifest e dependências
+├── src/
+│   ├── index.ts          # Entry point
+│   ├── commands/         # Comandos do plugin
+│   ├── providers/        # Provedores de dados
+│   ├── hooks/            # Event handlers
+│   └── ui/               # Componentes UI (opcional)
+├── tests/                # Testes
+├── README.md             # Documentação
+└── LICENSE               # Licença
+\`\`\`
+
+## Plugin Manifest (package.json)
+
+\`\`\`json
+{
+  "name": "@myorg/claude-plugin-example",
+  "version": "1.0.0",
+  "description": "Example Claude Code plugin",
+  "main": "dist/index.js",
+  "claude": {
+    "type": "plugin",
+    "minVersion": "1.0.0",
+    "permissions": [
+      "filesystem:read",
+      "network:fetch",
+      "git:read"
+    ],
+    "provides": {
+      "commands": ["my-command"],
+      "hooks": ["pre-commit"],
+      "providers": ["my-data"]
+    }
+  },
+  "keywords": ["claude-code-plugin"],
+  "license": "MIT"
+}
+\`\`\`
+
+## Instalando Plugins
+
+\`\`\`bash
+# Via npm registry
+claude plugin install @anthropic/plugin-example
+
+# Via GitHub
+claude plugin install github:user/repo
+
+# Via arquivo local
+claude plugin install ./my-local-plugin
+
+# Listar plugins instalados
+claude plugin list
+
+# Remover plugin
+claude plugin remove @anthropic/plugin-example
+\`\`\`
+
+## Segurança de Plugins
+
+> **Importante:** Plugins executam código no seu sistema. Sempre verifique a fonte antes de instalar.
+
+### Sistema de Permissões
+
+\`\`\`typescript
+// Plugins declaram permissões necessárias
+{
+  "permissions": [
+    "filesystem:read",       // Ler arquivos
+    "filesystem:write",      // Escrever arquivos
+    "network:fetch",         // Fazer requests HTTP
+    "git:read",              // Ler repositório git
+    "git:write",             // Modificar git
+    "exec:safe",             // Executar comandos safe-listed
+    "exec:any"               // Executar qualquer comando (PERIGOSO)
+  ]
+}
+\`\`\`
+
+### Verificação de Plugins
+
+\`\`\`bash
+# Verificar assinatura do plugin
+claude plugin verify @anthropic/plugin-example
+
+# Ver permissões antes de instalar
+claude plugin inspect github:user/repo
+
+# Plugins verificados pela Anthropic
+claude plugin search --verified
+\`\`\`
+
+## Resumo
+
+| Conceito | Descrição |
+|----------|-----------|
+| **Plugin** | Extensão distribuível que adiciona funcionalidades |
+| **Manifest** | package.json com configuração claude |
+| **Permissions** | Declaração de acessos necessários |
+| **Commands** | Novos comandos disponíveis |
+| **Providers** | Integrações com serviços externos |
+| **Hooks** | Interceptação de eventos |
 `,
-    { xp: 70, duration: 25, difficulty: 'advanced', tags: ['plugins', 'extensões'] }
+    {
+      xp: 80,
+      duration: 25,
+      difficulty: 'advanced',
+      tags: ['plugins', 'arquitetura', 'extensões'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-08-01-1',
+          question: 'Qual a principal diferença entre Skills e Plugins?',
+          options: ['Skills são mais rápidos', 'Plugins são distribuíveis e compartilháveis', 'Skills usam TypeScript', 'Não há diferença'],
+          correctIndex: 1,
+          explanation: 'Skills são locais (~/.claude/skills/), enquanto Plugins podem ser publicados e instalados por qualquer usuário.',
+        },
+        {
+          id: 'q-08-01-2',
+          question: 'Onde são declaradas as permissões de um plugin?',
+          options: ['index.ts', 'permissions.json', 'package.json (campo claude)', 'config.yaml'],
+          correctIndex: 2,
+          explanation: 'Permissões são declaradas no package.json dentro do campo "claude.permissions".',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-08-01-1',
+          title: 'Explore o Ecosystem',
+          description: 'Liste plugins instalados e explore o registry para encontrar 3 plugins úteis',
+          context: 'general' as const,
+          contextDescription: 'Familiarize-se com o ecosystem de plugins',
+          difficulty: 'advanced' as const,
+          xpBonus: 30,
+          hints: ['Use: claude plugin list', 'Use: claude plugin search <termo>'],
+        },
+      ],
+    }
+  ),
+
+  // ============================================================================
+  // LIÇÃO 08-02: Criando seu Primeiro Plugin
+  // ============================================================================
+  createLesson('08', '08-02-creating-plugin', '02. Criando seu Primeiro Plugin',
+    'Aprenda a criar, testar e estruturar um plugin do Claude Code do zero.',
+    `# Criando seu Primeiro Plugin
+
+Vamos criar um plugin completo do zero - um **Git Conventional Commit Helper** que ajuda a criar commits seguindo convenções.
+
+## Setup Inicial
+
+\`\`\`bash
+# Criar diretório do plugin
+mkdir claude-plugin-conventional-commit
+cd claude-plugin-conventional-commit
+
+# Inicializar npm
+npm init -y
+
+# Instalar dependências
+npm install typescript @types/node --save-dev
+
+# Criar estrutura
+mkdir -p src/{commands,utils}
+\`\`\`
+
+## Configurar TypeScript
+
+\`\`\`json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "declaration": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
+\`\`\`
+
+## Package.json Completo
+
+\`\`\`json
+{
+  "name": "@seu-usuario/claude-conventional-commit",
+  "version": "1.0.0",
+  "description": "Conventional commit helper for Claude Code",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "claude": {
+    "type": "plugin",
+    "minVersion": "1.0.0",
+    "permissions": [
+      "git:read",
+      "git:write"
+    ],
+    "provides": {
+      "commands": ["cc", "conventional-commit"]
+    }
+  },
+  "keywords": [
+    "claude-code-plugin",
+    "git",
+    "conventional-commits"
+  ],
+  "author": "Seu Nome",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}
+\`\`\`
+
+## Implementar o Plugin
+
+### Entry Point (src/index.ts)
+
+\`\`\`typescript
+// src/index.ts
+import { commitCommand } from './commands/commit';
+import type { Plugin, PluginContext } from '@anthropic/claude-code-plugin';
+
+const plugin: Plugin = {
+  name: 'conventional-commit',
+  version: '1.0.0',
+
+  // Lifecycle hooks
+  async onLoad(context: PluginContext) {
+    console.log('Conventional Commit plugin loaded!');
+  },
+
+  async onUnload() {
+    console.log('Conventional Commit plugin unloaded!');
+  },
+
+  // Commands provided
+  commands: {
+    'cc': commitCommand,
+    'conventional-commit': commitCommand,
+  },
+};
+
+export default plugin;
+\`\`\`
+
+### Command Implementation (src/commands/commit.ts)
+
+\`\`\`typescript
+// src/commands/commit.ts
+import type { Command, CommandContext } from '@anthropic/claude-code-plugin';
+import { getGitDiff, getStagedFiles } from '../utils/git';
+import { generateCommitMessage } from '../utils/ai';
+
+interface CommitArgs {
+  type?: string;
+  scope?: string;
+  message?: string;
+  breaking?: boolean;
+}
+
+export const commitCommand: Command<CommitArgs> = {
+  description: 'Create a conventional commit with AI assistance',
+
+  args: {
+    type: {
+      description: 'Commit type (feat, fix, docs, etc.)',
+      required: false,
+    },
+    scope: {
+      description: 'Scope of the change',
+      required: false,
+    },
+    message: {
+      description: 'Commit message (auto-generated if not provided)',
+      required: false,
+    },
+    breaking: {
+      description: 'Mark as breaking change',
+      type: 'boolean',
+      default: false,
+    },
+  },
+
+  async handler(args: CommitArgs, context: CommandContext) {
+    // 1. Verificar se há arquivos staged
+    const stagedFiles = await getStagedFiles();
+    if (stagedFiles.length === 0) {
+      return {
+        success: false,
+        message: 'Nenhum arquivo staged. Use: git add <files>',
+      };
+    }
+
+    // 2. Determinar tipo do commit
+    const type = args.type || await promptCommitType(context);
+
+    // 3. Determinar scope (opcional)
+    const scope = args.scope || await detectScope(stagedFiles);
+
+    // 4. Gerar mensagem se não fornecida
+    let message = args.message;
+    if (!message) {
+      const diff = await getGitDiff();
+      message = await generateCommitMessage(diff, type, context);
+    }
+
+    // 5. Construir commit message
+    const breaking = args.breaking ? '!' : '';
+    const scopePart = scope ? \`(\${scope})\` : '';
+    const fullMessage = \`\${type}\${scopePart}\${breaking}: \${message}\`;
+
+    // 6. Executar commit
+    const result = await context.exec(\`git commit -m "\${fullMessage}"\`);
+
+    return {
+      success: true,
+      message: \`Commit criado: \${fullMessage}\`,
+      data: { hash: result.stdout.match(/[a-f0-9]{7}/)?.[0] },
+    };
+  },
+};
+
+// Helper: Prompt para tipo de commit
+async function promptCommitType(context: CommandContext): Promise<string> {
+  const types = [
+    { value: 'feat', label: 'feat - Nova funcionalidade' },
+    { value: 'fix', label: 'fix - Correção de bug' },
+    { value: 'docs', label: 'docs - Documentação' },
+    { value: 'style', label: 'style - Formatação' },
+    { value: 'refactor', label: 'refactor - Refatoração' },
+    { value: 'test', label: 'test - Testes' },
+    { value: 'chore', label: 'chore - Manutenção' },
+  ];
+
+  const selected = await context.prompt({
+    type: 'select',
+    message: 'Tipo do commit:',
+    choices: types,
+  });
+
+  return selected.value;
+}
+
+// Helper: Detectar scope baseado em arquivos
+async function detectScope(files: string[]): Promise<string | undefined> {
+  const scopes = new Set<string>();
+
+  for (const file of files) {
+    if (file.startsWith('src/components/')) scopes.add('components');
+    else if (file.startsWith('src/hooks/')) scopes.add('hooks');
+    else if (file.startsWith('src/utils/')) scopes.add('utils');
+    else if (file.startsWith('tests/')) scopes.add('tests');
+    else if (file.startsWith('docs/')) scopes.add('docs');
+  }
+
+  if (scopes.size === 1) {
+    return Array.from(scopes)[0];
+  }
+
+  return undefined; // Multiple scopes, don't auto-detect
+}
+\`\`\`
+
+### Utils (src/utils/git.ts)
+
+\`\`\`typescript
+// src/utils/git.ts
+import { exec } from 'child_process';
+import { promisify } from 'util';
+
+const execAsync = promisify(exec);
+
+export async function getStagedFiles(): Promise<string[]> {
+  const { stdout } = await execAsync('git diff --cached --name-only');
+  return stdout.trim().split('\\n').filter(Boolean);
+}
+
+export async function getGitDiff(): Promise<string> {
+  const { stdout } = await execAsync('git diff --cached');
+  return stdout;
+}
+
+export async function getCurrentBranch(): Promise<string> {
+  const { stdout } = await execAsync('git branch --show-current');
+  return stdout.trim();
+}
+\`\`\`
+
+### AI Helper (src/utils/ai.ts)
+
+\`\`\`typescript
+// src/utils/ai.ts
+import type { CommandContext } from '@anthropic/claude-code-plugin';
+
+export async function generateCommitMessage(
+  diff: string,
+  type: string,
+  context: CommandContext
+): Promise<string> {
+  // Usar o Claude via context para gerar mensagem
+  const response = await context.ai.complete({
+    prompt: \`Analise o seguinte diff git e gere uma mensagem de commit concisa (máx 50 caracteres) para um commit do tipo "\${type}":
+
+\`\`\`diff
+\${diff.slice(0, 3000)} // Limitar tamanho
+\`\`\`
+
+Responda APENAS com a mensagem, sem aspas ou prefixos.\`,
+  });
+
+  return response.text.trim();
+}
+\`\`\`
+
+## Testando Localmente
+
+\`\`\`bash
+# Build do plugin
+npm run build
+
+# Instalar localmente para teste
+claude plugin install ./
+
+# Testar o comando
+git add .
+claude cc
+
+# Ou com argumentos
+claude cc --type=feat --scope=auth --message="add login"
+\`\`\`
+
+## Estrutura Final
+
+\`\`\`
+claude-plugin-conventional-commit/
+├── package.json
+├── tsconfig.json
+├── README.md
+├── LICENSE
+├── src/
+│   ├── index.ts              # Entry point
+│   ├── commands/
+│   │   └── commit.ts         # Comando principal
+│   └── utils/
+│       ├── git.ts            # Git helpers
+│       └── ai.ts             # AI integration
+├── tests/
+│   ├── commit.test.ts
+│   └── utils.test.ts
+└── dist/                     # Build output
+    └── ...
+\`\`\`
+
+## Próximos Passos
+
+Na próxima lição, veremos como:
+1. Adicionar testes automatizados
+2. Publicar no npm registry
+3. Submeter para verificação da Anthropic
+`,
+    {
+      xp: 100,
+      duration: 40,
+      difficulty: 'advanced',
+      tags: ['plugins', 'typescript', 'criação', 'git'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-08-02-1',
+          question: 'Onde o plugin declara quais comandos ele fornece?',
+          options: ['index.ts exports', 'package.json campo claude.provides', 'commands.json', 'tsconfig.json'],
+          correctIndex: 1,
+          explanation: 'O package.json contém o campo claude.provides.commands que lista os comandos do plugin.',
+        },
+        {
+          id: 'q-08-02-2',
+          question: 'Como instalar um plugin local para teste?',
+          options: ['npm link', 'claude plugin install ./', 'claude test plugin', 'npm run dev'],
+          correctIndex: 1,
+          explanation: 'Use "claude plugin install ./" para instalar um plugin do diretório local.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-08-02-1',
+          title: 'Crie seu Plugin',
+          description: 'Siga o tutorial e crie o plugin Conventional Commit funcional',
+          context: 'general' as const,
+          contextDescription: 'Plugin útil para qualquer projeto com git',
+          difficulty: 'advanced' as const,
+          xpBonus: 60,
+          hints: ['Comece com npm init', 'Teste localmente antes de publicar'],
+        },
+      ],
+    }
+  ),
+
+  // ============================================================================
+  // LIÇÃO 08-03: Hooks e Lifecycle
+  // ============================================================================
+  createLesson('08', '08-03-hooks-lifecycle', '03. Hooks e Lifecycle de Plugins',
+    'Domine o sistema de hooks e o ciclo de vida completo de plugins.',
+    `# Hooks e Lifecycle de Plugins
+
+Plugins podem reagir a eventos do Claude Code através de um sistema robusto de hooks.
+
+## Lifecycle de um Plugin
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────────┐
+│                      PLUGIN LIFECYCLE                           │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│   ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐ │
+│   │  INSTALL │───▶│   LOAD   │───▶│  ACTIVE  │───▶│  UNLOAD  │ │
+│   └──────────┘    └──────────┘    └──────────┘    └──────────┘ │
+│        │               │               │               │        │
+│        ▼               ▼               ▼               ▼        │
+│   onInstall()     onLoad()        hooks...       onUnload()    │
+│   - Download      - Init          - Events       - Cleanup     │
+│   - Verify        - Connect       - Commands     - Save state  │
+│   - Permissions   - Load config   - Providers                  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Hooks Disponíveis
+
+### 1. Session Hooks
+
+\`\`\`typescript
+const plugin: Plugin = {
+  hooks: {
+    // Quando uma sessão Claude inicia
+    'session:start': async (context) => {
+      console.log('Sessão iniciada:', context.sessionId);
+      await loadUserPreferences(context);
+    },
+
+    // Quando uma sessão termina
+    'session:end': async (context) => {
+      console.log('Sessão finalizada');
+      await saveSessionMetrics(context);
+    },
+
+    // Quando o contexto muda (novo arquivo, diretório)
+    'context:change': async (context) => {
+      console.log('Novo contexto:', context.workingDirectory);
+    },
+  },
+};
+\`\`\`
+
+### 2. Command Hooks
+
+\`\`\`typescript
+const plugin: Plugin = {
+  hooks: {
+    // Antes de qualquer comando executar
+    'command:before': async (command, args, context) => {
+      console.log(\`Executando: \${command}\`, args);
+
+      // Pode modificar args
+      return { ...args, enhanced: true };
+    },
+
+    // Depois de qualquer comando
+    'command:after': async (command, result, context) => {
+      // Log de auditoria
+      await auditLog.record({
+        command,
+        result: result.success,
+        timestamp: new Date(),
+      });
+    },
+
+    // Quando um comando falha
+    'command:error': async (command, error, context) => {
+      await errorReporter.send(error);
+    },
+  },
+};
+\`\`\`
+
+### 3. File Hooks
+
+\`\`\`typescript
+const plugin: Plugin = {
+  hooks: {
+    // Antes de ler um arquivo
+    'file:read:before': async (path, context) => {
+      // Verificar permissões
+      if (isSensitive(path)) {
+        throw new Error('Arquivo sensível - acesso negado');
+      }
+    },
+
+    // Depois de ler um arquivo
+    'file:read:after': async (path, content, context) => {
+      // Decrypt se necessário
+      if (isEncrypted(path)) {
+        return decrypt(content);
+      }
+      return content;
+    },
+
+    // Antes de escrever
+    'file:write:before': async (path, content, context) => {
+      // Validar conteúdo
+      if (path.endsWith('.json')) {
+        JSON.parse(content); // Valida JSON
+      }
+
+      // Pode modificar conteúdo
+      return addHeader(content);
+    },
+
+    // Depois de escrever
+    'file:write:after': async (path, context) => {
+      // Trigger backup
+      await backupService.snapshot(path);
+    },
+  },
+};
+\`\`\`
+
+### 4. Git Hooks
+
+\`\`\`typescript
+const plugin: Plugin = {
+  hooks: {
+    // Antes de commit
+    'git:commit:before': async (message, files, context) => {
+      // Validar mensagem
+      if (!isConventionalCommit(message)) {
+        throw new Error('Use conventional commits!');
+      }
+
+      // Rodar linter nos arquivos
+      for (const file of files) {
+        await lintFile(file);
+      }
+    },
+
+    // Depois de commit
+    'git:commit:after': async (hash, context) => {
+      // Notificar
+      await slack.notify(\`Novo commit: \${hash}\`);
+    },
+
+    // Antes de push
+    'git:push:before': async (branch, context) => {
+      // Rodar testes
+      const testResult = await runTests();
+      if (!testResult.success) {
+        throw new Error('Tests failed! Push aborted.');
+      }
+    },
+  },
+};
+\`\`\`
+
+### 5. AI Hooks
+
+\`\`\`typescript
+const plugin: Plugin = {
+  hooks: {
+    // Antes de enviar prompt para Claude
+    'ai:prompt:before': async (prompt, context) => {
+      // Adicionar contexto
+      return \`[Project: \${context.projectName}]\\n\${prompt}\`;
+    },
+
+    // Depois de receber resposta
+    'ai:response:after': async (response, context) => {
+      // Log para analytics
+      await analytics.track('ai_response', {
+        tokens: response.usage.totalTokens,
+        model: response.model,
+      });
+
+      return response;
+    },
+  },
+};
+\`\`\`
+
+## Hook Priorities
+
+Múltiplos plugins podem registrar o mesmo hook. A ordem é controlada por priority:
+
+\`\`\`typescript
+const plugin: Plugin = {
+  hooks: {
+    'git:commit:before': {
+      priority: 100, // Higher = runs first (default: 50)
+      handler: async (message, files, context) => {
+        // Este roda antes de plugins com priority menor
+      },
+    },
+  },
+};
+\`\`\`
+
+## Exemplo: Plugin de Segurança Completo
+
+\`\`\`typescript
+// plugin-security-guard/src/index.ts
+import type { Plugin } from '@anthropic/claude-code-plugin';
+
+const SENSITIVE_PATTERNS = [
+  /password\s*=\s*["'][^"']+["']/i,
+  /api[_-]?key\s*=\s*["'][^"']+["']/i,
+  /secret\s*=\s*["'][^"']+["']/i,
+  /AWS_[A-Z_]+\s*=\s*["'][^"']+["']/i,
+];
+
+const plugin: Plugin = {
+  name: 'security-guard',
+  version: '1.0.0',
+
+  async onLoad(context) {
+    console.log('🛡️ Security Guard ativo');
+  },
+
+  hooks: {
+    // Verificar antes de commit
+    'git:commit:before': {
+      priority: 100, // Alta prioridade - rodar primeiro
+      handler: async (message, files, context) => {
+        const issues: string[] = [];
+
+        for (const file of files) {
+          const content = await context.readFile(file);
+
+          for (const pattern of SENSITIVE_PATTERNS) {
+            if (pattern.test(content)) {
+              issues.push(\`⚠️ Possível secret em \${file}\`);
+            }
+          }
+        }
+
+        if (issues.length > 0) {
+          throw new Error([
+            '🚨 SECURITY ALERT - Commit bloqueado!',
+            '',
+            ...issues,
+            '',
+            'Remova os secrets antes de commitar.',
+          ].join('\\n'));
+        }
+      },
+    },
+
+    // Verificar antes de escrever arquivo
+    'file:write:before': async (path, content, context) => {
+      // Não permitir .env em projeto
+      if (path.endsWith('.env') && !path.includes('.example')) {
+        throw new Error('Não commite arquivos .env! Use .env.example');
+      }
+
+      return content;
+    },
+
+    // Log de auditoria
+    'command:after': async (command, result, context) => {
+      if (command.includes('rm') || command.includes('delete')) {
+        await context.log({
+          level: 'warn',
+          message: \`Comando destrutivo executado: \${command}\`,
+          timestamp: new Date(),
+        });
+      }
+    },
+  },
+};
+
+export default plugin;
+\`\`\`
+
+## Best Practices
+
+### 1. Hooks Assíncronos
+\`\`\`typescript
+// ✅ Bom: async/await
+'file:read:after': async (path, content) => {
+  return await transform(content);
+}
+
+// ❌ Evite: callbacks
+'file:read:after': (path, content, callback) => {
+  transform(content, callback);
+}
+\`\`\`
+
+### 2. Error Handling
+\`\`\`typescript
+'command:before': async (cmd, args, context) => {
+  try {
+    await validateCommand(cmd);
+  } catch (error) {
+    // Log mas não bloqueia
+    context.log({ level: 'warn', message: error.message });
+    // Ou: throw error; // Bloqueia a execução
+  }
+}
+\`\`\`
+
+### 3. Performance
+\`\`\`typescript
+// ❌ Evite: operações lentas em hooks frequentes
+'ai:prompt:before': async (prompt) => {
+  await fetch('https://api.slow.com/log'); // LENTO!
+}
+
+// ✅ Bom: operações async não-bloqueantes
+'ai:prompt:before': async (prompt) => {
+  // Fire and forget
+  logAsync(prompt).catch(console.error);
+  return prompt;
+}
+\`\`\`
+`,
+    {
+      xp: 110,
+      duration: 35,
+      difficulty: 'advanced',
+      tags: ['plugins', 'hooks', 'lifecycle', 'eventos'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-08-03-1',
+          question: 'Qual hook é chamado ANTES de um arquivo ser escrito?',
+          options: ['file:write:after', 'file:before:write', 'file:write:before', 'pre-file-write'],
+          correctIndex: 2,
+          explanation: 'O hook file:write:before é chamado antes de qualquer escrita de arquivo.',
+        },
+        {
+          id: 'q-08-03-2',
+          question: 'Como garantir que seu hook rode antes de outros plugins?',
+          options: ['Usar async/await', 'Definir priority maior que 50', 'Registrar primeiro', 'Usar onLoad'],
+          correctIndex: 1,
+          explanation: 'O campo priority (default: 50) controla a ordem. Valores maiores rodam primeiro.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-08-03-1',
+          title: 'Plugin de Auditoria',
+          description: 'Crie um plugin que loga todos os comandos executados em um arquivo audit.log',
+          context: 'general' as const,
+          contextDescription: 'Útil para compliance e debugging',
+          difficulty: 'advanced' as const,
+          xpBonus: 70,
+          hints: ['Use o hook command:after', 'Inclua timestamp, comando e resultado'],
+        },
+      ],
+    }
+  ),
+
+  // ============================================================================
+  // LIÇÃO 08-04: Publicando Plugins
+  // ============================================================================
+  createLesson('08', '08-04-publishing', '04. Publicando e Distribuindo Plugins',
+    'Aprenda a publicar seus plugins no npm e submeter para verificação.',
+    `# Publicando e Distribuindo Plugins
+
+Depois de criar e testar seu plugin, é hora de compartilhar com a comunidade.
+
+## Preparação para Publicação
+
+### 1. Checklist de Qualidade
+
+\`\`\`markdown
+## Pre-publish Checklist
+
+### Código
+- [ ] TypeScript compilando sem erros
+- [ ] ESLint passando sem warnings
+- [ ] Testes com 80%+ coverage
+- [ ] Sem console.log em produção
+- [ ] Sem secrets hardcoded
+
+### Documentação
+- [ ] README.md completo
+- [ ] Exemplos de uso
+- [ ] Changelog atualizado
+- [ ] LICENSE file presente
+
+### Package.json
+- [ ] Versão semântica correta
+- [ ] Descrição clara
+- [ ] Keywords relevantes
+- [ ] Repository URL
+- [ ] Campo claude preenchido
+
+### Segurança
+- [ ] Permissões mínimas necessárias
+- [ ] Sem dependências vulneráveis (npm audit)
+- [ ] Input validation em todos comandos
+\`\`\`
+
+### 2. README Template
+
+\`\`\`markdown
+# @seu-usuario/claude-plugin-nome
+
+> Descrição curta do que o plugin faz
+
+[![npm version](https://badge.fury.io/js/%40seu-usuario%2Fclaude-plugin-nome.svg)](https://www.npmjs.com/package/@seu-usuario/claude-plugin-nome)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+## Features
+
+- ✅ Feature 1
+- ✅ Feature 2
+- ✅ Feature 3
+
+## Installation
+
+\\\`\\\`\\\`bash
+claude plugin install @seu-usuario/claude-plugin-nome
+\\\`\\\`\\\`
+
+## Usage
+
+\\\`\\\`\\\`bash
+# Comando básico
+claude nome-comando
+
+# Com opções
+claude nome-comando --option value
+\\\`\\\`\\\`
+
+## Configuration
+
+Crie \`~/.claude/plugins/nome/config.json\`:
+
+\\\`\\\`\\\`json
+{
+  "option1": "value1",
+  "option2": true
+}
+\\\`\\\`\\\`
+
+## Permissions Required
+
+| Permission | Reason |
+|------------|--------|
+| \`git:read\` | Para ler status do repositório |
+| \`network:fetch\` | Para buscar dados externos |
+
+## Commands
+
+### \`nome-comando\`
+
+Descrição do que o comando faz.
+
+**Arguments:**
+- \`--option\` (string): Descrição da opção
+- \`--flag\` (boolean): Descrição da flag
+
+**Examples:**
+\\\`\\\`\\\`bash
+claude nome-comando --option value
+\\\`\\\`\\\`
+
+## Development
+
+\\\`\\\`\\\`bash
+# Clone
+git clone https://github.com/seu-usuario/claude-plugin-nome
+
+# Install
+npm install
+
+# Build
+npm run build
+
+# Test
+npm test
+
+# Link for local testing
+claude plugin install ./
+\\\`\\\`\\\`
+
+## Contributing
+
+PRs welcome! Please read CONTRIBUTING.md first.
+
+## License
+
+MIT
+\\\`\\\`\\\`
+
+## Publicando no npm
+
+### 1. Setup npm Account
+
+\`\`\`bash
+# Login no npm
+npm login
+
+# Verificar login
+npm whoami
+
+# Configurar escopo (para @usuario/package)
+npm config set scope seu-usuario
+\`\`\`
+
+### 2. Verificar Package
+
+\`\`\`bash
+# Verificar o que será publicado
+npm pack --dry-run
+
+# Verificar versão
+npm version
+
+# Rodar testes finais
+npm test
+
+# Verificar vulnerabilidades
+npm audit
+\`\`\`
+
+### 3. Publicar
+
+\`\`\`bash
+# Primeira publicação
+npm publish --access public
+
+# Atualizações
+npm version patch  # 1.0.0 -> 1.0.1
+npm version minor  # 1.0.0 -> 1.1.0
+npm version major  # 1.0.0 -> 2.0.0
+npm publish
+\`\`\`
+
+## Verificação Anthropic
+
+Plugins verificados recebem um badge e aparecem em destaque nas buscas.
+
+### Processo de Verificação
+
+\`\`\`bash
+# Submeter para verificação
+claude plugin verify-submit @seu-usuario/plugin-nome
+
+# Isso inicia:
+# 1. Análise de segurança automatizada
+# 2. Code review pela equipe Anthropic
+# 3. Testes de compatibilidade
+# 4. Verificação de permissões
+\`\`\`
+
+### Critérios de Verificação
+
+| Critério | Requisito |
+|----------|-----------|
+| **Segurança** | Sem vulnerabilidades conhecidas |
+| **Permissões** | Mínimas necessárias, bem documentadas |
+| **Qualidade** | Testes, documentação, sem bugs críticos |
+| **Manutenção** | Autor responsivo, atualizações regulares |
+| **Utilidade** | Resolve problema real, não duplica funcionalidade |
+
+### Benefícios de Verificação
+
+- ✅ Badge "Verified" no registry
+- ✅ Destaque nas buscas
+- ✅ Maior confiança dos usuários
+- ✅ Suporte prioritário
+
+## Versionamento Semântico
+
+\`\`\`
+MAJOR.MINOR.PATCH
+
+1.0.0 -> 1.0.1  (patch: bug fix)
+1.0.0 -> 1.1.0  (minor: nova feature, backwards-compatible)
+1.0.0 -> 2.0.0  (major: breaking change)
+\`\`\`
+
+### Changelog
+
+\`\`\`markdown
+# Changelog
+
+## [1.1.0] - 2025-01-15
+
+### Added
+- Novo comando \`feature-x\`
+- Suporte a configuração via env vars
+
+### Changed
+- Melhorada performance do comando principal
+
+### Fixed
+- Bug no parsing de argumentos
+
+## [1.0.0] - 2025-01-01
+
+### Added
+- Release inicial
+- Comando principal
+- Documentação completa
+\`\`\`
+
+## Distribuição Alternativa
+
+### Via GitHub Releases
+
+\`\`\`bash
+# Usuários podem instalar diretamente do GitHub
+claude plugin install github:seu-usuario/plugin-nome
+
+# Ou de uma release específica
+claude plugin install github:seu-usuario/plugin-nome@v1.0.0
+\`\`\`
+
+### Via Arquivo Local
+
+\`\`\`bash
+# Para distribuição privada
+claude plugin install ./path/to/plugin.tgz
+
+# Ou via URL
+claude plugin install https://internal.company.com/plugins/plugin.tgz
+\`\`\`
+
+## Monitoramento Pós-Publicação
+
+### Métricas npm
+
+\`\`\`bash
+# Ver downloads
+npm info @seu-usuario/plugin-nome
+
+# Ou via npm-stat.com
+\`\`\`
+
+### Issues e Feedback
+
+\`\`\`yaml
+# .github/ISSUE_TEMPLATE/bug_report.md
+name: Bug Report
+about: Report a bug in the plugin
+body:
+  - type: input
+    label: Plugin Version
+    required: true
+  - type: input
+    label: Claude Code Version
+    required: true
+  - type: textarea
+    label: Description
+    required: true
+  - type: textarea
+    label: Steps to Reproduce
+    required: true
+\`\`\`
+`,
+    {
+      xp: 90,
+      duration: 30,
+      difficulty: 'advanced',
+      tags: ['plugins', 'npm', 'publicação', 'distribuição'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-08-04-1',
+          question: 'Qual comando publica um pacote com escopo (@user/package) pela primeira vez?',
+          options: ['npm publish', 'npm publish --access public', 'npm release', 'npm deploy'],
+          correctIndex: 1,
+          explanation: 'Pacotes com escopo (@user/package) precisam de --access public na primeira publicação.',
+        },
+        {
+          id: 'q-08-04-2',
+          question: 'O que significa "npm version minor"?',
+          options: ['1.0.0 -> 1.0.1', '1.0.0 -> 1.1.0', '1.0.0 -> 2.0.0', 'Deleta a versão'],
+          correctIndex: 1,
+          explanation: 'Minor version (1.0.0 -> 1.1.0) indica nova funcionalidade backwards-compatible.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-08-04-1',
+          title: 'Publique seu Plugin',
+          description: 'Publique o plugin criado nas lições anteriores no npm',
+          context: 'general' as const,
+          contextDescription: 'Contribua para o ecosystem de plugins',
+          difficulty: 'advanced' as const,
+          xpBonus: 80,
+          hints: ['Siga o checklist de qualidade', 'Comece com versão 0.1.0 se ainda experimental'],
+        },
+      ],
+    }
+  ),
+
+  // ============================================================================
+  // LIÇÃO 08-05: Best Practices e Patterns
+  // ============================================================================
+  createLesson('08', '08-05-best-practices', '05. Best Practices e Design Patterns',
+    'Padrões arquiteturais e melhores práticas para plugins de alta qualidade.',
+    `# Best Practices e Design Patterns
+
+Crie plugins robustos, maintainable e de alta performance.
+
+## Patterns Arquiteturais
+
+### 1. Command Pattern
+
+Cada comando é um objeto isolado e testável:
+
+\`\`\`typescript
+// ✅ Bom: Comandos como objetos
+interface Command<T = unknown> {
+  name: string;
+  description: string;
+  args: ArgSpec;
+  validate: (args: T) => ValidationResult;
+  execute: (args: T, context: Context) => Promise<Result>;
+}
+
+const myCommand: Command<MyArgs> = {
+  name: 'my-command',
+  description: 'Does something useful',
+  args: { /* ... */ },
+  validate: (args) => {
+    if (!args.required) {
+      return { valid: false, error: 'Missing required arg' };
+    }
+    return { valid: true };
+  },
+  execute: async (args, context) => {
+    // Implementação
+  },
+};
+
+// ❌ Evite: Funções soltas
+function myCommand(args) {
+  // Difícil de testar, sem validação clara
+}
+\`\`\`
+
+### 2. Provider Pattern
+
+Abstraia integrações externas:
+
+\`\`\`typescript
+// Provider interface
+interface DataProvider {
+  name: string;
+  fetch(query: Query): Promise<Data[]>;
+  mutate?(mutation: Mutation): Promise<Result>;
+}
+
+// Implementação específica
+class JiraProvider implements DataProvider {
+  name = 'jira';
+
+  constructor(private config: JiraConfig) {}
+
+  async fetch(query: Query): Promise<Issue[]> {
+    return await this.client.search(query);
+  }
+}
+
+class GitHubProvider implements DataProvider {
+  name = 'github';
+
+  async fetch(query: Query): Promise<Issue[]> {
+    return await this.octokit.issues.list(query);
+  }
+}
+
+// Plugin usa providers abstratos
+const plugin: Plugin = {
+  providers: {
+    issues: new JiraProvider(config),
+    // Fácil trocar: issues: new GitHubProvider(config),
+  },
+};
+\`\`\`
+
+### 3. Middleware Pattern
+
+Chain of responsibility para hooks:
+
+\`\`\`typescript
+type Middleware = (
+  context: Context,
+  next: () => Promise<void>
+) => Promise<void>;
+
+// Middlewares reutilizáveis
+const loggingMiddleware: Middleware = async (ctx, next) => {
+  console.log('Before:', ctx.command);
+  await next();
+  console.log('After:', ctx.result);
+};
+
+const authMiddleware: Middleware = async (ctx, next) => {
+  if (!ctx.user.authenticated) {
+    throw new Error('Unauthorized');
+  }
+  await next();
+};
+
+const timingMiddleware: Middleware = async (ctx, next) => {
+  const start = Date.now();
+  await next();
+  console.log(\`Duration: \${Date.now() - start}ms\`);
+};
+
+// Compor middlewares
+const plugin: Plugin = {
+  middleware: [
+    loggingMiddleware,
+    authMiddleware,
+    timingMiddleware,
+  ],
+};
+\`\`\`
+
+### 4. Factory Pattern
+
+Criar objetos complexos:
+
+\`\`\`typescript
+class CommandFactory {
+  static create(type: string, options: Options): Command {
+    switch (type) {
+      case 'git':
+        return new GitCommand(options);
+      case 'file':
+        return new FileCommand(options);
+      case 'api':
+        return new ApiCommand(options);
+      default:
+        throw new Error(\`Unknown command type: \${type}\`);
+    }
+  }
+}
+
+// Uso
+const cmd = CommandFactory.create('git', { repo: '.' });
+\`\`\`
+
+## Error Handling
+
+### Custom Errors
+
+\`\`\`typescript
+// Hierarquia de erros
+class PluginError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+    public recoverable: boolean = true
+  ) {
+    super(message);
+    this.name = 'PluginError';
+  }
+}
+
+class ValidationError extends PluginError {
+  constructor(field: string, issue: string) {
+    super(\`Validation failed: \${field} - \${issue}\`, 'VALIDATION_ERROR');
+  }
+}
+
+class PermissionError extends PluginError {
+  constructor(permission: string) {
+    super(\`Missing permission: \${permission}\`, 'PERMISSION_ERROR', false);
+  }
+}
+
+class NetworkError extends PluginError {
+  constructor(url: string, status: number) {
+    super(\`Network error: \${url} returned \${status}\`, 'NETWORK_ERROR');
+  }
+}
+
+// Uso
+try {
+  await fetchData();
+} catch (error) {
+  if (error instanceof ValidationError) {
+    context.log({ level: 'warn', message: error.message });
+    return { success: false, error: error.message };
+  }
+  if (error instanceof PermissionError) {
+    throw error; // Re-throw non-recoverable
+  }
+  // Unknown error
+  throw new PluginError('Unexpected error', 'UNKNOWN', false);
+}
+\`\`\`
+
+### Result Pattern
+
+Evite exceções para erros esperados:
+
+\`\`\`typescript
+type Result<T, E = Error> =
+  | { success: true; data: T }
+  | { success: false; error: E };
+
+async function fetchUser(id: string): Promise<Result<User>> {
+  try {
+    const user = await api.getUser(id);
+    if (!user) {
+      return { success: false, error: new Error('User not found') };
+    }
+    return { success: true, data: user };
+  } catch (error) {
+    return { success: false, error };
+  }
+}
+
+// Uso - sem try/catch
+const result = await fetchUser('123');
+if (!result.success) {
+  console.error('Failed:', result.error.message);
+  return;
+}
+console.log('User:', result.data.name);
+\`\`\`
+
+## Performance
+
+### 1. Lazy Loading
+
+\`\`\`typescript
+// ✅ Bom: Carregar sob demanda
+const plugin: Plugin = {
+  commands: {
+    'heavy-command': {
+      // Módulo carregado apenas quando comando é usado
+      handler: async (args, context) => {
+        const { HeavyProcessor } = await import('./heavy-processor');
+        return new HeavyProcessor().run(args);
+      },
+    },
+  },
+};
+
+// ❌ Evite: Carregar tudo no início
+import { HeavyProcessor } from './heavy-processor'; // Carrega sempre
+\`\`\`
+
+### 2. Caching
+
+\`\`\`typescript
+class Cache<T> {
+  private data = new Map<string, { value: T; expires: number }>();
+
+  get(key: string): T | undefined {
+    const item = this.data.get(key);
+    if (!item) return undefined;
+    if (Date.now() > item.expires) {
+      this.data.delete(key);
+      return undefined;
+    }
+    return item.value;
+  }
+
+  set(key: string, value: T, ttlMs: number): void {
+    this.data.set(key, {
+      value,
+      expires: Date.now() + ttlMs,
+    });
+  }
+}
+
+// Uso no plugin
+const cache = new Cache<ApiResponse>();
+
+async function fetchWithCache(url: string): Promise<ApiResponse> {
+  const cached = cache.get(url);
+  if (cached) return cached;
+
+  const response = await fetch(url);
+  const data = await response.json();
+  cache.set(url, data, 60000); // 1 minuto
+  return data;
+}
+\`\`\`
+
+### 3. Debouncing
+
+\`\`\`typescript
+function debounce<T extends (...args: any[]) => any>(
+  fn: T,
+  delayMs: number
+): (...args: Parameters<T>) => void {
+  let timeout: NodeJS.Timeout;
+
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), delayMs);
+  };
+}
+
+// Uso em hook de file watch
+const handleFileChange = debounce(async (path: string) => {
+  await reindex(path);
+}, 500);
+\`\`\`
+
+## Testing
+
+### Unit Tests
+
+\`\`\`typescript
+// tests/commands/commit.test.ts
+import { commitCommand } from '../../src/commands/commit';
+import { createMockContext } from '../helpers';
+
+describe('commitCommand', () => {
+  it('should validate commit message format', async () => {
+    const context = createMockContext();
+
+    const result = await commitCommand.handler(
+      { type: 'feat', message: 'add login' },
+      context
+    );
+
+    expect(result.success).toBe(true);
+    expect(context.exec).toHaveBeenCalledWith(
+      expect.stringContaining('feat: add login')
+    );
+  });
+
+  it('should fail without staged files', async () => {
+    const context = createMockContext({ stagedFiles: [] });
+
+    const result = await commitCommand.handler({}, context);
+
+    expect(result.success).toBe(false);
+    expect(result.message).toContain('Nenhum arquivo staged');
+  });
+});
+\`\`\`
+
+### Integration Tests
+
+\`\`\`typescript
+// tests/integration/plugin.test.ts
+import { loadPlugin, unloadPlugin } from '../helpers';
+
+describe('Plugin Integration', () => {
+  let plugin: Plugin;
+
+  beforeAll(async () => {
+    plugin = await loadPlugin('./dist/index.js');
+  });
+
+  afterAll(async () => {
+    await unloadPlugin(plugin);
+  });
+
+  it('should load and unload correctly', () => {
+    expect(plugin.name).toBe('my-plugin');
+  });
+
+  it('should register commands', () => {
+    expect(plugin.commands).toHaveProperty('my-command');
+  });
+});
+\`\`\`
+
+## Checklist Final
+
+\`\`\`markdown
+## Plugin Quality Checklist
+
+### Architecture
+- [ ] Commands como objetos isolados
+- [ ] Providers abstratos para integrações
+- [ ] Error handling com tipos específicos
+- [ ] Result pattern para erros esperados
+
+### Performance
+- [ ] Lazy loading de módulos pesados
+- [ ] Caching de dados externos
+- [ ] Debounce de operações frequentes
+- [ ] Sem operações síncronas bloqueantes
+
+### Testing
+- [ ] Unit tests para cada comando
+- [ ] Integration tests para hooks
+- [ ] Mocks para dependências externas
+- [ ] 80%+ code coverage
+
+### Security
+- [ ] Input validation em todos comandos
+- [ ] Permissões mínimas necessárias
+- [ ] Sem secrets hardcoded
+- [ ] Sanitização de output
+
+### Documentation
+- [ ] README completo
+- [ ] JSDoc em funções públicas
+- [ ] Changelog atualizado
+- [ ] Exemplos de uso
+\`\`\`
+`,
+    {
+      xp: 120,
+      duration: 45,
+      difficulty: 'expert',
+      tags: ['plugins', 'patterns', 'best-practices', 'arquitetura'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-08-05-1',
+          question: 'Qual pattern é recomendado para evitar try/catch em erros esperados?',
+          options: ['Command Pattern', 'Factory Pattern', 'Result Pattern', 'Middleware Pattern'],
+          correctIndex: 2,
+          explanation: 'Result Pattern retorna { success: true, data } ou { success: false, error } sem exceções.',
+        },
+        {
+          id: 'q-08-05-2',
+          question: 'O que é "lazy loading" em plugins?',
+          options: ['Carregar tudo no início', 'Carregar módulos apenas quando necessário', 'Cache de dados', 'Debounce de funções'],
+          correctIndex: 1,
+          explanation: 'Lazy loading carrega módulos sob demanda, melhorando o tempo de inicialização.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-08-05-1',
+          title: 'Refatore seu Plugin',
+          description: 'Aplique os patterns aprendidos para refatorar o plugin criado nas lições anteriores',
+          context: 'general' as const,
+          contextDescription: 'Melhore a qualidade do seu código',
+          difficulty: 'expert' as const,
+          xpBonus: 100,
+          hints: ['Comece pelo error handling', 'Adicione caching onde faz sentido'],
+        },
+      ],
+    }
+  ),
+
+  // ============================================================================
+  // LIÇÃO 08-06: Challenge Final
+  // ============================================================================
+  createLesson('08', '08-06-challenge', '06. Challenge: Plugin Enterprise',
+    'Construa um plugin completo nível enterprise aplicando todos os conceitos.',
+    `# Challenge: Plugin Enterprise
+
+Chegou a hora de aplicar tudo que aprendeu criando um plugin de nível profissional.
+
+## O Desafio
+
+Crie um **Plugin de Project Analytics** que:
+
+1. **Coleta métricas** do projeto atual
+2. **Gera relatórios** de saúde do código
+3. **Integra com CI/CD** para monitoramento contínuo
+4. **Expõe dashboard** via comando
+
+## Requisitos Funcionais
+
+### Comando: \`analytics\`
+
+\`\`\`bash
+# Gerar relatório completo
+claude analytics
+
+# Métricas específicas
+claude analytics --metrics=coverage,complexity,dependencies
+
+# Formato de saída
+claude analytics --format=json|markdown|html
+
+# Comparar com baseline
+claude analytics --compare=main
+\`\`\`
+
+### Métricas a Coletar
+
+| Métrica | Descrição | Fonte |
+|---------|-----------|-------|
+| **Lines of Code** | Total de linhas | cloc/tokei |
+| **Test Coverage** | % de cobertura | jest/vitest |
+| **Complexity** | Cyclomatic complexity | eslint |
+| **Dependencies** | Outdated/vulnerable | npm audit |
+| **Git Stats** | Commits, contributors | git log |
+| **Tech Debt** | Issues marcadas como debt | grep TODO/FIXME |
+
+### Output Esperado
+
+\`\`\`markdown
+# 📊 Project Analytics Report
+
+**Project:** my-app
+**Generated:** 2025-01-15 10:30:00
+**Compared to:** main (3 days ago)
+
+## Summary
+
+| Metric | Current | Previous | Change |
+|--------|---------|----------|--------|
+| Lines of Code | 15,234 | 14,890 | +344 ⬆️ |
+| Test Coverage | 82.5% | 80.1% | +2.4% ✅ |
+| Complexity (avg) | 4.2 | 4.5 | -0.3 ✅ |
+| Dependencies | 45 | 43 | +2 ⚠️ |
+| Vulnerabilities | 0 | 2 | -2 ✅ |
+| Tech Debt Items | 12 | 15 | -3 ✅ |
+
+## Health Score: 85/100 (Good) ⬆️ +3
+
+### Breakdown
+- 📦 Dependencies: 90/100
+- 🧪 Testing: 85/100
+- 🔄 Complexity: 80/100
+- 🔒 Security: 95/100
+- 📝 Documentation: 75/100
+
+## Recommendations
+
+1. **Update 2 outdated dependencies**
+   - lodash: 4.17.20 → 4.17.21
+   - axios: 1.5.0 → 1.6.0
+
+2. **Improve coverage in src/utils/**
+   - Current: 65%, Target: 80%
+
+3. **Reduce complexity in src/services/api.ts**
+   - Function processData has complexity 15 (max: 10)
+
+## Trends (Last 7 Days)
+
+\`\`\`
+Coverage:  ▁▂▃▄▅▆▇ 82.5%
+Complexity: ▇▆▅▄▃▂▁ 4.2
+\`\`\`
+\`\`\`
+
+## Requisitos Técnicos
+
+### Estrutura do Plugin
+
+\`\`\`
+plugin-project-analytics/
+├── package.json
+├── tsconfig.json
+├── src/
+│   ├── index.ts
+│   ├── commands/
+│   │   └── analytics.ts
+│   ├── collectors/
+│   │   ├── index.ts
+│   │   ├── loc.ts           # Lines of Code
+│   │   ├── coverage.ts      # Test Coverage
+│   │   ├── complexity.ts    # Cyclomatic Complexity
+│   │   ├── dependencies.ts  # npm audit
+│   │   ├── git.ts           # Git stats
+│   │   └── techDebt.ts      # TODO/FIXME count
+│   ├── reporters/
+│   │   ├── index.ts
+│   │   ├── markdown.ts
+│   │   ├── json.ts
+│   │   └── html.ts
+│   ├── utils/
+│   │   ├── cache.ts
+│   │   ├── score.ts
+│   │   └── trends.ts
+│   └── types/
+│       └── index.ts
+├── tests/
+│   ├── collectors/
+│   └── reporters/
+└── README.md
+\`\`\`
+
+### Permissões Necessárias
+
+\`\`\`json
+{
+  "claude": {
+    "permissions": [
+      "filesystem:read",
+      "exec:safe",
+      "git:read",
+      "network:fetch"
+    ]
+  }
+}
+\`\`\`
+
+## Critérios de Avaliação
+
+| Critério | Pontos | Descrição |
+|----------|--------|-----------|
+| **Funcionalidade** | 30 | Todas métricas funcionando |
+| **Arquitetura** | 25 | Patterns corretos, código limpo |
+| **Error Handling** | 15 | Erros tratados graciosamente |
+| **Performance** | 10 | Caching, lazy loading |
+| **Testing** | 10 | 80%+ coverage |
+| **Documentação** | 10 | README completo, exemplos |
+| **Total** | 100 | |
+
+## Dicas
+
+### 1. Comece Simples
+
+\`\`\`typescript
+// Primeiro: apenas LOC
+const locCollector = {
+  async collect(context: Context): Promise<number> {
+    const result = await context.exec('find . -name "*.ts" | xargs wc -l');
+    return parseInt(result.stdout);
+  },
+};
+\`\`\`
+
+### 2. Use Providers
+
+\`\`\`typescript
+interface MetricCollector {
+  name: string;
+  collect(context: Context): Promise<MetricResult>;
+}
+
+const collectors: MetricCollector[] = [
+  new LocCollector(),
+  new CoverageCollector(),
+  new ComplexityCollector(),
+];
+
+// Executar todos em paralelo
+const results = await Promise.all(
+  collectors.map(c => c.collect(context))
+);
+\`\`\`
+
+### 3. Cache Results
+
+\`\`\`typescript
+const cache = new Cache<AnalyticsReport>();
+
+async function getReport(context: Context): Promise<AnalyticsReport> {
+  const cacheKey = \`\${context.projectPath}-\${context.gitHash}\`;
+
+  const cached = cache.get(cacheKey);
+  if (cached) return cached;
+
+  const report = await generateReport(context);
+  cache.set(cacheKey, report, 300000); // 5 min
+  return report;
+}
+\`\`\`
+
+### 4. Handle Errors Gracefully
+
+\`\`\`typescript
+async function collectSafely(collector: MetricCollector): Promise<MetricResult> {
+  try {
+    return await collector.collect(context);
+  } catch (error) {
+    return {
+      name: collector.name,
+      success: false,
+      error: error.message,
+      value: null,
+    };
+  }
+}
+\`\`\`
+
+## Entrega
+
+1. **Repositório GitHub** com código completo
+2. **Publicado no npm** (pode ser versão 0.x)
+3. **README** com instruções de instalação e uso
+4. **Demo** mostrando o plugin funcionando
+
+## Bônus (+20 pontos)
+
+- [ ] **+5**: Hook que roda analytics em cada commit
+- [ ] **+5**: Comparação com branches diferentes
+- [ ] **+5**: Integração com GitHub Actions
+- [ ] **+5**: Dashboard HTML interativo
+
+## Template Inicial
+
+\`\`\`typescript
+// src/index.ts
+import type { Plugin } from '@anthropic/claude-code-plugin';
+import { analyticsCommand } from './commands/analytics';
+
+const plugin: Plugin = {
+  name: 'project-analytics',
+  version: '1.0.0',
+
+  async onLoad(context) {
+    console.log('📊 Project Analytics loaded');
+  },
+
+  commands: {
+    'analytics': analyticsCommand,
+  },
+
+  hooks: {
+    // Bônus: rodar após cada commit
+    'git:commit:after': async (hash, context) => {
+      if (context.config.autoAnalytics) {
+        await runQuickAnalytics(context);
+      }
+    },
+  },
+};
+
+export default plugin;
+\`\`\`
+
+---
+
+> **Boa sorte!** Este é um projeto desafiador que demonstra domínio completo do sistema de plugins. Ao completá-lo, você terá criado uma ferramenta real que pode usar em todos seus projetos.
+`,
+    {
+      xp: 200,
+      duration: 120,
+      difficulty: 'expert',
+      tags: ['challenge', 'plugins', 'enterprise', 'analytics'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-08-06-1',
+          title: 'Plugin Analytics Completo',
+          description: 'Implemente o plugin de Project Analytics seguindo todos os requisitos',
+          context: 'general' as const,
+          contextDescription: 'Plugin enterprise-grade para análise de projetos',
+          difficulty: 'expert' as const,
+          xpBonus: 150,
+          hints: [
+            'Comece com 2-3 collectors básicos',
+            'Adicione caching cedo',
+            'Teste localmente antes de publicar',
+          ],
+        },
+      ],
+    }
   ),
 ];
 
