@@ -2981,6 +2981,531 @@ Quando houver texto de contrato ou menção a "contrato", "cláusula", "acordo".
       ]
     }
   ),
+
+  createLesson('04', '04-03-skill-library', '03. Biblioteca de Skills TOP 1%',
+    'Conheça as skills mais poderosas e como organizá-las.',
+    `# Biblioteca de Skills TOP 1%
+
+Os melhores usuários do Claude Code têm uma biblioteca de skills bem organizada. Aprenda a construir a sua.
+
+## Categorias de Skills
+
+### 1. Análise & Pesquisa
+\`\`\`
+/pesquisa-curada     → Pesquisa de alta qualidade com fontes
+/analise-3-camadas   → Análise em 3 níveis de profundidade
+/briefing-executivo  → Resumo CEO-level
+/resumo-estrategico  → Destila insights de documentos longos
+\`\`\`
+
+### 2. Produtividade & Comunicação
+\`\`\`
+/message-polish      → Refina mensagens profissionais
+/meeting-script      → Roteiro para reuniões importantes
+/traducao-corporativa → Tradução com ajuste de tom
+\`\`\`
+
+### 3. Desenvolvimento
+\`\`\`
+/code-review        → Revisão de código estruturada
+/prompt-architect   → Cria prompts de alta performance
+/ops-howto          → Guias técnicos passo a passo
+\`\`\`
+
+### 4. Jurídico (Costa Law)
+\`\`\`
+/analise-contrato   → Análise técnica de contratos
+/legal-shield       → Blindagem jurídica preventiva
+/lgpd-compliance    → Adequação LGPD
+/workflow-juridico  → Workflow completo end-to-end
+\`\`\`
+
+### 5. Dados & Arquivos
+\`\`\`
+/data-orchestrator  → Organização inteligente de arquivos
+/file-orchestrator  → Gestão avançada multi-cloud
+\`\`\`
+
+## Estrutura de Pastas Recomendada
+
+\`\`\`
+~/.claude/skills/
+├── _index.md           # Índice de todas as skills
+├── _router.md          # Router automático
+├── analise/
+│   ├── analise-3-camadas.md
+│   ├── briefing-executivo.md
+│   └── resumo-estrategico.md
+├── comunicacao/
+│   ├── message-polish.md
+│   └── meeting-script.md
+├── dev/
+│   ├── code-review.md
+│   └── prompt-architect.md
+└── juridico/
+    ├── analise-contrato.md
+    └── lgpd-compliance.md
+\`\`\`
+
+## Skill Index (Obrigatória!)
+
+Crie um \`_index.md\` listando todas as suas skills:
+
+\`\`\`markdown
+---
+description: Índice de todas as skills disponíveis
+model-invoked: true
+---
+
+# Skills Disponíveis
+
+| Skill | Descrição | Comando |
+|-------|-----------|---------|
+| Análise 3 Camadas | Análise estruturada | /analise-3-camadas |
+| Briefing Executivo | Resumo CEO-level | /briefing-executivo |
+| Message Polish | Refina mensagens | /message-polish |
+...
+\`\`\`
+
+## Skill Router (Avançado)
+
+Um router decide automaticamente qual skill usar:
+
+\`\`\`markdown
+---
+description: Router automático de skills
+model-invoked: true
+---
+
+# Skill Router
+
+## Análise de Intenção
+1. Identificar palavras-chave no pedido
+2. Mapear para categoria de skill
+3. Sugerir skill apropriada
+
+## Mapeamento
+- "contrato", "cláusula" → /analise-contrato
+- "resumo", "síntese" → /briefing-executivo
+- "revisar código" → /code-review
+- "reunião", "meeting" → /meeting-script
+\`\`\`
+
+## Dica TOP 1%
+
+> Mantenha suas skills em um repositório Git separado. Assim você pode versionar, fazer backup e compartilhar com a equipe.
+
+\`\`\`bash
+# Exemplo de setup
+cd ~/.claude/skills
+git init
+git remote add origin git@github.com:seu-user/claude-skills.git
+\`\`\`
+`,
+    {
+      xp: 110,
+      duration: 35,
+      difficulty: 'advanced',
+      tags: ['skills', 'biblioteca', 'organização'],
+      quizzes: [
+        {
+          question: 'Qual é a função do arquivo _index.md na pasta de skills?',
+          options: [
+            'Apenas decoração',
+            'Listar todas as skills disponíveis para Claude consultar',
+            'Configurar o tema do terminal',
+            'Armazenar senhas'
+          ],
+          correctIndex: 1,
+          explanation: 'O _index.md serve como catálogo de skills, permitindo que Claude saiba quais skills existem e quando usar cada uma.'
+        },
+        {
+          question: 'O que faz um Skill Router?',
+          options: [
+            'Instala novas skills automaticamente',
+            'Decide automaticamente qual skill usar baseado no contexto',
+            'Remove skills antigas',
+            'Faz backup das skills'
+          ],
+          correctIndex: 1,
+          explanation: 'O Router analisa o pedido do usuário e sugere/invoca a skill mais apropriada automaticamente.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('04', '04-04-productivity-skills', '04. Skills para Produtividade',
+    'Skills que multiplicam sua produtividade no dia a dia.',
+    `# Skills para Produtividade
+
+Estas skills transformam tarefas repetitivas em operações de um comando.
+
+## 1. Message Polish
+
+Refina qualquer mensagem profissional:
+
+\`\`\`markdown
+---
+description: Polimento de mensagens profissionais
+model-invoked: true
+---
+
+# Message Polish
+
+## Quando Usar
+Quando o usuário disser "polir", "melhorar", "refinar" + mensagem.
+
+## Processo
+1. Identificar tom desejado (formal, casual, assertivo)
+2. Corrigir gramática e ortografia
+3. Melhorar clareza e fluxo
+4. Ajustar tom
+5. Manter a essência original
+
+## Output
+- Mensagem polida
+- Changelog das mudanças (opcional)
+\`\`\`
+
+**Exemplo:**
+\`\`\`
+Input: "polir: oi pessoal, preciso do relatório pra ontem ok?"
+
+Output: "Olá equipe, preciso do relatório com urgência.
+Podem me enviar até o final do dia? Agradeço a atenção."
+\`\`\`
+
+## 2. Meeting Script
+
+Cria roteiro estruturado para reuniões:
+
+\`\`\`markdown
+---
+description: Roteiro para reuniões importantes
+model-invoked: true
+---
+
+# Meeting Script
+
+## Processo
+1. Definir objetivo da reunião
+2. Criar agenda com tempos
+3. Preparar talking points
+4. Antecipar objeções
+5. Definir próximos passos
+
+## Output
+\\\`\\\`\\\`
+📋 ROTEIRO: [Nome da Reunião]
+⏱️ Duração: X min
+
+1. Abertura (2 min)
+   - Contextualização
+
+2. Pauta Principal (X min)
+   - Talking point 1
+   - Talking point 2
+
+3. Discussão (X min)
+   - Perguntas preparadas
+
+4. Fechamento (3 min)
+   - Próximos passos
+   - Responsáveis
+\\\`\\\`\\\`
+\`\`\`
+
+## 3. Context Saver
+
+Salva contexto da sessão para retomar depois:
+
+\`\`\`markdown
+---
+description: Salva contexto da sessão atual
+model-invoked: false
+---
+
+# Context Saver
+
+## Processo
+1. Identificar decisões tomadas
+2. Listar arquivos modificados
+3. Resumir estado atual
+4. Próximos passos pendentes
+5. Salvar em Memory MCP
+
+## Output
+Arquivo \`session-YYYY-MM-DD.md\` com contexto completo.
+\`\`\`
+
+## 4. Quick Audit
+
+Health check rápido do ambiente Claude Code:
+
+\`\`\`markdown
+---
+description: Auditoria rápida do ambiente
+model-invoked: false
+---
+
+# Quick Audit
+
+## Verificar
+- [ ] MCPs ativos e funcionando
+- [ ] Skills carregadas
+- [ ] Memory MCP respondendo
+- [ ] Configurações corretas
+- [ ] Hooks ativos
+
+## Output
+Score de saúde: X/10 com recomendações.
+\`\`\`
+
+## 5. Tradução Corporativa
+
+Tradução com ajuste de contexto cultural:
+
+\`\`\`markdown
+---
+description: Tradução corporativa de alta qualidade
+model-invoked: true
+---
+
+# Tradução Corporativa
+
+## Processo
+1. Identificar idioma origem/destino
+2. Analisar contexto e tom
+3. Traduzir mantendo nuances
+4. Adaptar expressões culturais
+5. Revisar terminologia técnica
+
+## Diferencial
+- Não é tradução literal
+- Ajusta tom para cultura destino
+- Mantém terminologia do setor
+\`\`\`
+
+## Fluxo de Produtividade
+
+\`\`\`
+Dia Típico com Skills:
+
+07:30 - /quick-audit (check do ambiente)
+09:00 - /meeting-script para call com cliente
+10:00 - /message-polish em emails importantes
+14:00 - /briefing-executivo para relatório
+17:00 - /context-saver para salvar o dia
+\`\`\`
+`,
+    {
+      xp: 120,
+      duration: 40,
+      difficulty: 'intermediate',
+      tags: ['skills', 'produtividade', 'automação'],
+      quizzes: [
+        {
+          question: 'Qual skill você usaria para preparar uma reunião importante?',
+          options: [
+            '/message-polish',
+            '/meeting-script',
+            '/context-saver',
+            '/quick-audit'
+          ],
+          correctIndex: 1,
+          explanation: '/meeting-script cria roteiros estruturados com agenda, talking points e próximos passos para reuniões.'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-04-04-1',
+          title: 'Crie 3 Skills de Produtividade',
+          description: 'Crie 3 skills que automatizem tarefas do seu dia a dia. Documente o tempo economizado.',
+          context: 'personal',
+          contextDescription: 'Suas tarefas repetitivas',
+          difficulty: 'intermediate',
+          xpBonus: 100,
+          hints: [
+            'Pense em emails, relatórios, documentação',
+            'Comece pelas tarefas mais frequentes'
+          ]
+        }
+      ]
+    }
+  ),
+
+  createLesson('04', '04-05-skill-creator-challenge', '05. Challenge: Skill Creator',
+    'Desafio final: crie um sistema completo de skills.',
+    `# Challenge: Skill Creator
+
+Este é seu desafio final do módulo de Skills. Você vai criar um sistema completo de skills personalizadas.
+
+## O Desafio
+
+Crie uma **biblioteca de 5 skills** que resolva problemas reais do seu contexto:
+
+### Requisitos Mínimos
+
+1. **_index.md** - Catálogo de todas as skills
+2. **_router.md** - Router automático
+3. **3 Skills Especializadas** - Para seu contexto
+
+### Critérios de Avaliação
+
+| Critério | Pontos |
+|----------|:------:|
+| Estrutura correta (frontmatter) | 20 |
+| Documentação clara | 20 |
+| Exemplos de uso | 20 |
+| Utilidade prática | 20 |
+| Router funcional | 20 |
+| **Total** | **100** |
+
+## Template para Cada Skill
+
+\`\`\`markdown
+---
+description: [Descrição em 1 linha]
+model-invoked: [true/false]
+---
+
+# [Nome da Skill]
+
+## Quando Usar
+[Em quais situações esta skill é útil]
+
+## Processo
+1. [Passo 1]
+2. [Passo 2]
+3. [Passo 3]
+
+## Input Esperado
+[O que o usuário deve fornecer]
+
+## Output
+[Formato da saída]
+
+## Exemplos
+
+### Exemplo 1
+**Input:** [exemplo de entrada]
+**Output:** [exemplo de saída]
+\`\`\`
+
+## Ideias por Contexto
+
+### Para Desenvolvedores
+- /commit-message-generator
+- /api-documentation
+- /test-generator
+- /bug-report-template
+- /code-explainer
+
+### Para Jurídico (Costa Law)
+- /parecer-juridico
+- /analise-clausulas
+- /check-lgpd
+- /timeline-processual
+- /resumo-decisao
+
+### Para Marketing
+- /copy-generator
+- /social-post
+- /email-campaign
+- /a-b-test-analyzer
+- /competitor-analysis
+
+### Para Gestão
+- /okr-tracker
+- /1on1-template
+- /project-status
+- /decision-log
+- /risk-assessment
+
+## Entrega
+
+Ao finalizar, sua estrutura deve ser:
+
+\`\`\`
+~/.claude/skills/
+├── _index.md         ✓ Obrigatório
+├── _router.md        ✓ Obrigatório
+├── skill-1.md        ✓ Obrigatório
+├── skill-2.md        ✓ Obrigatório
+└── skill-3.md        ✓ Obrigatório
+\`\`\`
+
+## Bônus (+50 XP cada)
+
+- [ ] Adicionar quizzes interativos em uma skill
+- [ ] Criar skill que usa MCP (ex: Memory, GitHub)
+- [ ] Documentar em repositório Git com README
+- [ ] Criar skill que gera outras skills (meta-skill)
+
+## Validação
+
+Teste suas skills com estes comandos:
+
+\`\`\`bash
+# Verificar se skills estão carregadas
+claude "liste minhas skills disponíveis"
+
+# Testar o router
+claude "preciso de ajuda com [contexto da skill]"
+
+# Invocar diretamente
+claude "/nome-da-skill"
+\`\`\`
+
+## Reflexão Final
+
+Após completar o challenge, responda:
+
+1. Quanto tempo você economiza por dia com suas skills?
+2. Qual skill mais usada?
+3. O que você automatizaria a seguir?
+
+---
+
+> **Parabéns!** Ao completar este módulo, você domina uma das features mais poderosas do Claude Code. Skills são o que separam usuários comuns dos TOP 1%.
+`,
+    {
+      xp: 200,
+      duration: 60,
+      difficulty: 'expert',
+      tags: ['skills', 'challenge', 'criação'],
+      challenges: [
+        {
+          id: 'ch-04-05-1',
+          title: 'Sistema Completo de Skills',
+          description: 'Crie uma biblioteca de 5 skills: _index.md, _router.md, e 3 skills especializadas para seu contexto.',
+          context: 'general',
+          contextDescription: 'Seu contexto profissional ou pessoal',
+          difficulty: 'expert',
+          xpBonus: 200,
+          hints: [
+            'Comece pelo _index.md',
+            'O router é o mais importante para automação',
+            'Teste cada skill individualmente'
+          ]
+        },
+        {
+          id: 'ch-04-05-2',
+          title: 'Skill para Costa Law',
+          description: 'Se você é advogado ou trabalha com jurídico, crie uma skill completa de análise de contratos.',
+          context: 'costa_law',
+          contextDescription: 'Contexto jurídico',
+          difficulty: 'expert',
+          xpBonus: 150,
+          hints: [
+            'Inclua verificação de cláusulas abusivas',
+            'Adicione check de LGPD',
+            'Considere diferentes tipos de contrato'
+          ]
+        }
+      ]
+    }
+  ),
 ];
 
 // ============================================================================
