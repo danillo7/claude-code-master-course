@@ -129,6 +129,7 @@ export interface Module {
   // Versioning
   version: string;
   dateUpdated: string;
+  isNew?: boolean; // Highlight new modules in UI
 }
 
 export interface CodeExample {
@@ -154,12 +155,12 @@ export interface Challenge {
 }
 
 export interface Quiz {
-  id: string;
+  id?: string; // Optional - auto-generated if not provided
   question: string;
   options: string[];
   correctIndex: number;
   explanation: string;
-  xp: number;
+  xp?: number; // Optional - defaults to 10 if not provided
 }
 
 export interface ExternalLink {

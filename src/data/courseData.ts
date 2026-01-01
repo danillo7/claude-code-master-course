@@ -1183,7 +1183,7 @@ PRO (TOP 1%):
       difficulty: 'intermediate',
       tags: ['plan-mode', 'arquitetura', 'top-1-percent'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'Quando você NÃO deveria usar Plan Mode?',
           options: [
@@ -1192,7 +1192,7 @@ PRO (TOP 1%):
             'Fazendo refatoração de múltiplos arquivos',
             'Mudando a arquitetura do projeto'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Para tarefas simples e localizadas (como corrigir um typo), Plan Mode é overkill. Use direto.'
         },
         {
@@ -1203,7 +1203,7 @@ PRO (TOP 1%):
             'Claude usa menos tokens',
             'Funciona offline'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Plan Mode permite revisar e ajustar a estratégia antes de escrever código, evitando retrabalho.'
         }
       ]
@@ -1321,7 +1321,7 @@ DICA: Verbalize "crie um checkpoint antes" para mudanças críticas
       difficulty: 'intermediate',
       tags: ['checkpoints', 'rewind', 'navegacao', 'undo'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'Qual comando você usa para voltar ao estado anterior?',
           options: [
@@ -1330,7 +1330,7 @@ DICA: Verbalize "crie um checkpoint antes" para mudanças críticas
             '/rewind',
             '/restore'
           ],
-          correctAnswer: 2,
+          correctIndex: 2,
           explanation: 'O comando /rewind permite navegar pelos checkpoints e voltar a estados anteriores.'
         }
       ]
@@ -1454,7 +1454,7 @@ RESULTADO: Solução otimizada com baixo risco
       difficulty: 'advanced',
       tags: ['best-of-n', 'multiplas-solucoes', 'decisao', 'top-1-percent'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'Por que a técnica Best of N funciona?',
           options: [
@@ -1463,7 +1463,7 @@ RESULTADO: Solução otimizada com baixo risco
             'LLMs são probabilísticos e explorar alternativas revela trade-offs',
             'É mais rápido que pedir uma vez'
           ],
-          correctAnswer: 2,
+          correctIndex: 2,
           explanation: 'LLMs são probabilísticos, então gerar múltiplas soluções explora diferentes caminhos e revela trade-offs para decisão informada.'
         },
         {
@@ -1474,7 +1474,7 @@ RESULTADO: Solução otimizada com baixo risco
             '3 (padrão recomendado)',
             '10+ (quanto mais melhor)'
           ],
-          correctAnswer: 2,
+          correctIndex: 2,
           explanation: 'Para decisões arquiteturais, 3 alternativas é o sweet spot - suficiente para comparar sem overwhelm.'
         }
       ],
@@ -1619,19 +1619,19 @@ CheckoutPage
       difficulty: 'advanced',
       tags: ['arquitetura', 'projetos-grandes', 'navegacao', 'top-1-percent'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           id: 'q-02-13-1',
           question: 'Para projetos com 200+ arquivos, qual estratégia é mais eficiente?',
           options: ['Deixar Claude explorar tudo livremente', 'Usar contexto cirúrgico + CLAUDE.md por pasta', 'Ler todos os arquivos em uma sessão', 'Não usar Claude para projetos grandes'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Projetos grandes requerem contexto cirúrgico - apontar para os arquivos relevantes e usar CLAUDE.md por área para guiar a navegação.',
         },
         {
           id: 'q-02-13-2',
           question: 'O que deve conter um "Onboarding Document" para Claude?',
           options: ['Apenas o código mais importante', 'Visão geral, stack, arquitetura e decisões técnicas', 'Lista de todos os arquivos', 'Histórico de commits'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'O Onboarding Document dá contexto estratégico: visão geral do projeto, stack tecnológico, arquitetura principal e decisões que guiam o desenvolvimento.',
         },
       ],
@@ -1779,19 +1779,19 @@ Claude cria (em ordem):
       difficulty: 'advanced',
       tags: ['multi-file', 'refactoring', 'coordenacao', 'atomicidade'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           id: 'q-02-14-1',
           question: 'Qual a ordem correta para adicionar um novo campo a uma entidade?',
           options: ['Componente → API → Tipo', 'Tipo → API → Componente', 'Teste → Tipo → API', 'Qualquer ordem funciona'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'A ordem correta é: Tipo (define o contrato) → API (implementa) → Componente (consome). Isso garante que cada camada tem o que precisa quando for editada.',
         },
         {
           id: 'q-02-14-2',
           question: 'O que é uma "mudança atômica" em multi-file editing?',
           options: ['Editar apenas arquivos pequenos', 'Editar todos os arquivos relacionados de forma que o projeto sempre compile', 'Editar um arquivo por vez com pausa', 'Fazer backup antes de cada edição'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Mudança atômica significa que todas as edições relacionadas são feitas juntas, mantendo o projeto em estado consistente. Nunca quebra temporariamente.',
         },
       ],
@@ -1900,7 +1900,7 @@ ANTES de escrever qualquer prompt, pergunte:
       difficulty: 'beginner',
       tags: ['context-engineering', 'fundamentos', 'top-1-percent'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'Segundo Simon Willison, o que é Context Engineering?',
           options: [
@@ -1909,7 +1909,7 @@ ANTES de escrever qualquer prompt, pergunte:
             'A arte de fornecer toda informação relevante para a IA',
             'Memorizar comandos do terminal'
           ],
-          correctAnswer: 2,
+          correctIndex: 2,
           explanation: 'Context Engineering é sobre dar à IA todo o contexto necessário, não sobre o tamanho do prompt ou poder do modelo.'
         },
         {
@@ -1920,7 +1920,7 @@ ANTES de escrever qualquer prompt, pergunte:
             'Contexto (mais completo)',
             'Velocidade (mais rápido)'
           ],
-          correctAnswer: 2,
+          correctIndex: 2,
           explanation: 'O contexto é um multiplicador de 0.1x a 100x, enquanto modelo e prompt têm impacto mais limitado.'
         }
       ]
@@ -2036,7 +2036,7 @@ Antes de criar um CLAUDE.md, pergunte:
       difficulty: 'intermediate',
       tags: ['hierarquia', 'claude.md', 'prioridade'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'Qual arquivo tem MAIOR prioridade quando há conflito?',
           options: [
@@ -2045,7 +2045,7 @@ Antes de criar um CLAUDE.md, pergunte:
             'settings.json',
             'Nenhum, são iguais'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'O CLAUDE.md do projeto tem prioridade sobre o global. Mais específico sempre ganha.'
         },
         {
@@ -2056,7 +2056,7 @@ Antes de criar um CLAUDE.md, pergunte:
             'No settings.json',
             'Em um arquivo .env'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'O CLAUDE.md global (~/.claude/) é ideal para preferências universais que você quer em todos os projetos.'
         }
       ]
@@ -2135,7 +2135,7 @@ export default function(props) { ... }
       difficulty: 'intermediate',
       tags: ['configuração', 'claude.md', 'regras', 'context-engineering'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'Qual é a localização padrão do CLAUDE.md global?',
           options: [
@@ -2144,7 +2144,7 @@ export default function(props) { ... }
             '~/CLAUDE.md',
             '/usr/local/claude/config.md'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'O CLAUDE.md global fica em ~/.claude/CLAUDE.md e é lido em todas as sessões.'
         },
         {
@@ -2155,7 +2155,7 @@ export default function(props) { ... }
             'O do projeto tem prioridade, mas ambos são lidos',
             'Gera um erro de conflito'
           ],
-          correctAnswer: 2,
+          correctIndex: 2,
           explanation: 'Ambos são lidos, mas o CLAUDE.md do projeto tem prioridade em caso de conflito.'
         }
       ],
@@ -2406,7 +2406,7 @@ Ongoing: Atualizar com cada mudança significativa
       difficulty: 'advanced',
       tags: ['master-context', 'templates', 'top-1-percent', 'context-engineering'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'O que diferencia um Master Context Document de um CLAUDE.md básico?',
           options: [
@@ -2415,7 +2415,7 @@ Ongoing: Atualizar com cada mudança significativa
             'Só pode ser usado em projetos grandes',
             'Requer aprovação da Anthropic'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Master Context Documents são documentos vivos que evoluem continuamente com o projeto, não arquivos estáticos.'
         },
         {
@@ -2426,7 +2426,7 @@ Ongoing: Atualizar com cada mudança significativa
             'Lista de dependências',
             'Histórico de commits'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'As Regras Absolutas são críticas porque definem os limites inegociáveis do projeto - erros aqui têm alto impacto.'
         }
       ]
@@ -2533,7 +2533,7 @@ src/api/.claude/CLAUDE.md  ← Maior prioridade nesta pasta
       difficulty: 'intermediate',
       tags: ['per-folder', 'contexto-granular', 'projetos-grandes'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'Quando você deveria usar Per-Folder CLAUDE.md?',
           options: [
@@ -2542,7 +2542,7 @@ src/api/.claude/CLAUDE.md  ← Maior prioridade nesta pasta
             'Apenas em projetos com mais de 100 arquivos',
             'Nunca, é uma prática deprecada'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Per-folder é útil quando áreas distintas do projeto precisam de contexto específico, como API vs Components.'
         }
       ]
@@ -2659,7 +2659,7 @@ EOF
       difficulty: 'advanced',
       tags: ['include', 'modularizacao', 'reuso', 'dry'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           question: 'Qual é o principal benefício do sistema @include?',
           options: [
@@ -2668,7 +2668,7 @@ EOF
             'Fazer o Claude responder mais rápido',
             'Permitir usar múltiplos modelos de IA'
           ],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: '@include permite modularizar regras comuns, eliminando duplicação e garantindo consistência entre projetos.'
         }
       ],
@@ -3313,19 +3313,19 @@ Tarefa ─ Agente B ─┴→ Síntese
       difficulty: 'advanced',
       tags: ['subagents', 'orquestração', 'multi-agent', 'top-1-percent'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           id: 'q-07-02-1',
           question: 'Qual tipo de orquestração é mais rápido para tarefas divisíveis?',
           options: ['Sequencial', 'Paralela', 'Hierárquica', 'Todas têm o mesmo tempo'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Orquestração paralela pode ser 5-10x mais rápida porque múltiplos agentes trabalham simultaneamente em partes independentes da tarefa.',
         },
         {
           id: 'q-07-02-2',
           question: 'Por que devemos passar "contexto mínimo" para cada subagent?',
           options: ['Para economizar tokens e focar o agente na tarefa específica', 'Porque subagents não aceitam contexto grande', 'Para esconder informações sensíveis', 'Não há motivo real'],
-          correctAnswer: 0,
+          correctIndex: 0,
           explanation: 'Contexto mínimo reduz custos de tokens e mantém o subagent focado na sua tarefa específica, evitando distrações ou confusão.',
         },
       ],
@@ -3450,19 +3450,19 @@ Na prática, você pode combinar os padrões!
       difficulty: 'advanced',
       tags: ['subagents', 'arquitetura', 'patterns', 'master-clone', 'lead-specialist'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           id: 'q-07-03-1',
           question: 'Qual padrão é ideal para "adicionar logging em 50 arquivos"?',
           options: ['Lead-Specialist (cada arquivo precisa análise diferente)', 'Master-Clone (mesma tarefa replicada)', 'Nenhum (fazer manualmente)', 'Depende do tamanho do arquivo'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Master-Clone é perfeito para tarefas homogêneas. O Master define o padrão de logging e os Clones aplicam em paralelo em cada arquivo.',
         },
         {
           id: 'q-07-03-2',
           question: 'Para "implementar checkout com pagamento", qual padrão usar?',
           options: ['Master-Clone', 'Lead-Specialist', 'Sequencial simples', 'Nenhum padrão'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'Lead-Specialist pois requer expertise heterogênea: backend (API de pagamento), frontend (UX), security (validações), tests (cobertura).',
         },
       ],
@@ -3471,7 +3471,7 @@ Na prática, você pode combinar os padrões!
           id: 'ch-07-03-1',
           title: 'Arquitete um Sistema Multi-Agente',
           description: 'Projete a arquitetura de agentes para: "Migrar 100 componentes React de Class para Function components"',
-          context: 'geral',
+          context: 'general',
           contextDescription: 'Migração em massa de código',
           difficulty: 'advanced',
           xpBonus: 80,
@@ -3610,19 +3610,19 @@ Tempo paralelo: ~12 min (4x mais rápido)
       difficulty: 'expert',
       tags: ['subagents', 'parallel', 'performance', 'fork-join', 'top-1-percent'],
       isNew: true,
-      quiz: [
+      quizzes: [
         {
           id: 'q-07-04-1',
           question: 'Qual parâmetro ativa a execução paralela de subagents?',
           options: ['parallel: true', 'run_in_background: true', 'async: true', 'concurrent: true'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: 'O parâmetro run_in_background: true faz o subagent executar em background, permitindo lançar múltiplos simultaneamente.',
         },
         {
           id: 'q-07-04-2',
           question: 'Quantos subagents paralelos são recomendados simultaneamente?',
           options: ['1-2', '3-5', '10-15', 'Sem limite'],
-          correctAnswer: 1,
+          correctIndex: 1,
           explanation: '3-5 subagents é o ideal. Mais que isso pode sobrecarregar o sistema e aumentar chance de erros sem ganho proporcional de velocidade.',
         },
       ],
@@ -3631,7 +3631,7 @@ Tempo paralelo: ~12 min (4x mais rápido)
           id: 'ch-07-04-1',
           title: 'Paralelize uma Análise de Codebase',
           description: 'Projete como analisar um projeto com 200 arquivos usando parallel subagents. Defina: quantos batches, quantos paralelos, estratégia de síntese.',
-          context: 'geral',
+          context: 'general',
           contextDescription: 'Análise em larga escala',
           difficulty: 'expert',
           xpBonus: 100,
@@ -3737,7 +3737,7 @@ export const courseModules: Module[] = [
     id: '00',
     courseId: 'claude-code',
     number: 0,
-    title: 'Mindset TOP 1%',
+    title: '00. Mindset TOP 1%',
     slug: 'mindset',
     description: 'A mentalidade que separa os desenvolvedores de elite - princípios AI-First fundamentais',
     icon: 'Brain',
@@ -3754,7 +3754,7 @@ export const courseModules: Module[] = [
     id: '01',
     courseId: 'claude-code',
     number: 1,
-    title: 'Fundamentos',
+    title: '01. Fundamentos',
     slug: 'fundamentos',
     description: 'Instalação, primeiros passos e conceitos essenciais do Claude Code',
     icon: 'Rocket',
@@ -3770,7 +3770,7 @@ export const courseModules: Module[] = [
     id: '02',
     courseId: 'claude-code',
     number: 2,
-    title: 'Comandos CLI',
+    title: '02. Comandos CLI',
     slug: 'comandos-cli',
     description: 'Domine todas as flags, comandos e modos de operação',
     icon: 'Terminal',
@@ -3786,7 +3786,7 @@ export const courseModules: Module[] = [
     id: '03',
     courseId: 'claude-code',
     number: 3,
-    title: 'Context Engineering',
+    title: '03. Context Engineering',
     slug: 'context-engineering',
     description: 'Domine a arte de fornecer contexto perfeito para IA - a habilidade #1 dos TOP 1%',
     icon: 'Brain',
@@ -3803,7 +3803,7 @@ export const courseModules: Module[] = [
     id: '04',
     courseId: 'claude-code',
     number: 4,
-    title: 'Skills',
+    title: '04. Skills',
     slug: 'skills',
     description: 'Crie e gerencie skills personalizadas',
     icon: 'Zap',
@@ -3819,7 +3819,7 @@ export const courseModules: Module[] = [
     id: '05',
     courseId: 'claude-code',
     number: 5,
-    title: 'MCP',
+    title: '05. MCP',
     slug: 'mcp',
     description: 'Model Context Protocol e integrações externas',
     icon: 'Plug',
@@ -3835,7 +3835,7 @@ export const courseModules: Module[] = [
     id: '06',
     courseId: 'claude-code',
     number: 6,
-    title: 'Hooks',
+    title: '06. Hooks',
     slug: 'hooks',
     description: 'Automação com hooks e eventos',
     icon: 'Anchor',
@@ -3851,7 +3851,7 @@ export const courseModules: Module[] = [
     id: '07',
     courseId: 'claude-code',
     number: 7,
-    title: 'Subagents',
+    title: '07. Subagents',
     slug: 'subagents',
     description: 'Agentes especializados e processamento paralelo',
     icon: 'Users',
@@ -3867,7 +3867,7 @@ export const courseModules: Module[] = [
     id: '08',
     courseId: 'claude-code',
     number: 8,
-    title: 'Plugins',
+    title: '08. Plugins',
     slug: 'plugins',
     description: 'Extensões distribuíveis e marketplace',
     icon: 'Package',
@@ -3883,7 +3883,7 @@ export const courseModules: Module[] = [
     id: '09',
     courseId: 'claude-code',
     number: 9,
-    title: 'Integrações IDE',
+    title: '09. Integrações IDE',
     slug: 'integracoes-ide',
     description: 'VS Code, JetBrains, Vim e mais',
     icon: 'Code',
@@ -3899,7 +3899,7 @@ export const courseModules: Module[] = [
     id: '10',
     courseId: 'claude-code',
     number: 10,
-    title: 'Avançado',
+    title: '10. Avançado',
     slug: 'avancado',
     description: 'Extended thinking, sandboxing e features experimentais',
     icon: 'Sparkles',
@@ -3915,7 +3915,7 @@ export const courseModules: Module[] = [
     id: '11',
     courseId: 'claude-code',
     number: 11,
-    title: 'Best Practices',
+    title: '11. Best Practices',
     slug: 'best-practices',
     description: 'Padrões TOP 1% e workflows de produção',
     icon: 'Award',
@@ -3931,7 +3931,7 @@ export const courseModules: Module[] = [
     id: '12',
     courseId: 'claude-code',
     number: 12,
-    title: 'Projetos Práticos',
+    title: '12. Projetos Práticos',
     slug: 'projetos-praticos',
     description: 'Projetos hands-on do mundo real',
     icon: 'Hammer',
