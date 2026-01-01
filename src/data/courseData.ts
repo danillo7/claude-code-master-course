@@ -1082,7 +1082,254 @@ git commit -m "$MESSAGE"
 // ============================================================================
 
 const module03Lessons: Lesson[] = [
-  createLesson('03', '03-01-claudemd', 'O Arquivo CLAUDE.md',
+  createLesson('03', '03-00-what-is-context', 'O que é Context Engineering',
+    'Descubra por que fornecer o contexto certo para IA é a habilidade mais valiosa da era AI.',
+    `# Context Engineering: A Habilidade #1 dos TOP 1%
+
+## O que Separa os Melhores
+
+Simon Willison, um dos maiores especialistas em LLMs do mundo, cunhou o termo **Context Engineering** para descrever a habilidade mais importante de quem trabalha com IA:
+
+> "A arte de fornecer toda a informação relevante que a IA precisa para executar uma tarefa com excelência."
+
+## Por que Isso Importa?
+
+### O Problema do "Prompt Perfeito"
+Muitos acreditam que o segredo está em encontrar o "prompt mágico". Mas a verdade é outra:
+
+\`\`\`
+❌ "Escreva um código bom"
+   → IA não sabe: linguagem, padrões, contexto, objetivo
+
+✅ Contexto completo + prompt simples
+   → IA entende: projeto, stack, convenções, objetivo
+   → Resultado: código perfeito na primeira tentativa
+\`\`\`
+
+### A Matemática do Contexto
+\`\`\`
+Qualidade do Output = f(Modelo × Contexto × Prompt)
+
+- Modelo: 10x mais potente a cada 1-2 anos
+- Prompt: otimização marginal (~10-20%)
+- Contexto: multiplicador infinito (0.1x a 100x)
+\`\`\`
+
+## Os 3 Pilares do Context Engineering
+
+### 1. 📋 Contexto Declarativo (CLAUDE.md)
+Regras, preferências e padrões que nunca mudam.
+
+### 2. 📂 Contexto de Projeto
+Estrutura, dependências, arquitetura específica.
+
+### 3. 💬 Contexto Conversacional
+O que você está tentando fazer AGORA.
+
+## Claude Code: A Ferramenta de Context Engineering
+
+O Claude Code foi desenhado para Context Engineering:
+
+| Recurso | Função |
+|---------|--------|
+| CLAUDE.md | Contexto declarativo persistente |
+| @file | Incluir arquivos específicos |
+| @folder | Incluir estrutura de pastas |
+| /init | Gerar contexto automático |
+| Memory MCP | Persistência entre sessões |
+
+## A Mentalidade TOP 1%
+
+\`\`\`
+ANTES de escrever qualquer prompt, pergunte:
+
+1. Claude tem TODO o contexto necessário?
+2. Ele sabe as regras do projeto?
+3. Ele entende os padrões que seguimos?
+4. Ele conhece os anti-patterns a evitar?
+\`\`\`
+
+## Na Prática
+
+**Developer Médio:**
+> "Crie um componente de botão"
+> → Resultado: código genérico, sem padrões
+
+**TOP 1% (Context Engineer):**
+> Setup: CLAUDE.md com design system + padrões de código
+> Prompt: "Crie um componente de botão"
+> → Resultado: código perfeito, alinhado com todo o projeto
+`,
+    {
+      xp: 100,
+      duration: 15,
+      difficulty: 'beginner',
+      tags: ['context-engineering', 'fundamentos', 'top-1-percent'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'Segundo Simon Willison, o que é Context Engineering?',
+          options: [
+            'Escrever prompts mais longos',
+            'Usar modelos mais caros',
+            'A arte de fornecer toda informação relevante para a IA',
+            'Memorizar comandos do terminal'
+          ],
+          correctAnswer: 2,
+          explanation: 'Context Engineering é sobre dar à IA todo o contexto necessário, não sobre o tamanho do prompt ou poder do modelo.'
+        },
+        {
+          question: 'Qual fator tem o maior multiplicador na qualidade do output?',
+          options: [
+            'Modelo (mais potente)',
+            'Prompt (mais elaborado)',
+            'Contexto (mais completo)',
+            'Velocidade (mais rápido)'
+          ],
+          correctAnswer: 2,
+          explanation: 'O contexto é um multiplicador de 0.1x a 100x, enquanto modelo e prompt têm impacto mais limitado.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('03', '03-01-hierarchy', 'Hierarquia de Contexto TOP 1%',
+    'Entenda como os arquivos de contexto se organizam e priorizam.',
+    `# A Hierarquia de Contexto do Claude Code
+
+## Por que Hierarquia Importa?
+
+O Claude Code lê múltiplas fontes de contexto. Entender a **ordem de prioridade** é crucial:
+
+\`\`\`
+MAIOR PRIORIDADE (sobrescreve)
+│
+├── 1. System Prompt (sessão atual)
+├── 2. .claude/CLAUDE.md (projeto local)
+├── 3. CLAUDE.md (raiz do projeto)
+├── 4. ~/.claude/CLAUDE.md (global usuário)
+├── 5. settings.json (configurações técnicas)
+│
+MENOR PRIORIDADE (base)
+\`\`\`
+
+## Mapa Mental da Hierarquia
+
+\`\`\`
+~/.claude/
+├── CLAUDE.md              ← Global: suas preferências universais
+├── settings.json          ← Configurações técnicas
+└── skills/                ← Skills customizadas
+
+~/projeto/
+├── CLAUDE.md              ← Projeto: regras deste projeto (prioridade!)
+├── .claude/
+│   └── CLAUDE.md          ← Alternativa (mesma prioridade)
+└── src/
+    └── .claude/
+        └── CLAUDE.md      ← Per-folder: contexto específico
+\`\`\`
+
+## Estratégia TOP 1%: Camadas de Contexto
+
+### Camada 1: Global (~/.claude/CLAUDE.md)
+**O que colocar:**
+- Suas preferências de estilo de código
+- Idioma preferido (Português BR)
+- Regras de segurança universais
+- Padrões que você SEMPRE quer
+
+\`\`\`markdown
+# ~/.claude/CLAUDE.md
+
+## Preferências Globais
+- Idioma: Português BR
+- Código: TypeScript strict
+- NUNCA: deletar sem aprovação
+
+## Meu Contexto Pessoal
+- Nome: Dr. Danillo Costa
+- Empresas: Costa Law, CLA Digital, AI Spot
+\`\`\`
+
+### Camada 2: Projeto (/projeto/CLAUDE.md)
+**O que colocar:**
+- Stack específica do projeto
+- Convenções de código do projeto
+- Comandos importantes
+- Estrutura de pastas
+
+\`\`\`markdown
+# CLAUDE.md - Projeto X
+
+## Stack
+- Next.js 14 + App Router
+- Tailwind CSS
+- Prisma + PostgreSQL
+
+## Comandos
+- npm run dev: desenvolvimento
+- npm run build: produção
+\`\`\`
+
+### Camada 3: Per-Folder (/src/api/.claude/CLAUDE.md)
+**O que colocar:**
+- Contexto específico daquela pasta
+- Padrões de API endpoints
+- Regras de módulo específico
+
+## Conflitos: Quem Ganha?
+
+\`\`\`
+Global: "Use aspas duplas"
+Projeto: "Use aspas simples"
+
+→ RESULTADO: Aspas simples (projeto tem prioridade)
+\`\`\`
+
+**Regra de Ouro:** Mais específico sempre ganha.
+
+## Quiz Mental
+
+Antes de criar um CLAUDE.md, pergunte:
+1. Isso se aplica a TODOS os meus projetos? → Global
+2. Isso é específico DESTE projeto? → Projeto
+3. Isso é específico DESTA pasta? → Per-folder
+`,
+    {
+      xp: 80,
+      duration: 12,
+      difficulty: 'intermediate',
+      tags: ['hierarquia', 'claude.md', 'prioridade'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'Qual arquivo tem MAIOR prioridade quando há conflito?',
+          options: [
+            '~/.claude/CLAUDE.md (global)',
+            '/projeto/CLAUDE.md (projeto)',
+            'settings.json',
+            'Nenhum, são iguais'
+          ],
+          correctAnswer: 1,
+          explanation: 'O CLAUDE.md do projeto tem prioridade sobre o global. Mais específico sempre ganha.'
+        },
+        {
+          question: 'Onde você colocaria uma regra que se aplica a TODOS os seus projetos?',
+          options: [
+            'Em cada projeto individualmente',
+            'No ~/.claude/CLAUDE.md (global)',
+            'No settings.json',
+            'Em um arquivo .env'
+          ],
+          correctAnswer: 1,
+          explanation: 'O CLAUDE.md global (~/.claude/) é ideal para preferências universais que você quer em todos os projetos.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('03', '03-02-claudemd', 'O Arquivo CLAUDE.md',
     'Domine o arquivo de configuração mais importante do Claude Code.',
     `# CLAUDE.md - Sua "Constituição" para Claude
 
@@ -1152,10 +1399,35 @@ export default function(props) { ... }
       xp: 70,
       duration: 20,
       difficulty: 'intermediate',
-      tags: ['configuração', 'claude.md', 'regras'],
+      tags: ['configuração', 'claude.md', 'regras', 'context-engineering'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'Qual é a localização padrão do CLAUDE.md global?',
+          options: [
+            '/etc/claude/CLAUDE.md',
+            '~/.claude/CLAUDE.md',
+            '~/CLAUDE.md',
+            '/usr/local/claude/config.md'
+          ],
+          correctAnswer: 1,
+          explanation: 'O CLAUDE.md global fica em ~/.claude/CLAUDE.md e é lido em todas as sessões.'
+        },
+        {
+          question: 'O que acontece quando você tem um CLAUDE.md global E um de projeto?',
+          options: [
+            'Apenas o global é lido',
+            'Apenas o do projeto é lido',
+            'O do projeto tem prioridade, mas ambos são lidos',
+            'Gera um erro de conflito'
+          ],
+          correctAnswer: 2,
+          explanation: 'Ambos são lidos, mas o CLAUDE.md do projeto tem prioridade em caso de conflito.'
+        }
+      ],
       challenges: [
         {
-          id: 'ch-03-01-1',
+          id: 'ch-03-02-1',
           title: 'Crie seu CLAUDE.md Pessoal',
           description: 'Crie um CLAUDE.md global com suas preferências',
           context: 'personal',
@@ -1165,7 +1437,7 @@ export default function(props) { ... }
           hints: ['Inclua suas linguagens preferidas', 'Adicione regras de segurança'],
         },
         {
-          id: 'ch-03-01-2',
+          id: 'ch-03-02-2',
           title: 'CLAUDE.md para Costa Law',
           description: 'Crie um CLAUDE.md específico para projetos jurídicos',
           context: 'costa_law',
@@ -1178,7 +1450,7 @@ export default function(props) { ... }
     }
   ),
 
-  createLesson('03', '03-02-settings', 'Configurações Avançadas',
+  createLesson('03', '03-03-settings', 'Configurações Avançadas',
     'Configure permissões, modelos padrão e comportamentos.',
     `# Configurações Avançadas
 
@@ -1242,6 +1514,574 @@ claude config set theme light
       duration: 18,
       difficulty: 'intermediate',
       tags: ['settings', 'permissões', 'configuração'],
+    }
+  ),
+
+  createLesson('03', '03-04-master-context', 'Master Context Documents',
+    'Crie documentos de contexto de nível profissional usados pelos TOP 1%.',
+    `# Master Context Documents
+
+## O que os TOP 1% Fazem Diferente
+
+Enquanto a maioria cria CLAUDE.md genéricos, os profissionais de elite criam **Master Context Documents** - documentos vivos que evoluem com o projeto.
+
+## Anatomia de um Master Context Document
+
+### Seção 1: Identidade do Projeto
+\`\`\`markdown
+# 🎯 [NOME DO PROJETO]
+
+**Missão:** Uma frase que define o propósito
+**Stack:** Tecnologias principais
+**Status:** Fase atual (MVP/Beta/Produção)
+**Última atualização:** [Data]
+\`\`\`
+
+### Seção 2: Regras Absolutas (Inegociáveis)
+\`\`\`markdown
+## 🚨 REGRAS ABSOLUTAS
+
+### NUNCA (Proibições)
+- ❌ Deletar dados de produção
+- ❌ Expor secrets ou tokens
+- ❌ Modificar schema sem migration
+- ❌ Push direto na main
+
+### SEMPRE (Obrigações)
+- ✅ Testar antes de commitar
+- ✅ Documentar breaking changes
+- ✅ Usar tipos explícitos
+- ✅ Seguir convenções do projeto
+\`\`\`
+
+### Seção 3: Padrões de Código
+\`\`\`markdown
+## 📐 PADRÕES DE CÓDIGO
+
+### Nomenclatura
+- Componentes: PascalCase
+- Funções: camelCase
+- Constantes: UPPER_SNAKE_CASE
+- Arquivos: kebab-case
+
+### Exemplos de Referência
+\\\`\\\`\\\`typescript
+// ✅ Padrão correto
+export function useUserData(userId: string): UserData {
+  // implementação
+}
+
+// ❌ Evitar
+export default function(id) {
+  // sem tipos, export default anônimo
+}
+\\\`\\\`\\\`
+\`\`\`
+
+### Seção 4: Arquitetura
+\`\`\`markdown
+## 🏗️ ARQUITETURA
+
+\\\`\\\`\\\`
+src/
+├── components/     # UI components
+│   ├── ui/         # Primitivos (Button, Input)
+│   └── features/   # Específicos de feature
+├── hooks/          # Custom hooks
+├── services/       # Comunicação externa
+├── utils/          # Helpers puros
+└── types/          # TypeScript types
+\\\`\\\`\\\`
+
+### Fluxo de Dados
+[API] → [Service] → [Hook] → [Component]
+\`\`\`
+
+### Seção 5: Comandos Essenciais
+\`\`\`markdown
+## ⚡ COMANDOS
+
+| Comando | Ação |
+|---------|------|
+| npm run dev | Desenvolvimento local |
+| npm test | Rodar testes |
+| npm run build | Build produção |
+| npm run lint | Verificar código |
+\`\`\`
+
+## Templates TOP 1%
+
+### Template: Projeto TypeScript
+\`\`\`markdown
+# CLAUDE.md - [Projeto]
+
+## Stack
+- TypeScript 5.x (strict mode)
+- [Framework]
+- [Database]
+
+## Regras Absolutas
+- SEMPRE usar tipos explícitos
+- NUNCA usar any (preferir unknown)
+- Exports nomeados > default
+- Paths aliases via @/
+
+## Padrões
+- ESLint + Prettier configurados
+- Commits convencionais
+- PRs com descrição completa
+\`\`\`
+
+### Template: Projeto Jurídico (Costa Law)
+\`\`\`markdown
+# CLAUDE.md - Costa Law
+
+## Contexto
+Escritório de advocacia especializado em direito empresarial
+
+## Regras de Confidencialidade
+- NUNCA expor nomes de clientes
+- NUNCA armazenar dados sensíveis em logs
+- Usar pseudônimos em exemplos
+
+## Padrões de Documentos
+- Petições: modelo padrão OAB
+- Contratos: cláusulas padrão Costa Law
+- Pareceres: estrutura formal
+
+## Linguagem
+- Tom: Formal jurídico
+- Referências: Legislação brasileira atual
+\`\`\`
+
+## Evolução Contínua
+
+\`\`\`
+Semana 1: Criar CLAUDE.md básico
+Semana 2: Adicionar exemplos de código
+Mês 1: Documentar padrões emergentes
+Mês 3: Refatorar baseado em aprendizados
+Ongoing: Atualizar com cada mudança significativa
+\`\`\`
+
+**Regra de Ouro:** Um Master Context Document nunca está "pronto" - ele evolui com o projeto.
+`,
+    {
+      xp: 120,
+      duration: 25,
+      difficulty: 'advanced',
+      tags: ['master-context', 'templates', 'top-1-percent', 'context-engineering'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'O que diferencia um Master Context Document de um CLAUDE.md básico?',
+          options: [
+            'É mais curto e objetivo',
+            'É um documento vivo que evolui com o projeto',
+            'Só pode ser usado em projetos grandes',
+            'Requer aprovação da Anthropic'
+          ],
+          correctAnswer: 1,
+          explanation: 'Master Context Documents são documentos vivos que evoluem continuamente com o projeto, não arquivos estáticos.'
+        },
+        {
+          question: 'Qual seção é MAIS importante em um Master Context Document?',
+          options: [
+            'Comandos do terminal',
+            'Regras Absolutas (NUNCA/SEMPRE)',
+            'Lista de dependências',
+            'Histórico de commits'
+          ],
+          correctAnswer: 1,
+          explanation: 'As Regras Absolutas são críticas porque definem os limites inegociáveis do projeto - erros aqui têm alto impacto.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('03', '03-05-per-folder', 'Per-Folder CLAUDE.md',
+    'Contexto granular por pasta para projetos complexos.',
+    `# Per-Folder CLAUDE.md: Contexto Granular
+
+## Quando Usar Per-Folder?
+
+Projetos grandes têm áreas distintas que precisam de contexto específico:
+
+\`\`\`
+projeto/
+├── CLAUDE.md              ← Regras gerais do projeto
+├── src/
+│   ├── api/
+│   │   └── .claude/
+│   │       └── CLAUDE.md  ← Regras específicas para API
+│   ├── components/
+│   │   └── .claude/
+│   │       └── CLAUDE.md  ← Regras para componentes UI
+│   └── utils/
+│       └── .claude/
+│           └── CLAUDE.md  ← Regras para utilities
+\`\`\`
+
+## Exemplos Práticos
+
+### API Folder (.claude/CLAUDE.md)
+\`\`\`markdown
+# Contexto: API Endpoints
+
+## Padrões de Endpoint
+- Sempre usar verbos REST corretos
+- Validar input com Zod
+- Retornar erros padronizados
+
+## Estrutura de Response
+\\\`\\\`\\\`typescript
+{
+  success: boolean;
+  data?: T;
+  error?: { code: string; message: string; }
+}
+\\\`\\\`\\\`
+
+## Autenticação
+- Todos os endpoints requerem Bearer token
+- Exceto: /health, /auth/login
+\`\`\`
+
+### Components Folder
+\`\`\`markdown
+# Contexto: UI Components
+
+## Design System
+- Usar Tailwind CSS
+- Seguir tokens de design em theme.ts
+- Componentes devem ser acessíveis (ARIA)
+
+## Estrutura de Componente
+1. Interface/Types no topo
+2. Styled components (se houver)
+3. Subcomponentes
+4. Componente principal
+5. Export
+
+## Nomenclatura
+- Props: ComponentNameProps
+- Container: ComponentName.Container
+- Variantes: usar CVA
+\`\`\`
+
+## Quando Contexto Per-Folder é Overkill?
+
+\`\`\`
+✅ USE quando:
+- Pastas têm padrões muito diferentes
+- Times diferentes trabalham em áreas distintas
+- Tecnologias específicas por área
+
+❌ EVITE quando:
+- Projeto pequeno (< 20 arquivos)
+- Padrões são uniformes
+- Você é o único dev
+\`\`\`
+
+## Hierarquia de Prioridade (Revisão)
+
+\`\`\`
+Per-folder > Projeto > Global
+
+src/api/.claude/CLAUDE.md  ← Maior prioridade nesta pasta
+./CLAUDE.md                ← Base do projeto
+~/.claude/CLAUDE.md        ← Fallback global
+\`\`\`
+`,
+    {
+      xp: 80,
+      duration: 15,
+      difficulty: 'intermediate',
+      tags: ['per-folder', 'contexto-granular', 'projetos-grandes'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'Quando você deveria usar Per-Folder CLAUDE.md?',
+          options: [
+            'Sempre, em todo projeto',
+            'Quando diferentes áreas do projeto têm padrões muito diferentes',
+            'Apenas em projetos com mais de 100 arquivos',
+            'Nunca, é uma prática deprecada'
+          ],
+          correctAnswer: 1,
+          explanation: 'Per-folder é útil quando áreas distintas do projeto precisam de contexto específico, como API vs Components.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('03', '03-06-include-system', 'Sistema @include',
+    'Modularize e reutilize contexto entre arquivos.',
+    `# Sistema @include: Modularização de Contexto
+
+## O Problema da Duplicação
+
+Sem @include:
+\`\`\`markdown
+# Projeto A - CLAUDE.md
+[100 linhas de regras comuns...]
+[Regras específicas do projeto A]
+
+# Projeto B - CLAUDE.md
+[As mesmas 100 linhas de regras comuns...]
+[Regras específicas do projeto B]
+\`\`\`
+
+## A Solução: @include
+
+\`\`\`markdown
+# Projeto A - CLAUDE.md
+@include ~/.claude/modules/regras-base.md
+@include ~/.claude/modules/typescript-strict.md
+
+## Regras Específicas do Projeto A
+[Apenas o que é único]
+\`\`\`
+
+## Estrutura Modular Recomendada
+
+\`\`\`
+~/.claude/
+├── CLAUDE.md              ← Seu arquivo principal
+└── modules/
+    ├── regras-base.md     ← Regras universais
+    ├── typescript.md      ← Padrões TypeScript
+    ├── react.md           ← Padrões React
+    ├── seguranca.md       ← Regras de segurança
+    └── juridico.md        ← Padrões Costa Law
+\`\`\`
+
+## Exemplos de Módulos
+
+### regras-base.md
+\`\`\`markdown
+## Regras Universais
+
+### Segurança
+- NUNCA expor secrets
+- NUNCA deletar sem confirmação
+- SEMPRE fazer backup
+
+### Qualidade
+- Código limpo e legível
+- Comentários em português
+- Testes antes de commit
+\`\`\`
+
+### typescript.md
+\`\`\`markdown
+## Padrões TypeScript
+
+- strict mode sempre
+- Evitar any (usar unknown)
+- Interfaces > Types para objetos
+- Exports nomeados
+- Paths aliases (@/)
+\`\`\`
+
+## Benefícios da Modularização
+
+| Antes | Depois |
+|-------|--------|
+| Duplicação em N projetos | Single source of truth |
+| Atualizar 10 arquivos | Atualizar 1 módulo |
+| CLAUDE.md de 500+ linhas | CLAUDE.md enxuto + @includes |
+| Inconsistências entre projetos | Consistência garantida |
+
+## Combinando com Per-Folder
+
+\`\`\`markdown
+# src/api/.claude/CLAUDE.md
+
+@include ~/.claude/modules/regras-base.md
+@include ~/.claude/modules/api-patterns.md
+
+## Regras Específicas desta API
+[Contexto local]
+\`\`\`
+
+## Setup Rápido
+
+\`\`\`bash
+# Criar estrutura de módulos
+mkdir -p ~/.claude/modules
+
+# Criar módulo base
+cat > ~/.claude/modules/regras-base.md << 'EOF'
+## Regras Universais
+- NUNCA deletar sem aprovação
+- SEMPRE fazer backup antes
+EOF
+\`\`\`
+`,
+    {
+      xp: 90,
+      duration: 18,
+      difficulty: 'advanced',
+      tags: ['include', 'modularizacao', 'reuso', 'dry'],
+      isNew: true,
+      quiz: [
+        {
+          question: 'Qual é o principal benefício do sistema @include?',
+          options: [
+            'Deixar o CLAUDE.md mais bonito',
+            'Evitar duplicação e ter single source of truth',
+            'Fazer o Claude responder mais rápido',
+            'Permitir usar múltiplos modelos de IA'
+          ],
+          correctAnswer: 1,
+          explanation: '@include permite modularizar regras comuns, eliminando duplicação e garantindo consistência entre projetos.'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-03-06-1',
+          title: 'Crie seu Sistema de Módulos',
+          description: 'Crie uma estrutura ~/.claude/modules/ com pelo menos 3 módulos reutilizáveis',
+          context: 'personal',
+          contextDescription: 'Configure módulos para suas necessidades',
+          difficulty: 'advanced',
+          xpBonus: 100,
+          hints: ['Comece com regras-base.md', 'Adicione um módulo por stack', 'Teste incluindo em um projeto real'],
+        }
+      ]
+    }
+  ),
+
+  createLesson('03', '03-07-challenge-final', 'Challenge: CLAUDE.md TOP 1%',
+    'Aplique tudo que aprendeu criando um CLAUDE.md de nível profissional.',
+    `# 🏆 CHALLENGE FINAL: Crie seu CLAUDE.md TOP 1%
+
+## Objetivo
+
+Criar um sistema completo de Context Engineering para seu ambiente de trabalho, aplicando todos os conceitos do módulo.
+
+## Requisitos Mínimos
+
+### 1. CLAUDE.md Global (~/.claude/CLAUDE.md)
+- [ ] Suas preferências universais
+- [ ] Regras de segurança (NUNCA/SEMPRE)
+- [ ] Informações pessoais relevantes
+- [ ] Idioma e tom preferidos
+
+### 2. Estrutura de Módulos
+\`\`\`
+~/.claude/modules/
+├── regras-base.md      ← Regras universais
+├── [sua-stack].md      ← Padrões da sua stack
+└── [contexto].md       ← Contexto específico (ex: juridico.md)
+\`\`\`
+
+### 3. CLAUDE.md de Projeto
+Criar um CLAUDE.md para um projeto real usando:
+- @include para módulos
+- Seção de arquitetura
+- Exemplos de código correto/incorreto
+- Comandos essenciais
+
+## Critérios de Avaliação
+
+| Critério | Pontos |
+|----------|:------:|
+| Global CLAUDE.md completo | 25 |
+| Pelo menos 3 módulos reutilizáveis | 25 |
+| Projeto com @includes funcionando | 25 |
+| Regras NUNCA/SEMPRE claras | 15 |
+| Exemplos de código | 10 |
+
+## Templates de Partida
+
+### Template: Global
+\`\`\`markdown
+# CLAUDE.md - [Seu Nome]
+
+## Sobre Mim
+[Quem você é, o que faz, contexto profissional]
+
+## Preferências Universais
+- Idioma: Português BR
+- Tom: [Seu estilo preferido]
+- Código: [Suas preferências]
+
+## 🚨 Regras Absolutas
+### NUNCA
+- [Suas proibições]
+
+### SEMPRE
+- [Suas obrigações]
+\`\`\`
+
+### Template: Módulo
+\`\`\`markdown
+# Módulo: [Nome]
+
+## Contexto
+[Quando usar este módulo]
+
+## Padrões
+[Regras específicas]
+
+## Exemplos
+[Código correto/incorreto]
+\`\`\`
+
+## Entrega
+
+Após completar:
+1. Tire um screenshot da sua estrutura
+2. Teste com Claude Code em um projeto real
+3. Anote o que funcionou/não funcionou
+4. Itere e melhore
+
+**Lembre-se:** Um CLAUDE.md TOP 1% nunca está "pronto" - ele evolui continuamente!
+
+---
+
+> 🎉 Parabéns! Ao completar este challenge, você terá um sistema de Context Engineering de nível profissional!
+`,
+    {
+      xp: 200,
+      duration: 60,
+      difficulty: 'advanced',
+      tags: ['challenge', 'context-engineering', 'master', 'top-1-percent'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-03-07-1',
+          title: 'CLAUDE.md Global Completo',
+          description: 'Crie seu CLAUDE.md global com todas as seções recomendadas',
+          context: 'personal',
+          contextDescription: 'Seu contexto pessoal universal',
+          difficulty: 'intermediate',
+          xpBonus: 50,
+          hints: ['Inclua NUNCA/SEMPRE', 'Adicione preferências de idioma', 'Mencione suas empresas/projetos'],
+        },
+        {
+          id: 'ch-03-07-2',
+          title: 'Sistema de Módulos',
+          description: 'Crie pelo menos 3 módulos reutilizáveis em ~/.claude/modules/',
+          context: 'personal',
+          contextDescription: 'Modularize suas regras',
+          difficulty: 'advanced',
+          xpBonus: 75,
+          hints: ['regras-base.md é obrigatório', 'Adicione um por stack', 'Teste os @includes'],
+        },
+        {
+          id: 'ch-03-07-3',
+          title: 'CLAUDE.md Costa Law',
+          description: 'Crie um CLAUDE.md profissional para projetos da Costa Law',
+          context: 'costa_law',
+          contextDescription: 'Contexto jurídico profissional',
+          difficulty: 'advanced',
+          xpBonus: 100,
+          hints: ['Regras de confidencialidade', 'Padrões de documentos legais', 'Linguagem formal jurídica'],
+        }
+      ]
     }
   ),
 ];
@@ -1797,11 +2637,12 @@ export const courseModules: Module[] = [
     id: '03',
     courseId: 'claude-code',
     number: 3,
-    title: 'Configuração',
-    slug: 'configuracao',
-    description: 'CLAUDE.md, settings.json e configurações avançadas',
-    icon: 'Settings',
+    title: 'Context Engineering',
+    slug: 'context-engineering',
+    description: 'Domine a arte de fornecer contexto perfeito para IA - a habilidade #1 dos TOP 1%',
+    icon: 'Brain',
     color: 'purple',
+    isNew: true,
     lessons: module03Lessons,
     totalXp: module03Lessons.reduce((acc, l) => acc + l.xp, 0),
     estimatedHours: 2,
