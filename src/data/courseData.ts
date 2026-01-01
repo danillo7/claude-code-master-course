@@ -4297,51 +4297,947 @@ const module06Lessons: Lesson[] = [
 
 Hooks são **scripts que executam automaticamente** em resposta a eventos do Claude Code.
 
+## Conceito
+
+\`\`\`
+┌─────────────────┐
+│   Claude Code   │
+│                 │
+│  ┌───────────┐  │     ┌─────────────┐
+│  │  Evento   │──┼────▶│    Hook     │
+│  │ (trigger) │  │     │  (script)   │
+│  └───────────┘  │     └─────────────┘
+└─────────────────┘
+\`\`\`
+
 ## Eventos Disponíveis
 
-| Evento | Quando Dispara |
-|--------|----------------|
-| \`preToolUse\` | Antes de usar uma ferramenta |
-| \`postToolUse\` | Depois de usar uma ferramenta |
-| \`preMessage\` | Antes de enviar mensagem |
-| \`postMessage\` | Depois de receber resposta |
-| \`sessionStart\` | Ao iniciar sessão |
-| \`sessionEnd\` | Ao encerrar sessão |
+| Evento | Quando Dispara | Exemplo de Uso |
+|--------|----------------|----------------|
+| \`PreToolUse\` | Antes de usar ferramenta | Validar comando |
+| \`PostToolUse\` | Depois de usar ferramenta | Lint, format |
+| \`Notification\` | Notificações do sistema | Alertas |
+| \`Stop\` | Quando Claude para | Cleanup |
 
-## Estrutura Básica
+## Por que Usar Hooks?
+
+1. **Automação** - Tarefas repetitivas automáticas
+2. **Consistência** - Padrões aplicados sempre
+3. **Segurança** - Validação antes de ações
+4. **Produtividade** - Menos trabalho manual
+5. **Qualidade** - Lint, format, test automáticos
+
+## Exemplo Simples
 
 \`\`\`json
-// .claude/hooks.json
 {
   "hooks": {
-    "postToolUse": [
+    "PostToolUse": [{
+      "matcher": { "tool_name": "Write" },
+      "hooks": [{
+        "type": "command",
+        "command": "echo 'Arquivo criado!'"
+      }]
+    }]
+  }
+}
+\`\`\`
+
+> **Lembre-se:** Hooks são poderosos mas devem ser usados com cuidado!
+`,
+    {
+      xp: 80,
+      duration: 25,
+      difficulty: 'intermediate',
+      tags: ['hooks', 'automação', 'eventos'],
+      quizzes: [
+        {
+          question: 'O que são Hooks no Claude Code?',
+          options: ['Plugins de terceiros', 'Scripts que executam em resposta a eventos', 'Atalhos de teclado', 'Comandos do terminal'],
+          correctIndex: 1,
+          explanation: 'Hooks são scripts que executam automaticamente em resposta a eventos específicos do Claude Code.'
+        },
+        {
+          question: 'Qual evento dispara ANTES de usar uma ferramenta?',
+          options: ['PostToolUse', 'PreToolUse', 'BeforeTool', 'ToolStart'],
+          correctIndex: 1,
+          explanation: 'PreToolUse dispara antes de usar uma ferramenta, permitindo validação ou modificação.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('06', '06-02-hook-configuration', '02. Configurando Hooks',
+    'Aprenda a estrutura e configuração de hooks no settings.json.',
+    `# Configurando Hooks
+
+## Onde Configurar
+
+Hooks são configurados no \`settings.json\`:
+
+\`\`\`bash
+# Global (todas as sessões)
+~/.claude/settings.json
+
+# Por projeto
+./.claude/settings.json
+\`\`\`
+
+## Estrutura do settings.json
+
+\`\`\`json
+{
+  "hooks": {
+    "PreToolUse": [
       {
-        "matcher": { "tool": "Write" },
-        "command": "npm run lint --fix {{file}}"
+        "matcher": { /* condição */ },
+        "hooks": [
+          { /* ação */ }
+        ]
       }
     ],
-    "sessionEnd": [
+    "PostToolUse": [ /* ... */ ],
+    "Notification": [ /* ... */ ],
+    "Stop": [ /* ... */ ]
+  }
+}
+\`\`\`
+
+## Anatomy de um Hook
+
+\`\`\`json
+{
+  "matcher": {
+    "tool_name": "Write",        // Filtrar por tool
+    "tool_input": {              // Filtrar por input
+      "file_path": ".*\\\\.ts$"   // Regex
+    }
+  },
+  "hooks": [
+    {
+      "type": "command",
+      "command": "npm run lint",
+      "timeout": 30000,
+      "working_directory": "/path/to/project"
+    }
+  ]
+}
+\`\`\`
+
+## Tipos de Hook
+
+### 1. Command Hook
+Executa um comando shell:
+
+\`\`\`json
+{
+  "type": "command",
+  "command": "npm run format",
+  "timeout": 10000
+}
+\`\`\`
+
+### 2. URL Hook
+Chama um endpoint HTTP:
+
+\`\`\`json
+{
+  "type": "url",
+  "url": "http://localhost:3000/webhook",
+  "method": "POST"
+}
+\`\`\`
+
+## Variáveis Disponíveis
+
+| Variável | Descrição |
+|----------|-----------|
+| \`$TOOL_NAME\` | Nome da ferramenta |
+| \`$TOOL_INPUT\` | Input JSON da ferramenta |
+| \`$TOOL_OUTPUT\` | Output da ferramenta |
+| \`$CWD\` | Diretório de trabalho |
+| \`$SESSION_ID\` | ID da sessão atual |
+
+## Exemplo Completo
+
+\`\`\`json
+{
+  "hooks": {
+    "PostToolUse": [
       {
-        "command": "echo 'Sessão encerrada às $(date)' >> ~/.claude/log.txt"
+        "matcher": {
+          "tool_name": "Write",
+          "tool_input": {
+            "file_path": ".*\\\\.(ts|tsx)$"
+          }
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx eslint --fix $TOOL_INPUT_FILE_PATH",
+            "timeout": 30000
+          }
+        ]
       }
     ]
   }
 }
 \`\`\`
 
-## Casos de Uso
+## Validando Configuração
 
-1. **Lint automático** após escrever arquivo
-2. **Backup** ao encerrar sessão
-3. **Notificação** quando tarefa longa completa
-4. **Log** de todas as ações
-5. **Validação** antes de executar comandos
+\`\`\`bash
+# Verificar sintaxe do settings.json
+cat ~/.claude/settings.json | jq .
+
+# Ver hooks ativos
+claude config list | grep hooks
+\`\`\`
 `,
     {
-      xp: 80,
-      duration: 25,
+      xp: 90,
+      duration: 30,
+      difficulty: 'intermediate',
+      tags: ['hooks', 'configuração', 'settings'],
+      quizzes: [
+        {
+          question: 'Onde os hooks são configurados?',
+          options: ['hooks.json', 'package.json', 'settings.json', 'config.yaml'],
+          correctIndex: 2,
+          explanation: 'Hooks são configurados no settings.json, seja global (~/.claude/) ou por projeto (./.claude/).'
+        },
+        {
+          question: 'Qual propriedade define a condição para um hook executar?',
+          options: ['condition', 'filter', 'matcher', 'trigger'],
+          correctIndex: 2,
+          explanation: 'O "matcher" define a condição (tool_name, tool_input) que precisa ser satisfeita.'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-basic-hook-config',
+          title: 'Configure Seu Primeiro Hook',
+          description: 'Crie um hook que imprime uma mensagem quando qualquer arquivo é escrito.',
+          context: 'general',
+          contextDescription: 'Primeiro contato com configuração de hooks',
+          difficulty: 'intermediate',
+          xpBonus: 30,
+          hints: [
+            'Use PostToolUse com matcher para Write',
+            'O comando pode ser um simples echo',
+            'Coloque no ~/.claude/settings.json'
+          ]
+        }
+      ]
+    }
+  ),
+
+  createLesson('06', '06-03-tool-hooks', '03. Hooks de Ferramentas',
+    'Automatize ações antes e depois do uso de ferramentas.',
+    `# Hooks de Ferramentas
+
+Os hooks mais poderosos são os que interceptam o uso de ferramentas.
+
+## PreToolUse - Antes da Execução
+
+\`\`\`
+┌──────────┐     ┌──────────┐     ┌──────────┐
+│  Pedido  │────▶│ PreTool  │────▶│   Tool   │
+│          │     │  Hook    │     │ Executa  │
+└──────────┘     └──────────┘     └──────────┘
+                      │
+                      ▼
+              [Pode BLOQUEAR]
+\`\`\`
+
+### Casos de Uso PreToolUse
+
+1. **Validação de segurança**
+\`\`\`json
+{
+  "matcher": { "tool_name": "Bash" },
+  "hooks": [{
+    "type": "command",
+    "command": "echo \\"$TOOL_INPUT\\" | grep -q 'rm -rf' && exit 1 || exit 0"
+  }]
+}
+\`\`\`
+
+2. **Confirmação para ações destrutivas**
+3. **Log de auditoria**
+4. **Rate limiting**
+
+## PostToolUse - Depois da Execução
+
+\`\`\`
+┌──────────┐     ┌──────────┐     ┌──────────┐
+│   Tool   │────▶│ PostTool │────▶│ Continua │
+│ Executa  │     │  Hook    │     │          │
+└──────────┘     └──────────┘     └──────────┘
+\`\`\`
+
+### Casos de Uso PostToolUse
+
+1. **Lint após Write**
+\`\`\`json
+{
+  "matcher": {
+    "tool_name": "Write",
+    "tool_input": { "file_path": ".*\\\\.ts$" }
+  },
+  "hooks": [{
+    "type": "command",
+    "command": "npx eslint --fix \\"$FILE_PATH\\""
+  }]
+}
+\`\`\`
+
+2. **Format após Edit**
+\`\`\`json
+{
+  "matcher": { "tool_name": "Edit" },
+  "hooks": [{
+    "type": "command",
+    "command": "npx prettier --write \\"$FILE_PATH\\""
+  }]
+}
+\`\`\`
+
+3. **Test após alteração**
+\`\`\`json
+{
+  "matcher": {
+    "tool_name": "Write",
+    "tool_input": { "file_path": ".*\\\\.test\\\\.ts$" }
+  },
+  "hooks": [{
+    "type": "command",
+    "command": "npm test -- --findRelatedTests \\"$FILE_PATH\\""
+  }]
+}
+\`\`\`
+
+## Matchers Avançados
+
+### Por Nome de Tool
+\`\`\`json
+{ "tool_name": "Write" }
+{ "tool_name": "Bash" }
+{ "tool_name": "Edit" }
+\`\`\`
+
+### Por Padrão de Input (Regex)
+\`\`\`json
+{
+  "tool_input": {
+    "file_path": ".*\\\\.tsx?$",
+    "command": "^npm.*"
+  }
+}
+\`\`\`
+
+### Combinando Condições
+\`\`\`json
+{
+  "tool_name": "Write",
+  "tool_input": {
+    "file_path": "src/.*\\\\.ts$"
+  }
+}
+\`\`\`
+
+## Exemplo: Lint + Format + Git Add
+
+\`\`\`json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": {
+          "tool_name": "Write",
+          "tool_input": { "file_path": ".*\\\\.(ts|tsx|js|jsx)$" }
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx eslint --fix \\"$FILE_PATH\\" && npx prettier --write \\"$FILE_PATH\\" && git add \\"$FILE_PATH\\"",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
+  }
+}
+\`\`\`
+
+> **Pro Tip:** Combine múltiplas ações em um único comando com \`&&\`
+`,
+    {
+      xp: 110,
+      duration: 35,
       difficulty: 'advanced',
-      tags: ['hooks', 'automação', 'eventos'],
+      tags: ['hooks', 'pretooluse', 'posttooluse', 'automação'],
+      quizzes: [
+        {
+          question: 'PreToolUse pode bloquear a execução de uma ferramenta?',
+          options: ['Não, apenas observa', 'Sim, se retornar exit code != 0', 'Apenas para Bash', 'Apenas no modo debug'],
+          correctIndex: 1,
+          explanation: 'PreToolUse pode bloquear a execução se o hook retornar um código de saída diferente de 0.'
+        },
+        {
+          question: 'Qual hook é ideal para rodar lint após criar um arquivo?',
+          options: ['PreToolUse', 'PostToolUse', 'Notification', 'Stop'],
+          correctIndex: 1,
+          explanation: 'PostToolUse executa após a ferramenta, perfeito para lint, format e outras ações pós-criação.'
+        },
+        {
+          question: 'O matcher usa qual sintaxe para patterns?',
+          options: ['Glob', 'Regex', 'SQL LIKE', 'XPath'],
+          correctIndex: 1,
+          explanation: 'Matchers usam regex (expressões regulares) para filtrar por patterns.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('06', '06-04-notification-hooks', '04. Hooks de Notificação',
+    'Receba alertas e notificações inteligentes.',
+    `# Hooks de Notificação
+
+Notification hooks permitem reagir a eventos do sistema.
+
+## Quando Usar
+
+- Tarefa longa completou
+- Erro ocorreu
+- Decisão precisa de input
+- Status mudou
+
+## Configuração Básica
+
+\`\`\`json
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": {
+          "type": ".*"
+        },
+        "hooks": [{
+          "type": "command",
+          "command": "osascript -e 'display notification \\"$MESSAGE\\" with title \\"Claude Code\\"'"
+        }]
+      }
+    ]
+  }
+}
+\`\`\`
+
+## Notificações por Tipo
+
+### Sucesso
+\`\`\`json
+{
+  "matcher": { "type": "success" },
+  "hooks": [{
+    "type": "command",
+    "command": "afplay /System/Library/Sounds/Glass.aiff"
+  }]
+}
+\`\`\`
+
+### Erro
+\`\`\`json
+{
+  "matcher": { "type": "error" },
+  "hooks": [{
+    "type": "command",
+    "command": "osascript -e 'display alert \\"Erro no Claude Code\\" message \\"$MESSAGE\\"'"
+  }]
+}
+\`\`\`
+
+## Integrações Populares
+
+### macOS Notification Center
+\`\`\`bash
+osascript -e 'display notification "Tarefa completa!" with title "Claude"'
+\`\`\`
+
+### Slack Webhook
+\`\`\`json
+{
+  "type": "url",
+  "url": "https://hooks.slack.com/services/XXX",
+  "method": "POST",
+  "body": "{\\"text\\": \\"$MESSAGE\\"}"
+}
+\`\`\`
+
+### Discord Webhook
+\`\`\`json
+{
+  "type": "url",
+  "url": "https://discord.com/api/webhooks/XXX",
+  "method": "POST",
+  "body": "{\\"content\\": \\"$MESSAGE\\"}"
+}
+\`\`\`
+
+### Terminal Bell
+\`\`\`bash
+echo -e "\\a"
+\`\`\`
+
+### Desktop Notification (Linux)
+\`\`\`bash
+notify-send "Claude Code" "$MESSAGE"
+\`\`\`
+
+## Hook de Stop
+
+Executar ações quando Claude para:
+
+\`\`\`json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [{
+          "type": "command",
+          "command": "echo 'Sessão finalizada: $(date)' >> ~/.claude/sessions.log"
+        }]
+      }
+    ]
+  }
+}
+\`\`\`
+
+### Casos de Uso Stop
+
+1. **Backup de contexto**
+2. **Log de sessão**
+3. **Cleanup de arquivos temporários**
+4. **Sync de estado**
+
+## Exemplo: Sistema de Alertas Completo
+
+\`\`\`json
+{
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": { "type": "success" },
+        "hooks": [{
+          "type": "command",
+          "command": "osascript -e 'display notification \\"Tarefa concluída!\\" with title \\"Claude Code\\" sound name \\"Glass\\"'"
+        }]
+      },
+      {
+        "matcher": { "type": "error" },
+        "hooks": [{
+          "type": "command",
+          "command": "osascript -e 'display alert \\"Erro\\" message \\"$MESSAGE\\"'"
+        }]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [{
+          "type": "command",
+          "command": "echo '$(date): Sessão encerrada' >> ~/.claude/log.txt"
+        }]
+      }
+    ]
+  }
+}
+\`\`\`
+`,
+    {
+      xp: 100,
+      duration: 30,
+      difficulty: 'intermediate',
+      tags: ['hooks', 'notificações', 'alertas', 'stop'],
+      quizzes: [
+        {
+          question: 'Qual hook é usado para ações quando Claude para de executar?',
+          options: ['End', 'Finish', 'Stop', 'Complete'],
+          correctIndex: 2,
+          explanation: 'O hook "Stop" é disparado quando Claude para de executar.'
+        },
+        {
+          question: 'Para enviar notificação para Slack, qual tipo de hook usar?',
+          options: ['command com curl', 'url com webhook', 'Ambos funcionam', 'Não é possível'],
+          correctIndex: 2,
+          explanation: 'Tanto command (com curl) quanto url (webhook direto) funcionam para Slack.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('06', '06-05-advanced-hooks', '05. Hooks Avançados',
+    'Técnicas avançadas e patterns profissionais de hooks.',
+    `# Hooks Avançados
+
+Leve seus hooks ao próximo nível com técnicas profissionais.
+
+## Pattern: Git Auto-Add Inteligente
+
+\`\`\`json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": {
+          "tool_name": "Write|Edit",
+          "tool_input": { "file_path": "^(?!.*node_modules).*$" }
+        },
+        "hooks": [{
+          "type": "command",
+          "command": "git add \\"$FILE_PATH\\" 2>/dev/null || true"
+        }]
+      }
+    ]
+  }
+}
+\`\`\`
+
+## Pattern: Pre-commit Analysis
+
+\`\`\`json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": {
+          "tool_name": "Bash",
+          "tool_input": { "command": "^git commit.*" }
+        },
+        "hooks": [{
+          "type": "command",
+          "command": "~/.claude/scripts/pre-commit-check.sh"
+        }]
+      }
+    ]
+  }
+}
+\`\`\`
+
+## Pattern: Contexto Persistente
+
+Salvar contexto automaticamente:
+
+\`\`\`json
+{
+  "hooks": {
+    "Stop": [{
+      "hooks": [{
+        "type": "command",
+        "command": "~/.claude/scripts/save-context.sh"
+      }]
+    }]
+  }
+}
+\`\`\`
+
+Script \`save-context.sh\`:
+\`\`\`bash
+#!/bin/bash
+CONTEXT_DIR=~/.claude/contexts
+mkdir -p $CONTEXT_DIR
+DATE=$(date +%Y-%m-%d_%H-%M)
+# Salva contexto da sessão
+echo "Session ended at $DATE" >> $CONTEXT_DIR/sessions.log
+\`\`\`
+
+## Pattern: Security Guard
+
+Bloquear comandos perigosos:
+
+\`\`\`json
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": {
+          "tool_name": "Bash"
+        },
+        "hooks": [{
+          "type": "command",
+          "command": "~/.claude/scripts/security-check.sh"
+        }]
+      }
+    ]
+  }
+}
+\`\`\`
+
+Script \`security-check.sh\`:
+\`\`\`bash
+#!/bin/bash
+DANGEROUS_PATTERNS=(
+  "rm -rf /"
+  "rm -rf ~"
+  "> /dev/sda"
+  "mkfs"
+  "dd if="
+)
+
+for pattern in "\${DANGEROUS_PATTERNS[@]}"; do
+  if echo "$TOOL_INPUT" | grep -q "$pattern"; then
+    echo "BLOCKED: Dangerous command detected"
+    exit 1
+  fi
+done
+exit 0
+\`\`\`
+
+## Pattern: Quality Pipeline
+
+Lint → Format → Test em sequência:
+
+\`\`\`json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": {
+          "tool_name": "Write",
+          "tool_input": { "file_path": ".*\\\\.ts$" }
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx eslint --fix \\"$FILE_PATH\\"",
+            "timeout": 10000
+          },
+          {
+            "type": "command",
+            "command": "npx prettier --write \\"$FILE_PATH\\"",
+            "timeout": 5000
+          },
+          {
+            "type": "command",
+            "command": "npm test -- --findRelatedTests \\"$FILE_PATH\\" --passWithNoTests",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
+  }
+}
+\`\`\`
+
+## Pattern: Logging Completo
+
+\`\`\`json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": { "tool_name": ".*" },
+        "hooks": [{
+          "type": "command",
+          "command": "echo '$(date +%Y-%m-%dT%H:%M:%S) | $TOOL_NAME | $FILE_PATH' >> ~/.claude/tool-usage.log"
+        }]
+      }
+    ]
+  }
+}
+\`\`\`
+
+## Debugging Hooks
+
+\`\`\`bash
+# Testar comando manualmente
+TOOL_INPUT='{"file_path": "test.ts"}' ~/.claude/scripts/my-hook.sh
+
+# Ver logs
+tail -f ~/.claude/hook-debug.log
+
+# Modo verbose
+claude --debug
+\`\`\`
+
+## Boas Práticas
+
+| Prática | Descrição |
+|---------|-----------|
+| **Timeout** | Sempre definir para evitar travamentos |
+| **Fail-safe** | Usar \`\\|\\| true\` para erros não críticos |
+| **Logs** | Registrar execuções para debug |
+| **Idempotência** | Hooks devem ser seguros para re-execução |
+| **Escopo** | Matchers específicos para evitar overhead |
+`,
+    {
+      xp: 130,
+      duration: 40,
+      difficulty: 'expert',
+      tags: ['hooks', 'avançado', 'patterns', 'segurança'],
+      quizzes: [
+        {
+          question: 'Para evitar travamentos, qual propriedade é essencial?',
+          options: ['priority', 'timeout', 'async', 'retry'],
+          correctIndex: 1,
+          explanation: 'O timeout é essencial para evitar que hooks lentos travem a sessão.'
+        },
+        {
+          question: 'O que significa "|| true" no final de um comando hook?',
+          options: ['Forçar sucesso', 'Ignorar erros', 'Ambos', 'Nenhum'],
+          correctIndex: 2,
+          explanation: '|| true ignora erros e força código de saída 0, evitando bloqueios por falhas não críticas.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('06', '06-06-hooks-challenge', '06. Challenge: Sistema de Hooks',
+    'Crie um sistema completo de automação com hooks.',
+    `# Challenge: Sistema de Hooks TOP 1%
+
+## Objetivo
+
+Criar um sistema completo de hooks que automatize seu workflow de desenvolvimento.
+
+## Requisitos
+
+### Tier 1: Básico (Obrigatório)
+- [ ] Hook de lint após Write em arquivos .ts/.tsx
+- [ ] Hook de format após Edit
+- [ ] Notificação de conclusão de tarefas longas
+
+### Tier 2: Intermediário (Escolha 2+)
+- [ ] Git auto-add após alterações
+- [ ] Pre-commit analysis
+- [ ] Log de todas as ações
+- [ ] Notificação de erros
+
+### Tier 3: Avançado (Opcional)
+- [ ] Security guard para comandos perigosos
+- [ ] Contexto persistente entre sessões
+- [ ] Pipeline completo (lint → format → test)
+- [ ] Integração com Slack/Discord
+
+## Entregáveis
+
+### 1. settings.json
+
+\`\`\`json
+{
+  "hooks": {
+    "PreToolUse": [ /* ... */ ],
+    "PostToolUse": [ /* ... */ ],
+    "Notification": [ /* ... */ ],
+    "Stop": [ /* ... */ ]
+  }
+}
+\`\`\`
+
+### 2. Scripts de Suporte
+
+\`\`\`
+~/.claude/scripts/
+├── pre-commit-check.sh
+├── security-guard.sh
+├── save-context.sh
+└── notify.sh
+\`\`\`
+
+### 3. Documentação
+
+Criar \`~/.claude/HOOKS.md\`:
+
+\`\`\`markdown
+# Meus Hooks
+
+## Hooks Ativos
+| Hook | Trigger | Ação |
+|------|---------|------|
+| ... | ... | ... |
+
+## Scripts
+| Script | Função |
+|--------|--------|
+| ... | ... |
+\`\`\`
+
+## Critérios de Avaliação
+
+| Critério | Pontos |
+|----------|--------|
+| 3 hooks Tier 1 | 40 |
+| 2+ hooks Tier 2 | 30 |
+| Scripts funcionando | 15 |
+| Documentação | 15 |
+| **Total** | **100** |
+
+## Dicas
+
+1. **Comece simples** - Um hook por vez
+2. **Teste cada hook** - Antes de adicionar o próximo
+3. **Use timeout** - Evite travamentos
+4. **Documente** - Futuro você agradece
+5. **Fail-safe** - Use \`|| true\` para não-críticos
+
+## Stack Exemplo
+
+\`\`\`
+┌────────────────────────────────────────────┐
+│              HOOK SYSTEM                    │
+├────────────────────────────────────────────┤
+│  PreToolUse                                 │
+│  ├── security-guard.sh (Bash)              │
+│  └── pre-commit-check.sh (git commit)      │
+├────────────────────────────────────────────┤
+│  PostToolUse                                │
+│  ├── lint + format (Write *.ts)            │
+│  ├── git add (Write/Edit)                  │
+│  └── log (todas as tools)                  │
+├────────────────────────────────────────────┤
+│  Notification                               │
+│  ├── macOS notification (success)          │
+│  └── alert (error)                         │
+├────────────────────────────────────────────┤
+│  Stop                                       │
+│  └── save-context.sh                       │
+└────────────────────────────────────────────┘
+\`\`\`
+
+## Teste Final
+
+Após configurar, verifique:
+
+\`\`\`bash
+# 1. Criar arquivo TS (deve lint + format)
+# 2. Editar arquivo (deve format + git add)
+# 3. Tentar comando perigoso (deve bloquear)
+# 4. Finalizar sessão (deve salvar contexto)
+\`\`\`
+
+> **Lembre-se:** Hooks bem configurados = Produtividade 10x!
+`,
+    {
+      xp: 200,
+      duration: 60,
+      difficulty: 'expert',
+      tags: ['hooks', 'challenge', 'automação', 'sistema'],
+      challenges: [
+        {
+          id: 'ch-hooks-system-complete',
+          title: 'Sistema de Hooks Completo',
+          description: 'Configure um sistema completo de hooks com lint, format, segurança e notificações.',
+          context: 'general',
+          contextDescription: 'Challenge final do módulo Hooks',
+          difficulty: 'expert',
+          xpBonus: 100,
+          hints: [
+            'Comece pelos hooks de PostToolUse para lint/format',
+            'Adicione scripts em ~/.claude/scripts/',
+            'Teste cada hook individualmente antes de combinar',
+            'Documente tudo em HOOKS.md'
+          ]
+        }
+      ]
     }
   ),
 ];
