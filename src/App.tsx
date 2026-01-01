@@ -15,18 +15,19 @@ import {
   Moon, Sun, BookOpen, Trophy, Flame, Bell, Search, Menu,
   CheckCircle2, Circle, Lock, Play, Clock, Star, Target,
   ArrowRight, Bookmark, FileText, BarChart3, Monitor, Check,
-  LogOut, Mail, Calendar, Home, Newspaper, LayoutGrid
+  LogOut, Mail, Calendar, Home, Newspaper, LayoutGrid, Layers
 } from 'lucide-react';
 import { NewsTicker, TrendsSection } from './components/NewsAndTrends';
 import { AINewsIntelligenceHub } from './components/AINewsIntelligenceHub';
 import { AITeamFramework } from './components/AITeamFramework';
+import { KLLMsFramework } from './components/KLLMsFramework';
 import './index.css';
 
 // ============================================================================
 // VIEW TYPES & PORTAL AREAS
 // ============================================================================
 
-type PortalArea = 'portal' | 'course' | 'news' | 'market-intel' | 'timeline' | 'ai-team';
+type PortalArea = 'portal' | 'course' | 'news' | 'market-intel' | 'timeline' | 'ai-team' | 'k-llms';
 
 interface PortalAreaConfig {
   id: PortalArea;
@@ -88,6 +89,16 @@ const PORTAL_AREAS: PortalAreaConfig[] = [
     gradient: 'from-cyan-500 to-blue-500',
     color: 'cyan',
     badge: 'NEW'
+  },
+  {
+    id: 'k-llms',
+    label: 'K-LLMs Architecture',
+    shortLabel: 'K-LLMs',
+    description: 'Multi-LLM paralelo da Palantir',
+    icon: Layers,
+    gradient: 'from-rose-500 to-red-500',
+    color: 'rose',
+    badge: 'HOT'
   }
 ];
 
@@ -1801,6 +1812,32 @@ function App() {
 
         {/* AI Team Framework Content */}
         <AITeamFramework />
+      </div>
+    );
+  }
+
+  // Show K-LLMs Framework
+  if (currentArea === 'k-llms') {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+        {/* Header with Context Switcher */}
+        <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <GlobalContextSwitcher
+              currentArea={currentArea}
+              currentCourseId={null}
+              onAreaChange={handleAreaChange}
+              onBackToPortal={handleBackToPortal}
+            />
+            <div className="flex items-center gap-3">
+              <ThemeSelector />
+              <UserMenu profile={profile} onLogout={handleLogout} />
+            </div>
+          </div>
+        </div>
+
+        {/* K-LLMs Framework Content */}
+        <KLLMsFramework />
       </div>
     );
   }
