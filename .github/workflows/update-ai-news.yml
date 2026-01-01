@@ -1,0 +1,155 @@
+# ============================================================================
+# AI NEWS AUTO-UPDATE WORKFLOW
+# Automated news capture 5x per day covering full day (BRT timezone)
+# Schedule: 06:00, 10:00, 14:00, 18:00, 22:00 BRT
+# ============================================================================
+
+name: Update AI News
+
+on:
+  schedule:
+    # 06:00 BRT = 09:00 UTC
+    - cron: '0 9 * * *'
+    # 10:00 BRT = 13:00 UTC
+    - cron: '0 13 * * *'
+    # 14:00 BRT = 17:00 UTC
+    - cron: '0 17 * * *'
+    # 18:00 BRT = 21:00 UTC
+    - cron: '0 21 * * *'
+    # 22:00 BRT = 01:00 UTC (next day)
+    - cron: '0 1 * * *'
+
+  # Manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      force_update:
+        description: 'Force update even if no new news'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  NODE_VERSION: '20'
+  TIMEZONE: 'America/Sao_Paulo'
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Get current timestamp (BRT)
+        id: timestamp
+        run: |
+          echo "date=$(TZ=${{ env.TIMEZONE }} date '+%Y-%m-%d')" >> $GITHUB_OUTPUT
+          echo "time=$(TZ=${{ env.TIMEZONE }} date '+%H:%M:%S')" >> $GITHUB_OUTPUT
+          echo "iso=$(TZ=${{ env.TIMEZONE }} date -Iseconds)" >> $GITHUB_OUTPUT
+          echo "schedule=$(TZ=${{ env.TIMEZONE }} date '+%H:00')" >> $GITHUB_OUTPUT
+
+      - name: Run news capture script
+        id: capture
+        env:
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          node scripts/capture-ai-news.js
+          echo "status=success" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Update news data file
+        if: steps.capture.outputs.status == 'success' || github.event.inputs.force_update == 'true'
+        run: |
+          # Update the lastUpdated timestamp in aiNewsData.ts
+          TIMESTAMP="${{ steps.timestamp.outputs.iso }}"
+
+          # Calculate next update time
+          HOUR=$(TZ=${{ env.TIMEZONE }} date '+%H')
+          case $HOUR in
+            0[0-9]) NEXT="10:00:00" ;;
+            1[0-3]) NEXT="14:00:00" ;;
+            1[4-7]) NEXT="18:00:00" ;;
+            1[8-9]|2[0-1]) NEXT="22:00:00" ;;
+            *) NEXT="06:00:00" ;;
+          esac
+
+          NEXT_DATE=$(TZ=${{ env.TIMEZONE }} date '+%Y-%m-%d')
+          if [ "$HOUR" -ge 22 ]; then
+            NEXT_DATE=$(TZ=${{ env.TIMEZONE }} date -d '+1 day' '+%Y-%m-%d')
+          fi
+
+          NEXT_TIMESTAMP="${NEXT_DATE}T${NEXT}-03:00"
+
+          # Update metadata in file
+          sed -i "s/lastUpdated: '[^']*'/lastUpdated: '${TIMESTAMP}'/" src/data/aiNewsData.ts
+          sed -i "s/nextUpdate: '[^']*'/nextUpdate: '${NEXT_TIMESTAMP}'/" src/data/aiNewsData.ts
+
+      - name: Add update to history
+        if: steps.capture.outputs.status == 'success'
+        run: |
+          # This would be done by the capture script
+          echo "Update history would be appended here"
+
+      - name: Build and verify
+        run: npm run build
+
+      - name: Commit and push changes
+        if: steps.capture.outputs.status == 'success' || github.event.inputs.force_update == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+          git add -A
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(news): Auto-update ${{ steps.timestamp.outputs.date }} ${{ steps.timestamp.outputs.schedule }} BRT
+
+            - Captured latest AI news
+            - Updated metadata timestamps
+            - Next update: $(TZ=${{ env.TIMEZONE }} date -d '+4 hours' '+%H:00') BRT"
+
+            git push
+          fi
+
+      - name: Deploy to GitHub Pages
+        if: steps.capture.outputs.status == 'success'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          commit_message: "deploy: Auto-update ${{ steps.timestamp.outputs.date }} ${{ steps.timestamp.outputs.time }}"
+
+      - name: Summary
+        run: |
+          echo "## AI News Update Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date:** ${{ steps.timestamp.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Time (BRT):** ${{ steps.timestamp.outputs.time }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status:** ${{ steps.capture.outputs.status || 'completed' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Schedule:** ${{ steps.timestamp.outputs.schedule }} BRT" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Update Schedule (BRT)" >> $GITHUB_STEP_SUMMARY
+          echo "| Time | UTC |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|-----|" >> $GITHUB_STEP_SUMMARY
+          echo "| 06:00 | 09:00 |" >> $GITHUB_STEP_SUMMARY
+          echo "| 10:00 | 13:00 |" >> $GITHUB_STEP_SUMMARY
+          echo "| 14:00 | 17:00 |" >> $GITHUB_STEP_SUMMARY
+          echo "| 18:00 | 21:00 |" >> $GITHUB_STEP_SUMMARY
+          echo "| 22:00 | 01:00 |" >> $GITHUB_STEP_SUMMARY
