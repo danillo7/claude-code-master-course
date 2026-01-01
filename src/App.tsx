@@ -1002,30 +1002,54 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson, courseModules
                 <button
                   onClick={() => setExpandedModule(isExpanded ? null : module.id)}
                   className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl
-                            transition-all ${
+                            transition-all duration-200 group/module ${
                     currentModule === module.id
-                      ? 'bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400'
-                      : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
+                      ? 'bg-indigo-50 dark:bg-indigo-500/15 text-indigo-600 dark:text-indigo-400 shadow-sm'
+                      : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:shadow-sm'
                   }`}
                 >
-                  <Icon className="w-5 h-5 flex-shrink-0 text-slate-500 dark:text-slate-400" />
-                  <div className="flex-1 text-left">
-                    <div className="text-sm font-medium text-slate-900 dark:text-slate-100">{module.title}</div>
-                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+                  <div className={`p-1.5 rounded-lg transition-all ${
+                    progress === 100
+                      ? 'bg-emerald-100 dark:bg-emerald-500/20'
+                      : 'bg-slate-100 dark:bg-slate-800 group-hover/module:bg-indigo-100 dark:group-hover/module:bg-indigo-500/20'
+                  }`}>
+                    <Icon className={`w-4 h-4 flex-shrink-0 ${
+                      progress === 100
+                        ? 'text-emerald-600 dark:text-emerald-400'
+                        : 'text-slate-500 dark:text-slate-400 group-hover/module:text-indigo-600 dark:group-hover/module:text-indigo-400'
+                    }`} />
+                  </div>
+                  <div className="flex-1 text-left min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-slate-900 dark:text-slate-100 truncate">{module.title}</span>
+                      {module.isNew && (
+                        <span className="text-[9px] bg-gradient-to-r from-indigo-500 to-violet-500 text-white px-1.5 py-0.5 rounded-full font-bold animate-pulse">
+                          NEW
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                       <span>{completedLessons}/{module.lessons.length} lições</span>
-                      <div className="w-12 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                      <div className="flex-1 max-w-16 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-emerald-500 rounded-full transition-all"
+                          className={`h-full rounded-full transition-all duration-500 ${
+                            progress === 100
+                              ? 'bg-gradient-to-r from-emerald-400 to-emerald-500'
+                              : progress > 0
+                              ? 'bg-gradient-to-r from-indigo-400 to-violet-500'
+                              : 'bg-slate-300 dark:bg-slate-600'
+                          }`}
                           style={{ width: `${progress}%` }}
                         />
                       </div>
+                      {progress === 100 && (
+                        <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                      )}
                     </div>
                   </div>
-                  {isExpanded ? (
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4 text-slate-400" />
-                  )}
+                  <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${
+                    isExpanded ? 'rotate-90' : ''
+                  }`} />
                 </button>
 
                 {isExpanded && (
@@ -1041,26 +1065,33 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson, courseModules
                         <button
                           key={lesson.id}
                           onClick={() => onSelectLesson(lesson.id)}
-                          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left
-                                   text-slate-700 dark:text-slate-300
-                                   hover:bg-slate-100 dark:hover:bg-slate-800
-                                   hover:text-slate-900 dark:hover:text-slate-100
-                                   transition-all group"
+                          className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left
+                                   transition-all duration-150 group ${
+                                     status === 'completed'
+                                       ? 'text-emerald-700 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/10'
+                                       : status === 'in_progress'
+                                       ? 'text-indigo-700 dark:text-indigo-400 bg-indigo-50/50 dark:bg-indigo-500/10'
+                                       : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                                   } hover:translate-x-1`}
                         >
                           <StatusIcon
-                            className={`w-4 h-4 flex-shrink-0 ${
+                            className={`w-4 h-4 flex-shrink-0 transition-transform ${
                               status === 'completed' ? 'text-emerald-500' :
-                              status === 'in_progress' ? 'text-indigo-500' :
+                              status === 'in_progress' ? 'text-indigo-500 animate-pulse' :
                               'text-slate-400 dark:text-slate-500'
                             }`}
                           />
                           <span className="text-sm truncate flex-1">{lesson.title}</span>
                           {lesson.isNew && (
-                            <span className="text-[10px] bg-indigo-500 text-white px-1.5 py-0.5 rounded font-medium">
+                            <span className="text-[9px] bg-gradient-to-r from-indigo-500 to-violet-500 text-white px-1.5 py-0.5 rounded-full font-bold">
                               NEW
                             </span>
                           )}
-                          <span className="text-xs text-slate-500 dark:text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-all ${
+                            status === 'completed'
+                              ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400'
+                              : 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400'
+                          }`}>
                             +{lesson.xp}xp
                           </span>
                         </button>
