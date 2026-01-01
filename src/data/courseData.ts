@@ -3633,6 +3633,655 @@ claude mcp test memory
       duration: 20,
       difficulty: 'intermediate',
       tags: ['mcp', 'instalação', 'configuração'],
+      quizzes: [
+        {
+          question: 'Qual flag define o escopo de um MCP?',
+          options: ['-e (environment)', '-s (scope)', '-l (local)', '-g (global)'],
+          correctIndex: 1,
+          explanation: 'A flag -s define o escopo: user (global) ou project (local ao projeto).'
+        },
+        {
+          question: 'Onde ficam os MCPs de escopo "user"?',
+          options: ['./claude/', '~/.claude/', '/etc/claude/', '~/.config/claude/'],
+          correctIndex: 1,
+          explanation: 'MCPs de escopo user ficam em ~/.claude/ e são acessíveis em todas as sessões.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('05', '05-03-essential-mcps', '03. MCPs Essenciais',
+    'Os MCPs que todo profissional TOP 1% deve ter configurados.',
+    `# MCPs Essenciais - O Kit TOP 1%
+
+Estes são os MCPs que transformam Claude Code de uma ferramenta boa para uma **máquina de produtividade**.
+
+## 1. Memory MCP - Persistência Entre Sessões
+
+\`\`\`bash
+claude mcp add memory -s user -- npx -y @anthropic-ai/mcp-memory
+\`\`\`
+
+**O que faz:**
+- Persiste contexto entre sessões
+- Lembra preferências, decisões, padrões
+- Cria knowledge graph automático
+
+**Uso prático:**
+\`\`\`
+"Lembre que uso Tailwind com design system custom"
+"Consulte o memory sobre minhas preferências de código"
+\`\`\`
+
+## 2. GitHub MCP - Operações Git Avançadas
+
+\`\`\`bash
+claude mcp add github -s user -- npx -y @anthropic-ai/mcp-github
+\`\`\`
+
+**Capabilities:**
+- Criar/gerenciar PRs e issues
+- Code review automatizado
+- Buscar código em repos
+- Gerenciar branches
+
+**Uso prático:**
+\`\`\`
+"Crie um PR para a branch feature/auth"
+"Liste as issues abertas com label bug"
+"Faça review do PR #42"
+\`\`\`
+
+## 3. Filesystem MCP - Acesso Estruturado
+
+\`\`\`bash
+claude mcp add filesystem -s user -- npx -y @anthropic-ai/mcp-filesystem ~/Documents ~/Projects
+\`\`\`
+
+**O que adiciona:**
+- Navegação estruturada de diretórios
+- Leitura/escrita com permissões
+- Tree view de projetos
+
+## 4. Brave Search MCP - Pesquisa Web
+
+\`\`\`bash
+claude mcp add brave-search -s user -- npx -y @anthropic-ai/mcp-brave-search
+\`\`\`
+
+**Para que serve:**
+- Pesquisar documentação atualizada
+- Buscar soluções para erros
+- Encontrar APIs e bibliotecas
+
+## Comparativo: Com vs Sem MCPs
+
+| Tarefa | Sem MCPs | Com MCPs |
+|--------|----------|----------|
+| Lembrar preferências | Repetir toda sessão | Automático |
+| Criar PR | Comandos manuais | "Crie um PR" |
+| Pesquisar docs | Sair do terminal | Inline |
+| Acessar arquivos | Paths manuais | Navegação inteligente |
+
+## Configuração Completa
+
+\`\`\`json
+{
+  "mcpServers": {
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-memory"]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-github"],
+      "env": { "GITHUB_TOKEN": "\${GITHUB_TOKEN}" }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-filesystem", "~"]
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/mcp-brave-search"],
+      "env": { "BRAVE_API_KEY": "\${BRAVE_API_KEY}" }
+    }
+  }
+}
+\`\`\`
+
+> **Pro Tip:** Configure todos os 4 MCPs essenciais e veja sua produtividade multiplicar!
+`,
+    {
+      xp: 100,
+      duration: 30,
+      difficulty: 'intermediate',
+      tags: ['mcp', 'memory', 'github', 'filesystem', 'brave-search'],
+      quizzes: [
+        {
+          question: 'Qual MCP permite persistir contexto entre sessões?',
+          options: ['github', 'filesystem', 'memory', 'brave-search'],
+          correctIndex: 2,
+          explanation: 'O Memory MCP cria um knowledge graph que persiste informações entre sessões.'
+        },
+        {
+          question: 'Para criar PRs diretamente do Claude Code, qual MCP é necessário?',
+          options: ['git', 'github', 'gitlab', 'vcs'],
+          correctIndex: 1,
+          explanation: 'O GitHub MCP permite operações completas de Git/GitHub incluindo PRs, issues e reviews.'
+        },
+        {
+          question: 'O Brave Search MCP é útil para:',
+          options: ['Salvar arquivos', 'Pesquisar documentação atualizada', 'Gerenciar containers', 'Criar databases'],
+          correctIndex: 1,
+          explanation: 'Brave Search permite pesquisar na web diretamente do Claude Code para docs atualizadas.'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-install-essential-mcps',
+          title: 'Configure os 4 MCPs Essenciais',
+          description: 'Instale e configure memory, github, filesystem e brave-search no seu ambiente.',
+          context: 'general',
+          contextDescription: 'Configuração padrão para qualquer desenvolvedor',
+          difficulty: 'intermediate',
+          xpBonus: 40,
+          hints: [
+            'Use escopo "user" para disponibilidade global',
+            'Configure as variáveis de ambiente necessárias',
+            'Teste cada MCP após instalação com "claude mcp list"'
+          ]
+        }
+      ]
+    }
+  ),
+
+  createLesson('05', '05-04-advanced-mcps', '04. MCPs Avançados',
+    'MCPs especializados para casos de uso profissionais.',
+    `# MCPs Avançados - Nível Enterprise
+
+Além dos essenciais, estes MCPs elevam seu setup para **nível enterprise**.
+
+## 1. Playwright MCP - Automação de Browser
+
+\`\`\`bash
+claude mcp add playwright -s user -- npx -y @anthropic-ai/mcp-playwright
+\`\`\`
+
+**Capabilities:**
+- Screenshots de páginas
+- Navegação automatizada
+- Preenchimento de formulários
+- Testes E2E
+
+**Uso:**
+\`\`\`
+"Tire um screenshot da página de login"
+"Preencha o formulário de cadastro com dados de teste"
+"Navegue até a página de dashboard e capture o estado"
+\`\`\`
+
+## 2. Sequential Thinking MCP - Raciocínio Estruturado
+
+\`\`\`bash
+claude mcp add sequential-thinking -s user -- npx -y @anthropic-ai/mcp-sequential-thinking
+\`\`\`
+
+**Para que serve:**
+- Problemas complexos que precisam de passos
+- Análise de trade-offs
+- Planejamento de arquitetura
+
+**Quando usar:**
+- Decisões arquiteturais
+- Debug de problemas complexos
+- Análise de requisitos
+
+## 3. Langfuse MCP - Observabilidade LLM
+
+\`\`\`bash
+claude mcp add langfuse -s user -- npx -y langfuse-mcp
+\`\`\`
+
+**O que oferece:**
+- Tracing de prompts
+- Versionamento de prompts
+- Métricas de performance
+- A/B testing de prompts
+
+**Integração:**
+\`\`\`json
+{
+  "langfuse": {
+    "command": "npx",
+    "args": ["-y", "langfuse-mcp"],
+    "env": {
+      "LANGFUSE_HOST": "http://localhost:3000",
+      "LANGFUSE_PUBLIC_KEY": "\${LANGFUSE_PUBLIC_KEY}",
+      "LANGFUSE_SECRET_KEY": "\${LANGFUSE_SECRET_KEY}"
+    }
+  }
+}
+\`\`\`
+
+## 4. Graphiti MCP - Memory Avançado
+
+\`\`\`bash
+# Requer Neo4j + Graphiti server
+claude mcp add graphiti-memory -s user -- npx -y graphiti-mcp
+\`\`\`
+
+**Diferencial do Memory padrão:**
+- Temporal knowledge graph
+- Queries complexas de relacionamento
+- Versionamento de fatos
+- Busca semântica avançada
+
+## 5. Firecrawl MCP - Web Scraping Inteligente
+
+\`\`\`bash
+claude mcp add firecrawl -s user -- npx -y firecrawl-mcp
+\`\`\`
+
+**Capabilities:**
+- Scraping de qualquer site
+- Conversão para Markdown
+- Extração estruturada
+- Crawling de sites inteiros
+
+## Stack Completo TOP 1%
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│                    CLAUDE CODE                           │
+├──────────────┬──────────────┬──────────────┬────────────┤
+│   Memory     │   GitHub     │  Filesystem  │   Brave    │
+│  (essencial) │  (essencial) │  (essencial) │ (essencial)│
+├──────────────┼──────────────┼──────────────┼────────────┤
+│  Playwright  │  Langfuse    │   Graphiti   │ Firecrawl  │
+│  (browser)   │ (observabil) │  (memory++)  │  (scrape)  │
+├──────────────┼──────────────┼──────────────┼────────────┤
+│   Postgres   │   Notion     │    Slack     │  Custom    │
+│    (SQL)     │   (docs)     │   (comms)    │  (seu!)    │
+└──────────────┴──────────────┴──────────────┴────────────┘
+\`\`\`
+
+## Quando Usar Cada Um?
+
+| Cenário | MCP Recomendado |
+|---------|-----------------|
+| Testar UI automaticamente | Playwright |
+| Debug problema complexo | Sequential Thinking |
+| Monitorar performance de prompts | Langfuse |
+| Memória com relacionamentos | Graphiti |
+| Extrair dados de sites | Firecrawl |
+| Queries em banco | Postgres |
+
+> **Aviso:** MCPs avançados podem requerer setup adicional (Docker, APIs, etc)
+`,
+    {
+      xp: 120,
+      duration: 35,
+      difficulty: 'advanced',
+      tags: ['mcp', 'playwright', 'langfuse', 'graphiti', 'enterprise'],
+      quizzes: [
+        {
+          question: 'Qual MCP permite automação de browser e screenshots?',
+          options: ['selenium', 'playwright', 'puppeteer', 'cypress'],
+          correctIndex: 1,
+          explanation: 'O Playwright MCP oferece automação completa de browser com screenshots, navegação e forms.'
+        },
+        {
+          question: 'Para observabilidade e tracing de prompts, qual MCP usar?',
+          options: ['datadog', 'langfuse', 'prometheus', 'grafana'],
+          correctIndex: 1,
+          explanation: 'Langfuse é especializado em observabilidade de LLMs com tracing e versionamento de prompts.'
+        },
+        {
+          question: 'Graphiti MCP diferencia-se do Memory padrão por:',
+          options: ['Ser mais rápido', 'Usar temporal knowledge graph', 'Ser gratuito', 'Não precisar de setup'],
+          correctIndex: 1,
+          explanation: 'Graphiti usa temporal knowledge graph com versionamento de fatos e queries complexas.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('05', '05-05-mcp-architecture', '05. Arquitetura de MCPs',
+    'Entenda como MCPs funcionam internamente e como criar o seu.',
+    `# Arquitetura de MCPs
+
+## Como MCPs Funcionam
+
+\`\`\`
+┌─────────────────┐
+│   Claude Code   │
+│   (Cliente)     │
+└────────┬────────┘
+         │ JSON-RPC
+         ▼
+┌─────────────────┐
+│   MCP Server    │
+│   (Processo)    │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│  Serviço Real   │
+│  (API, DB, etc) │
+└─────────────────┘
+\`\`\`
+
+## Anatomia de um MCP
+
+Um MCP expõe 3 tipos de capabilities:
+
+### 1. Tools (Ferramentas)
+Ações que podem ser executadas:
+\`\`\`json
+{
+  "name": "create_file",
+  "description": "Cria um novo arquivo",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "path": { "type": "string" },
+      "content": { "type": "string" }
+    }
+  }
+}
+\`\`\`
+
+### 2. Resources (Recursos)
+Dados que podem ser lidos:
+\`\`\`json
+{
+  "uri": "file:///Users/me/project",
+  "name": "Project Directory",
+  "mimeType": "application/json"
+}
+\`\`\`
+
+### 3. Prompts (Templates)
+Templates reutilizáveis:
+\`\`\`json
+{
+  "name": "code-review",
+  "description": "Template para code review",
+  "arguments": [
+    { "name": "language", "required": true }
+  ]
+}
+\`\`\`
+
+## Criando um MCP Simples
+
+### 1. Setup do Projeto
+
+\`\`\`bash
+mkdir mcp-custom && cd mcp-custom
+npm init -y
+npm install @modelcontextprotocol/sdk
+\`\`\`
+
+### 2. Código Base
+
+\`\`\`typescript
+// index.ts
+import { Server } from '@modelcontextprotocol/sdk/server';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio';
+
+const server = new Server({
+  name: 'mcp-custom',
+  version: '1.0.0'
+}, {
+  capabilities: {
+    tools: {}
+  }
+});
+
+// Registrar uma tool
+server.setRequestHandler('tools/list', async () => ({
+  tools: [{
+    name: 'hello',
+    description: 'Diz olá',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        name: { type: 'string' }
+      }
+    }
+  }]
+}));
+
+server.setRequestHandler('tools/call', async (request) => {
+  if (request.params.name === 'hello') {
+    const name = request.params.arguments?.name || 'World';
+    return { content: [{ type: 'text', text: \`Hello, \${name}!\` }] };
+  }
+});
+
+// Iniciar servidor
+const transport = new StdioServerTransport();
+server.connect(transport);
+\`\`\`
+
+### 3. Registrar no Claude
+
+\`\`\`bash
+claude mcp add custom -s user -- node /path/to/mcp-custom/index.js
+\`\`\`
+
+## Boas Práticas
+
+| Prática | Descrição |
+|---------|-----------|
+| **Escopo mínimo** | Expor apenas o necessário |
+| **Validação** | Validar todos os inputs |
+| **Erros claros** | Mensagens de erro úteis |
+| **Documentação** | Descriptions completas |
+| **Idempotência** | Operações seguras para retry |
+
+## Debug de MCPs
+
+\`\`\`bash
+# Ver logs do MCP
+claude mcp logs memory
+
+# Testar conexão
+claude mcp test github
+
+# Listar capabilities
+claude mcp describe filesystem
+\`\`\`
+
+## Estrutura de Projeto MCP
+
+\`\`\`
+mcp-custom/
+├── package.json
+├── tsconfig.json
+├── src/
+│   ├── index.ts      # Entry point
+│   ├── tools/        # Tool handlers
+│   ├── resources/    # Resource providers
+│   └── prompts/      # Prompt templates
+└── README.md
+\`\`\`
+`,
+    {
+      xp: 140,
+      duration: 45,
+      difficulty: 'expert',
+      tags: ['mcp', 'arquitetura', 'custom', 'sdk'],
+      quizzes: [
+        {
+          question: 'Quais são os 3 tipos de capabilities que um MCP pode expor?',
+          options: ['Tools, Resources, Prompts', 'Read, Write, Execute', 'Input, Output, Transform', 'Get, Post, Delete'],
+          correctIndex: 0,
+          explanation: 'MCPs expõem Tools (ações), Resources (dados) e Prompts (templates).'
+        },
+        {
+          question: 'Qual protocolo MCPs usam para comunicação?',
+          options: ['REST', 'GraphQL', 'JSON-RPC', 'gRPC'],
+          correctIndex: 2,
+          explanation: 'MCPs usam JSON-RPC para comunicação entre cliente (Claude) e servidor (MCP).'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-create-simple-mcp',
+          title: 'Crie um MCP Personalizado',
+          description: 'Crie um MCP simples que expõe uma tool para gerar UUIDs ou timestamps.',
+          context: 'general',
+          contextDescription: 'Prática de desenvolvimento de MCPs',
+          difficulty: 'expert',
+          xpBonus: 60,
+          hints: [
+            'Use o SDK @modelcontextprotocol/sdk',
+            'Comece com uma única tool simples',
+            'Teste com "claude mcp test"'
+          ]
+        }
+      ]
+    }
+  ),
+
+  createLesson('05', '05-06-mcp-challenge', '06. Challenge: Stack MCP TOP 1%',
+    'Monte sua stack completa de MCPs e documente.',
+    `# Challenge: Stack MCP TOP 1%
+
+## Objetivo
+
+Configurar uma stack completa de MCPs que te coloque no TOP 1% de produtividade.
+
+## Requisitos Mínimos
+
+### Tier 1: Essenciais (Obrigatório)
+- [ ] Memory MCP configurado
+- [ ] GitHub MCP com token
+- [ ] Filesystem MCP com paths
+- [ ] Um MCP de busca (Brave ou similar)
+
+### Tier 2: Produtividade (Escolha 2+)
+- [ ] Playwright para automação
+- [ ] Sequential Thinking para análise
+- [ ] Postgres/SQLite para dados
+- [ ] Slack/Discord para comunicação
+
+### Tier 3: Enterprise (Opcional)
+- [ ] Langfuse para observabilidade
+- [ ] Graphiti para memory avançado
+- [ ] Custom MCP próprio
+
+## Entregáveis
+
+### 1. settings.json Completo
+
+\`\`\`json
+{
+  "mcpServers": {
+    // Seu setup aqui
+  }
+}
+\`\`\`
+
+### 2. Documentação
+
+Criar \`~/.claude/MCP-STACK.md\`:
+
+\`\`\`markdown
+# Minha Stack MCP
+
+## MCPs Ativos
+| MCP | Versão | Uso Principal |
+|-----|--------|---------------|
+| ... | ... | ... |
+
+## Variáveis de Ambiente Necessárias
+- GITHUB_TOKEN: ...
+- BRAVE_API_KEY: ...
+
+## Comandos Úteis
+- claude mcp list
+- ...
+\`\`\`
+
+### 3. Teste de Integração
+
+Demonstrar que todos os MCPs funcionam:
+
+\`\`\`bash
+# Script de verificação
+claude mcp list
+claude mcp test memory
+claude mcp test github
+# ... etc
+\`\`\`
+
+## Critérios de Avaliação
+
+| Critério | Pontos |
+|----------|--------|
+| 4 MCPs essenciais | 40 |
+| 2+ MCPs de produtividade | 30 |
+| Documentação completa | 20 |
+| Variáveis seguras (.env) | 10 |
+| **Total** | **100** |
+
+## Dicas
+
+1. **Comece pelos essenciais** - Memory, GitHub, Filesystem
+2. **Adicione gradualmente** - Um MCP por vez
+3. **Documente tudo** - Futuro você agradece
+4. **Use .env** - Nunca hardcode tokens
+5. **Teste sempre** - \`claude mcp test <name>\`
+
+## Exemplo de Stack Completa
+
+\`\`\`
+┌──────────────────────────────────────────┐
+│            MINHA STACK MCP               │
+├──────────┬──────────┬──────────┬─────────┤
+│  memory  │  github  │filesystem│  brave  │
+│    ✓     │    ✓     │    ✓     │    ✓    │
+├──────────┼──────────┼──────────┼─────────┤
+│playwright│ langfuse │ postgres │ custom  │
+│    ✓     │    ✓     │    ○     │    ○    │
+└──────────┴──────────┴──────────┴─────────┘
+✓ = Configurado  ○ = Planejado
+\`\`\`
+
+## Bônus: Compartilhe
+
+Após completar, considere:
+- Criar um gist com sua config
+- Escrever um post sobre sua stack
+- Ajudar outros a configurar
+
+> **Lembre-se:** A melhor stack é a que você realmente usa!
+`,
+    {
+      xp: 200,
+      duration: 60,
+      difficulty: 'expert',
+      tags: ['mcp', 'challenge', 'stack', 'configuração'],
+      challenges: [
+        {
+          id: 'ch-mcp-stack-complete',
+          title: 'Stack MCP Completa',
+          description: 'Configure todos os MCPs essenciais e pelo menos 2 avançados, com documentação.',
+          context: 'general',
+          contextDescription: 'Challenge final do módulo MCPs',
+          difficulty: 'expert',
+          xpBonus: 100,
+          hints: [
+            'Use o checklist do lesson como guia',
+            'Crie o arquivo MCP-STACK.md com sua documentação',
+            'Guarde tokens em variáveis de ambiente, nunca no código'
+          ]
+        }
+      ]
     }
   ),
 ];
