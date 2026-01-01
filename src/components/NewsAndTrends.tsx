@@ -1,7 +1,8 @@
 // ============================================================================
-// AI NEWS TICKER & TRENDS COMPONENT v2.0
-// Real-time AI news with persistence, trends, search, bookmarks, and sharing
-// FASE 2 - Complete News Features
+// AI NEWS TICKER & TRENDS COMPONENT v3.0
+// Real-time AI news with auto-updates, persistence, trends, search, bookmarks
+// FASE 3 - Automated News System with Last Updated Indicator
+// Last Updated: 2026-01-01
 // ============================================================================
 
 import { useState, useEffect, useCallback } from 'react';
@@ -10,285 +11,160 @@ import {
   Zap, Building2, Code2, Lightbulb, DollarSign, Rocket,
   ChevronLeft, ChevronRight, Pause, Play, Search, X,
   Bookmark, BookmarkCheck, Twitter, Linkedin, Copy, Check,
-  BookOpen
+  BookOpen, History, CalendarClock
 } from 'lucide-react';
 
+// Import centralized news data
+import {
+  AI_NEWS,
+  AI_TRENDS,
+  NEWS_METADATA,
+  UPDATE_HISTORY,
+  formatLastUpdated,
+  type NewsItem,
+  type TrendItem
+} from '../data/aiNewsData';
+
 // ============================================================================
-// TYPES
+// LAST UPDATED INDICATOR COMPONENT
 // ============================================================================
 
-interface NewsItem {
-  id: string;
-  title: string;
-  source: string;
-  url: string;
-  timestamp: string;
-  category: 'tech' | 'infrastructure' | 'code' | 'case' | 'startup' | 'investment' | 'research';
-  excerpt?: string;
-  content?: string; // Full content for modal
-  readingTime?: number; // Estimated reading time in minutes
-  isRead?: boolean; // Track if user has read this news
+interface LastUpdatedBadgeProps {
+  showHistory?: boolean;
+  onToggleHistory?: () => void;
 }
 
-interface TrendItem {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  change: 'up' | 'down' | 'stable';
-  category: string;
+function LastUpdatedBadge({ showHistory, onToggleHistory }: LastUpdatedBadgeProps) {
+  const [isLive, setIsLive] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => setIsLive(prev => !prev), 1500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="flex items-center gap-3">
+      {/* Live indicator */}
+      <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-100 dark:bg-emerald-500/20 rounded-lg">
+        <span className={`w-2 h-2 rounded-full ${isLive ? 'bg-emerald-500' : 'bg-emerald-300'} animate-pulse`} />
+        <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400">
+          Auto-Atualizado
+        </span>
+      </div>
+
+      {/* Last updated */}
+      <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 dark:bg-slate-800 rounded-lg">
+        <CalendarClock className="w-3.5 h-3.5 text-slate-500" />
+        <span className="text-xs text-slate-600 dark:text-slate-400">
+          {formatLastUpdated(NEWS_METADATA.lastUpdated)}
+        </span>
+      </div>
+
+      {/* History toggle */}
+      {onToggleHistory && (
+        <button
+          onClick={onToggleHistory}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs transition-colors ${
+            showHistory
+              ? 'bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+          }`}
+        >
+          <History className="w-3.5 h-3.5" />
+          Histórico
+        </button>
+      )}
+    </div>
+  );
 }
 
 // ============================================================================
-// MOCK DATA (In production, this would come from an API)
+// UPDATE HISTORY PANEL
+// ============================================================================
+
+function UpdateHistoryPanel() {
+  return (
+    <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700 mb-4">
+      <div className="flex items-center gap-2 mb-3">
+        <History className="w-4 h-4 text-indigo-500" />
+        <h3 className="font-semibold text-slate-900 dark:text-white text-sm">Histórico de Atualizações</h3>
+      </div>
+
+      {/* Schedule info */}
+      <div className="p-3 bg-indigo-50 dark:bg-indigo-500/10 rounded-lg mb-3">
+        <p className="text-xs text-indigo-700 dark:text-indigo-300 font-medium">
+          📅 {NEWS_METADATA.updateFrequency}
+        </p>
+        <p className="text-xs text-indigo-600 dark:text-indigo-400 mt-1">
+          Próxima: {new Date(NEWS_METADATA.nextUpdate).toLocaleString('pt-BR')}
+        </p>
+      </div>
+
+      {/* History list */}
+      <div className="space-y-2">
+        {UPDATE_HISTORY.slice(0, 5).map((item, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-between p-2 bg-white dark:bg-slate-900 rounded-lg text-xs"
+          >
+            <div className="flex items-center gap-2">
+              <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                item.source === 'automated'
+                  ? 'bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400'
+                  : item.source === 'github-actions'
+                  ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400'
+                  : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
+              }`}>
+                {item.source === 'automated' ? '🤖 Auto' : item.source === 'github-actions' ? '⚡ GH Actions' : '👤 Manual'}
+              </span>
+              <span className="text-slate-600 dark:text-slate-400">{item.action}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              {item.newsAdded > 0 && (
+                <span className="text-emerald-600 dark:text-emerald-400">+{item.newsAdded}</span>
+              )}
+              <span className="text-slate-400">{formatLastUpdated(item.timestamp)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Sources */}
+      <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+        <p className="text-[10px] text-slate-500 dark:text-slate-500 uppercase tracking-wide mb-1">
+          Fontes ({NEWS_METADATA.sources.length})
+        </p>
+        <div className="flex flex-wrap gap-1">
+          {NEWS_METADATA.sources.slice(0, 6).map((source, index) => (
+            <span
+              key={index}
+              className="px-1.5 py-0.5 bg-slate-200 dark:bg-slate-700 rounded text-[10px] text-slate-600 dark:text-slate-400"
+            >
+              {source}
+            </span>
+          ))}
+          {NEWS_METADATA.sources.length > 6 && (
+            <span className="px-1.5 py-0.5 text-[10px] text-slate-500">
+              +{NEWS_METADATA.sources.length - 6} mais
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// DATA FUNCTIONS (Using centralized data)
 // ============================================================================
 
 const getInitialNews = (): NewsItem[] => {
-  const now = new Date();
-  return [
-    {
-      id: '1',
-      title: 'OpenAI lança GPT-5 com capacidades de raciocínio avançado',
-      source: 'TechCrunch',
-      url: 'https://techcrunch.com',
-      timestamp: new Date(now.getTime() - 2 * 60 * 60 * 1000).toISOString(),
-      category: 'tech',
-      excerpt: 'O novo modelo GPT-5 promete revolucionar o campo de IA com chain-of-thought nativo.',
-      content: `A OpenAI anunciou oficialmente o lançamento do GPT-5, marcando um novo capítulo na evolução dos modelos de linguagem. O novo modelo traz capacidades de raciocínio avançado que permitem resolver problemas complexos de forma mais eficiente.
-
-Entre as principais melhorias estão:
-- Chain-of-thought nativo para raciocínio estruturado
-- Melhor compreensão de contexto longo (até 1M tokens)
-- Capacidades multimodais aprimoradas
-- Redução significativa de alucinações
-
-O GPT-5 já está disponível para usuários Plus e Enterprise, com rollout gradual para a API.`,
-      readingTime: 3,
-    },
-    {
-      id: '2',
-      title: 'Anthropic recebe investimento de $4B da Amazon para Claude',
-      source: 'Bloomberg',
-      url: 'https://bloomberg.com',
-      timestamp: new Date(now.getTime() - 4 * 60 * 60 * 1000).toISOString(),
-      category: 'investment',
-      excerpt: 'A Amazon consolida parceria estratégica com investimento bilionário.',
-      content: `A Anthropic, criadora do Claude, anunciou ter recebido um novo investimento de $4 bilhões da Amazon, totalizando $8 bilhões em investimentos da gigante do e-commerce.
-
-O acordo inclui:
-- Uso de AWS Trainium para treinamento de modelos
-- Integração nativa com Amazon Bedrock
-- Desenvolvimento conjunto de chips de IA
-- Compromisso de longo prazo com segurança de IA
-
-Este é o maior investimento já feito em uma empresa de IA por uma big tech.`,
-      readingTime: 2,
-    },
-    {
-      id: '3',
-      title: 'NVIDIA revela H200: 2x mais rápido para LLMs',
-      source: 'The Verge',
-      url: 'https://theverge.com',
-      timestamp: new Date(now.getTime() - 6 * 60 * 60 * 1000).toISOString(),
-      category: 'infrastructure',
-      excerpt: 'Nova GPU promete dobrar a velocidade de inferência para modelos de linguagem.',
-      content: `A NVIDIA revelou o H200, sua mais nova GPU otimizada para cargas de trabalho de IA. O chip oferece o dobro de performance para inferência de LLMs comparado ao H100.
-
-Especificações principais:
-- 141GB de memória HBM3e
-- Bandwidth de 4.8 TB/s
-- Até 2x mais rápido em inferência de LLMs
-- Compatibilidade total com stack de software existente
-
-As primeiras unidades começam a ser entregues no Q2 de 2024.`,
-      readingTime: 2,
-    },
-    {
-      id: '4',
-      title: 'Cursor AI atinge 1M de desenvolvedores ativos',
-      source: 'VentureBeat',
-      url: 'https://venturebeat.com',
-      timestamp: new Date(now.getTime() - 8 * 60 * 60 * 1000).toISOString(),
-      category: 'startup',
-      excerpt: 'O editor de código com IA integrada conquista desenvolvedores ao redor do mundo.',
-      content: `O Cursor, editor de código com IA integrada, ultrapassou a marca de 1 milhão de desenvolvedores ativos mensais, consolidando sua posição no mercado de ferramentas de desenvolvimento.
-
-Destaques do crescimento:
-- 10x mais usuários em 12 meses
-- Integração nativa com Claude e GPT-4
-- Recursos de código em contexto longo
-- Plano gratuito generoso para desenvolvedores individuais
-
-A empresa planeja expandir recursos de colaboração em tempo real.`,
-      readingTime: 2,
-    },
-    {
-      id: '5',
-      title: 'Meta open-sources Llama 4 com 400B parâmetros',
-      source: 'Wired',
-      url: 'https://wired.com',
-      timestamp: new Date(now.getTime() - 10 * 60 * 60 * 1000).toISOString(),
-      category: 'tech',
-      excerpt: 'O modelo mais poderoso da família Llama agora está disponível para todos.',
-      content: `A Meta surpreendeu o mercado ao liberar o Llama 4 como código aberto, seu modelo mais poderoso até o momento com 400 bilhões de parâmetros.
-
-O Llama 4 traz:
-- Performance comparável ao GPT-4 em benchmarks
-- Licença comercial aberta
-- Suporte a 100+ idiomas
-- Versões otimizadas para diferentes tamanhos
-
-A decisão reforça o compromisso da Meta com IA aberta e acessível.`,
-      readingTime: 2,
-    },
-    {
-      id: '6',
-      title: 'Google DeepMind anuncia avanço em AlphaFold 3 para drug discovery',
-      source: 'Nature',
-      url: 'https://nature.com',
-      timestamp: new Date(now.getTime() - 12 * 60 * 60 * 1000).toISOString(),
-      category: 'research',
-      excerpt: 'Nova versão do AlphaFold promete acelerar descoberta de medicamentos.',
-      content: `O Google DeepMind revelou avanços significativos no AlphaFold 3, expandindo suas capacidades para além de proteínas para incluir interações com moléculas pequenas.
-
-Impacto esperado:
-- Redução de anos no ciclo de descoberta de medicamentos
-- Previsão de interações proteína-ligante
-- Modelagem de complexos moleculares
-- Acesso gratuito para pesquisa acadêmica
-
-Farmacêuticas já estão formando parcerias para aplicações comerciais.`,
-      readingTime: 3,
-    },
-    {
-      id: '7',
-      title: 'Mistral AI fecha rodada de $600M com valuation de $6B',
-      source: 'Forbes',
-      url: 'https://forbes.com',
-      timestamp: new Date(now.getTime() - 14 * 60 * 60 * 1000).toISOString(),
-      category: 'investment',
-      excerpt: 'Startup europeia de IA alcança status de unicórnio em tempo recorde.',
-      content: `A Mistral AI, startup francesa de IA fundada há menos de um ano, fechou uma rodada de $600 milhões que avalia a empresa em $6 bilhões.
-
-A rodada foi liderada por investidores de peso:
-- Andreessen Horowitz
-- Lightspeed Venture Partners
-- General Catalyst
-- BPI France
-
-A empresa planeja expandir sua presença nos EUA e lançar novos modelos.`,
-      readingTime: 2,
-    },
-    {
-      id: '8',
-      title: 'Claude Code permite automação completa de workflows de desenvolvimento',
-      source: 'Anthropic Blog',
-      url: 'https://anthropic.com',
-      timestamp: new Date(now.getTime() - 16 * 60 * 60 * 1000).toISOString(),
-      category: 'code',
-      excerpt: 'A ferramenta CLI da Anthropic revoluciona a forma como desenvolvedores trabalham.',
-      content: `A Anthropic lançou novas funcionalidades para o Claude Code que permitem automação completa de workflows de desenvolvimento.
-
-Novos recursos incluem:
-- Skills customizáveis com comandos /
-- Hooks para integração com CI/CD
-- Subagents para tarefas paralelas
-- MCP (Model Context Protocol) para extensibilidade
-
-O Claude Code já está sendo usado por equipes enterprise para aumentar produtividade.`,
-      readingTime: 2,
-    },
-    {
-      id: '9',
-      title: 'Perplexity AI entra para unicórnios com valuation de $3B',
-      source: 'TechCrunch',
-      url: 'https://techcrunch.com',
-      timestamp: new Date(now.getTime() - 18 * 60 * 60 * 1000).toISOString(),
-      category: 'startup',
-      excerpt: 'Motor de busca com IA conquista investidores e usuários.',
-      content: `A Perplexity AI, conhecida por seu motor de busca conversacional, alcançou o status de unicórnio com valuation de $3 bilhões.
-
-Números impressionantes:
-- 15 milhões de usuários mensais ativos
-- Crescimento de 400% ano a ano
-- Expansão para mercados enterprise
-- Lançamento de API para desenvolvedores
-
-A empresa compete diretamente com Google e Bing no mercado de busca.`,
-      readingTime: 2,
-    },
-    {
-      id: '10',
-      title: 'AWS anuncia chips Trainium 2 para reduzir custos de inferência em 50%',
-      source: 'AWS Blog',
-      url: 'https://aws.amazon.com',
-      timestamp: new Date(now.getTime() - 20 * 60 * 60 * 1000).toISOString(),
-      category: 'infrastructure',
-      excerpt: 'Nova geração de chips promete tornar IA mais acessível.',
-      content: `A AWS revelou a segunda geração de seus chips Trainium, prometendo redução de 50% nos custos de inferência de IA.
-
-Melhorias do Trainium 2:
-- 4x mais throughput que a geração anterior
-- Suporte nativo a modelos maiores
-- Integração otimizada com SageMaker
-- Disponibilidade global em EC2
-
-O chip foi desenvolvido em parceria com Anthropic para otimização do Claude.`,
-      readingTime: 2,
-    },
-  ];
+  return AI_NEWS;
 };
 
-const getTrends = (): TrendItem[] => [
-  {
-    id: 't1',
-    title: 'Agentes Autônomos',
-    description: 'LLMs que executam tarefas complexas sem supervisão',
-    icon: '🤖',
-    change: 'up',
-    category: 'Tecnologia',
-  },
-  {
-    id: 't2',
-    title: 'Reasoning Models',
-    description: 'Modelos com chain-of-thought nativo (o1, Claude Opus)',
-    icon: '🧠',
-    change: 'up',
-    category: 'Modelos',
-  },
-  {
-    id: 't3',
-    title: 'Edge AI',
-    description: 'Modelos pequenos rodando localmente (Phi, Gemma)',
-    icon: '📱',
-    change: 'up',
-    category: 'Infraestrutura',
-  },
-  {
-    id: 't4',
-    title: 'AI Coding Assistants',
-    description: 'Cursor, GitHub Copilot, Claude Code dominando dev',
-    icon: '💻',
-    change: 'up',
-    category: 'Ferramentas',
-  },
-  {
-    id: 't5',
-    title: 'Multimodal Native',
-    description: 'Modelos que entendem texto, imagem, áudio, vídeo',
-    icon: '🎨',
-    change: 'up',
-    category: 'Modelos',
-  },
-  {
-    id: 't6',
-    title: 'AI Governance',
-    description: 'Regulação e compliance (EU AI Act, LGPD)',
-    icon: '⚖️',
-    change: 'stable',
-    category: 'Legal',
-  },
-];
+const getTrends = (): TrendItem[] => {
+  return AI_TRENDS;
+};
 
 // ============================================================================
 // CATEGORY ICONS & COLORS
@@ -776,6 +652,7 @@ export function NewsFeed() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showBookmarksOnly, setShowBookmarksOnly] = useState(false);
   const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
+  const [showHistory, setShowHistory] = useState(false);
 
   const { bookmarks, toggleBookmark, isBookmarked } = useBookmarks();
   const { markAsRead, isRead, unreadCount } = useReadStatus();
@@ -852,6 +729,20 @@ export function NewsFeed() {
               Salvos ({bookmarks.length})
             </button>
           </div>
+
+          {/* Last Updated Indicator */}
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <LastUpdatedBadge
+              showHistory={showHistory}
+              onToggleHistory={() => setShowHistory(!showHistory)}
+            />
+            <span className="text-xs text-slate-500 dark:text-slate-400">
+              v{NEWS_METADATA.version} | {NEWS_METADATA.totalNews} notícias
+            </span>
+          </div>
+
+          {/* Update History Panel (expandable) */}
+          {showHistory && <UpdateHistoryPanel />}
 
           {/* Search bar */}
           <div className="relative mb-4">
