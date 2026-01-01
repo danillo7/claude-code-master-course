@@ -5710,6 +5710,397 @@ Tempo paralelo: ~12 min (4x mais rápido)
       ],
     }
   ),
+
+  createLesson('07', '07-05-model-selection', '05. Model Selection Strategy',
+    'Escolha o modelo certo para cada tarefa: Opus, Sonnet ou Haiku.',
+    `# Model Selection Strategy
+
+Domine a arte de escolher o modelo certo para cada tarefa - um dos segredos TOP 1%.
+
+## Os 3 Modelos Claude
+
+\`\`\`
+┌─────────────────────────────────────────────────────────────┐
+│                    CAPACIDADE vs CUSTO                       │
+│                                                              │
+│   OPUS 4.5    ████████████████████████████  Máxima          │
+│   (Premium)   Custo: $$$$$                  Capacidade      │
+│               Velocidade: Lenta                              │
+│                                                              │
+│   SONNET      ███████████████████           Balanceado      │
+│   (Standard)  Custo: $$                                     │
+│               Velocidade: Média                              │
+│                                                              │
+│   HAIKU       █████████                     Econômico       │
+│   (Fast)      Custo: $                                      │
+│               Velocidade: Rápida                             │
+└─────────────────────────────────────────────────────────────┘
+\`\`\`
+
+## Matriz de Decisão
+
+| Tarefa | Modelo Ideal | Justificativa |
+|--------|--------------|---------------|
+| **Arquitetura de sistema** | Opus | Requer raciocínio profundo |
+| **Code review crítico** | Opus | Precisa pegar nuances sutis |
+| **Decisões estratégicas** | Opus | Alto impacto, vale o custo |
+| **Análise de segurança** | Opus | Não pode perder nada |
+| **Feature complexa** | Sonnet | Bom equilíbrio |
+| **Bug fix médio** | Sonnet | Suficiente para maioria |
+| **Refatoração padrão** | Sonnet | Economia sem sacrificar qualidade |
+| **Formatação de código** | Haiku | Tarefa mecânica |
+| **Extração de dados** | Haiku | Não requer reasoning |
+| **Traduções simples** | Haiku | Volume alto, custo baixo |
+| **Geração de testes** | Haiku | Repetitivo, pattern-based |
+
+## O Framework CRITICO
+
+Use este framework para decidir o modelo:
+
+\`\`\`
+C - Complexidade: Alta → Opus, Média → Sonnet, Baixa → Haiku
+R - Risco: Alto impacto → Opus, use o melhor
+I - Iterações: Muitas → Haiku para economizar
+T - Tempo: Urgente → Haiku (mais rápido)
+I - Importância: Estratégico → Opus
+C - Custo: Limitado → Haiku
+O - Output: Criativo → Opus, Mecânico → Haiku
+\`\`\`
+
+## Estratégia: Model Cascade
+
+Uma técnica TOP 1%: começar com Haiku e escalar se necessário.
+
+\`\`\`
+┌─────────────────────────────────────────┐
+│           MODEL CASCADE                  │
+│                                          │
+│   1. Haiku tenta resolver               │
+│        ↓                                 │
+│   2. Se falhar → Sonnet tenta           │
+│        ↓                                 │
+│   3. Se falhar → Opus resolve           │
+│                                          │
+│   Economia: 70% das tarefas param em 1  │
+└─────────────────────────────────────────┘
+\`\`\`
+
+### Implementação
+
+\`\`\`typescript
+// Conceito de Model Cascade
+async function smartQuery(task: Task) {
+  // Primeiro: tenta com Haiku (barato/rápido)
+  const haikuResult = await query(task, 'haiku');
+  if (isGoodEnough(haikuResult)) return haikuResult;
+
+  // Escala: Sonnet
+  const sonnetResult = await query(task, 'sonnet');
+  if (isGoodEnough(sonnetResult)) return sonnetResult;
+
+  // Último recurso: Opus
+  return await query(task, 'opus');
+}
+\`\`\`
+
+## Model Distillation
+
+Outra técnica avançada: usar Opus para criar, Haiku para executar.
+
+\`\`\`
+┌────────────────────────────────────────────────────┐
+│              MODEL DISTILLATION                     │
+│                                                     │
+│   OPUS cria:        HAIKU executa:                 │
+│   - Templates       - Aplica templates             │
+│   - Padrões         - Segue padrões                │
+│   - Prompts         - Usa prompts                  │
+│   - Guidelines      - Segue guidelines             │
+│                                                     │
+│   1x pensamento     1000x execução barata          │
+└────────────────────────────────────────────────────┘
+\`\`\`
+
+### Exemplo Real
+
+\`\`\`
+1. Opus cria: Skill de code review com 50 regras
+2. Haiku executa: Roda essa skill em 500 arquivos
+
+Custo se usasse Opus direto: $50
+Custo com distillation: $2 (Opus) + $0.50 (Haiku) = $2.50
+
+ECONOMIA: 95%!
+\`\`\`
+
+## CLI: Selecionando Modelos
+
+\`\`\`bash
+# Usar Opus para tarefa crítica
+claude --model opus "Analise a arquitetura deste sistema"
+
+# Usar Haiku para tarefa simples
+claude --model haiku "Formate este JSON"
+
+# Default (Sonnet) para maioria
+claude "Implemente esta feature"
+\`\`\`
+
+## Tabela de Custos (Referência)
+
+| Modelo | Input (1M tokens) | Output (1M tokens) |
+|--------|-------------------|-------------------|
+| Opus   | ~$15              | ~$75              |
+| Sonnet | ~$3               | ~$15              |
+| Haiku  | ~$0.25            | ~$1.25            |
+
+> **Pro Tip:** Para tarefas repetitivas, a diferença entre Opus e Haiku pode ser **60x no custo**!
+`,
+    {
+      xp: 110,
+      duration: 35,
+      difficulty: 'advanced',
+      tags: ['models', 'opus', 'sonnet', 'haiku', 'cost', 'optimization', 'top-1-percent'],
+      isNew: true,
+      quizzes: [
+        {
+          id: 'q-07-05-1',
+          question: 'Para "formatar 100 arquivos JSON", qual modelo usar?',
+          options: ['Opus (máxima qualidade)', 'Sonnet (equilíbrio)', 'Haiku (tarefa mecânica)', 'Qualquer um, não faz diferença'],
+          correctIndex: 2,
+          explanation: 'Haiku é ideal para tarefas mecânicas e repetitivas como formatação. Economiza significativamente sem perda de qualidade.',
+        },
+        {
+          id: 'q-07-05-2',
+          question: 'O que é "Model Distillation"?',
+          options: ['Comprimir modelos para rodar local', 'Usar Opus para criar, Haiku para executar em escala', 'Misturar outputs de múltiplos modelos', 'Treinar um modelo custom'],
+          correctIndex: 1,
+          explanation: 'Model Distillation: Opus cria templates/padrões/skills uma vez, Haiku executa milhares de vezes. Economia de 90%+ em tarefas repetitivas.',
+        },
+        {
+          id: 'q-07-05-3',
+          question: 'Qual a economia aproximada de usar Haiku vs Opus para tarefas repetitivas?',
+          options: ['10%', '30%', '50%', '90%+'],
+          correctIndex: 3,
+          explanation: 'A diferença de custo entre Opus e Haiku pode chegar a 60x, resultando em economia de 90%+ para tarefas repetitivas.',
+        },
+      ],
+      challenges: [
+        {
+          id: 'ch-07-05-1',
+          title: 'Crie uma Estratégia de Model Selection',
+          description: 'Para um projeto com: 50 code reviews, 200 testes a gerar, 5 decisões arquiteturais - defina qual modelo usar em cada tarefa e calcule o custo estimado.',
+          context: 'general',
+          contextDescription: 'Otimização de custos',
+          difficulty: 'advanced',
+          xpBonus: 80,
+          hints: ['Code reviews críticos = Opus', 'Testes repetitivos = Haiku', 'Calcule: (tokens × preço) para cada modelo'],
+        }
+      ],
+    }
+  ),
+
+  createLesson('07', '07-06-enterprise-challenge', '06. Challenge: Sistema Enterprise',
+    'Monte um sistema completo de orquestração enterprise-grade.',
+    `# Challenge: Sistema Enterprise TOP 1%
+
+Hora de aplicar TUDO que você aprendeu em um sistema de produção real.
+
+## Objetivo
+
+Criar um sistema de orquestração multi-agente completo para um cenário real de empresa.
+
+## O Cenário
+
+\`\`\`
+SUA MISSÃO:
+Você é o Tech Lead de uma empresa que precisa:
+
+1. Migrar 100 componentes React de JavaScript para TypeScript
+2. Adicionar testes para cada componente (cobertura 80%)
+3. Documentar todos os componentes
+4. Garantir que nada quebre em produção
+
+TEMPO DISPONÍVEL: 1 sprint (2 semanas)
+EQUIPE: Apenas você + Claude Code
+\`\`\`
+
+## Requisitos do Sistema
+
+### 1. Arquitetura Multi-Agente
+
+\`\`\`
+┌─────────────────────────────────────────────────────────┐
+│                    ORCHESTRATOR                          │
+│              (Você controlando Claude)                   │
+│                         │                                │
+│     ┌───────────────────┼───────────────────┐           │
+│     ▼                   ▼                   ▼           │
+│  ┌──────┐          ┌──────┐          ┌──────┐          │
+│  │PLAN  │          │EXECUTE│         │REVIEW │          │
+│  │Agent │          │ Team  │         │ Agent │          │
+│  └──────┘          └──────┘          └──────┘          │
+│     │                  │                  │             │
+│     ▼                  ▼                  ▼             │
+│  Strategy         ┌────┴────┐         Quality          │
+│  Document         │         │         Report           │
+│               Clone 1   Clone 2                         │
+│               Clone 3   Clone 4                         │
+│               Clone 5                                   │
+└─────────────────────────────────────────────────────────┘
+\`\`\`
+
+### 2. Model Selection
+
+| Fase | Modelo | Justificativa |
+|------|--------|---------------|
+| Planejamento | Opus | Estratégia crítica |
+| Migração TS | Sonnet | Equilíbrio |
+| Geração Testes | Haiku | Repetitivo |
+| Code Review | Opus | Qualidade |
+| Documentação | Haiku | Volume |
+
+### 3. Parallel Execution
+
+\`\`\`
+Batch 1 (20 componentes): [Clone 1-5 em paralelo]
+Batch 2 (20 componentes): [Clone 1-5 em paralelo]
+...
+Batch 5 (20 componentes): [Clone 1-5 em paralelo]
+
+Total: 5 batches × 5 paralelos = 25 execuções
+vs 100 execuções sequenciais
+
+SPEEDUP: 4x
+\`\`\`
+
+## Sua Entrega
+
+### Arquivo: ENTERPRISE-SYSTEM.md
+
+\`\`\`markdown
+# Sistema de Orquestração Enterprise
+
+## 1. Visão Geral
+[Diagrama da arquitetura]
+
+## 2. Fase de Planejamento
+- Agent: Plan (Opus)
+- Output: Lista de componentes, ordem de migração, riscos
+
+## 3. Fase de Execução
+- Pattern: Master-Clone
+- Parallelism: 5 clones simultâneos
+- Batches: 5 de 20 componentes
+
+### 3.1 Migração TypeScript
+- Model: Sonnet
+- Input: Componente JS
+- Output: Componente TS + tipos
+
+### 3.2 Geração de Testes
+- Model: Haiku
+- Input: Componente TS
+- Output: Arquivo de teste (80% coverage)
+
+### 3.3 Documentação
+- Model: Haiku
+- Input: Componente TS
+- Output: JSDoc + README
+
+## 4. Fase de Validação
+- Agent: Reviewer (Opus)
+- Checklist: tipos corretos, testes passando, docs completas
+
+## 5. Custos Estimados
+| Fase | Tokens | Modelo | Custo |
+|------|--------|--------|-------|
+| ... | ... | ... | ... |
+
+Total estimado: $X.XX
+
+## 6. Timeline
+- Dia 1-2: Planejamento (Opus)
+- Dia 3-8: Migração + Testes (Sonnet/Haiku paralelo)
+- Dia 9-10: Review e fixes (Opus)
+
+## 7. Rollback Plan
+Em caso de problemas:
+1. Git revert do batch problemático
+2. Re-executar com parâmetros ajustados
+3. Fallback para migração manual se crítico
+\`\`\`
+
+## Critérios de Avaliação
+
+| Critério | Pontos |
+|----------|:------:|
+| Arquitetura clara e documentada | 20 |
+| Model selection justificado | 20 |
+| Parallel execution bem planejado | 20 |
+| Estimativa de custos realista | 15 |
+| Rollback plan definido | 15 |
+| Timeline factível | 10 |
+| **TOTAL** | **100** |
+
+## Dicas TOP 1%
+
+1. **Comece pequeno**: Teste com 5 componentes antes de escalar
+2. **Monitore custos**: Use Langfuse para tracking real-time
+3. **Tenha checkpoints**: Commit após cada batch bem-sucedido
+4. **Documente tudo**: Decisões, problemas, soluções
+5. **Automate validation**: Scripts que verificam se cada componente migrou corretamente
+
+## Bônus: Automação Completa
+
+Se você criar scripts que automatizam todo o fluxo:
+
+\`\`\`bash
+./migrate.sh --batch-size 20 --parallelism 5 --dry-run
+./migrate.sh --batch-size 20 --parallelism 5 --execute
+./validate.sh --coverage-threshold 80
+./report.sh --output enterprise-report.md
+\`\`\`
+
+**+50 XP Bônus!**
+
+## Reflexão Final
+
+Ao completar este challenge, você terá:
+
+- ✅ Projetado arquitetura multi-agente
+- ✅ Aplicado model selection strategy
+- ✅ Usado parallel execution
+- ✅ Criado sistema enterprise-grade
+- ✅ Documentado tudo profissionalmente
+
+**Você agora pensa como um Tech Lead que usa IA como multiplicador de força!**
+`,
+    {
+      xp: 200,
+      duration: 60,
+      difficulty: 'expert',
+      tags: ['enterprise', 'challenge', 'multi-agent', 'orchestration', 'top-1-percent'],
+      isNew: true,
+      challenges: [
+        {
+          id: 'ch-07-06-final',
+          title: 'Sistema Enterprise Completo',
+          description: 'Crie o documento ENTERPRISE-SYSTEM.md completo com todos os componentes: arquitetura, model selection, parallelism, custos, timeline e rollback plan.',
+          context: 'general',
+          contextDescription: 'Challenge final do módulo Enterprise',
+          difficulty: 'expert',
+          xpBonus: 150,
+          hints: [
+            'Use o template fornecido como base',
+            'Justifique CADA escolha de modelo',
+            'Calcule custos reais baseado na tabela de preços',
+            'O rollback plan é crítico - não pule!'
+          ]
+        }
+      ]
+    }
+  ),
 ];
 
 // ============================================================================
@@ -6535,17 +6926,18 @@ export const courseModules: Module[] = [
     id: '07',
     courseId: 'claude-code',
     number: 7,
-    title: '07. Subagents',
-    slug: 'subagents',
-    description: 'Agentes especializados e processamento paralelo',
-    icon: 'Users',
+    title: '07. Enterprise',
+    slug: 'enterprise',
+    description: 'Subagents, orquestração e estratégias multi-modelo',
+    icon: 'Building2',
     color: 'pink',
     lessons: module07Lessons,
     totalXp: module07Lessons.reduce((acc, l) => acc + l.xp, 0),
-    estimatedHours: 4,
+    estimatedHours: 5,
     prerequisites: ['04', '05'],
     version: '1.0.0',
     dateUpdated: new Date().toISOString().split('T')[0],
+    isNew: true,
   },
   {
     id: '08',
