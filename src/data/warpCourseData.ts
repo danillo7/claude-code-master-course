@@ -48,7 +48,7 @@ function createLesson(
 // ============================================================================
 
 const module01Lessons: Lesson[] = [
-  createLesson('w01', 'w01-01-what-is-warp', 'O que é Warp?',
+  createLesson('w01', 'w01-01-what-is-warp', '01. O que é Warp?',
     'Entenda porque Warp é o terminal escolhido pelo TOP 1% de desenvolvedores.',
     `# O que é Warp?
 
@@ -175,7 +175,7 @@ warp --info`,
     }
   ),
 
-  createLesson('w01', 'w01-02-installation', 'Instalação e Setup Inicial',
+  createLesson('w01', 'w01-02-installation', '02. Instalação e Setup Inicial',
     'Instale o Warp e configure seu ambiente para máxima produtividade.',
     `# Instalação do Warp
 
@@ -338,7 +338,7 @@ tree ~/.warp`,
     }
   ),
 
-  createLesson('w01', 'w01-03-interface', 'Conhecendo a Interface',
+  createLesson('w01', 'w01-03-interface', '03. Conhecendo a Interface',
     'Domine cada elemento da interface do Warp.',
     `# Interface do Warp
 
@@ -674,7 +674,7 @@ echo "Agora use ⌘ + ↑ para voltar aos comandos anteriores"`,
     }
   ),
 
-  createLesson('w02', 'w02-01-shortcuts-essential', 'TOP 10 Atalhos Obrigatórios',
+  createLesson('w02', 'w02-01-shortcuts-essential', '01. TOP 10 Atalhos Obrigatórios',
     'Os 10 atalhos que você DEVE decorar para máxima produtividade.',
     `# TOP 10 Atalhos do Warp
 
@@ -826,7 +826,7 @@ docker run -d \\
     }
   ),
 
-  createLesson('w02', 'w02-02-shortcuts-navigation', 'Navegação Avançada',
+  createLesson('w02', 'w02-02-shortcuts-navigation', '02. Navegação Avançada',
     'Navegue entre abas, panes e blocks como um profissional.',
     `# Navegação no Warp
 
@@ -963,7 +963,7 @@ docker logs -f backend`,
     }
   ),
 
-  createLesson('w02', 'w02-03-shortcuts-editing', 'Edição de Texto',
+  createLesson('w02', 'w02-03-shortcuts-editing', '03. Edição de Texto',
     'Domine a edição de comandos com atalhos de IDE.',
     `# Edição de Texto no Warp
 
@@ -1137,7 +1137,7 @@ git clone https://github.com/usuario/repo-errado.git`,
 // ============================================================================
 
 const module03Lessons: Lesson[] = [
-  createLesson('w03', 'w03-01-warp-ai-intro', 'Introdução ao Warp AI',
+  createLesson('w03', 'w03-01-warp-ai-intro', '01. Introdução ao Warp AI',
     'Aprenda a usar a IA integrada do Warp para resolver problemas.',
     `# Warp AI - Sua IA de Linha de Comando
 
@@ -1302,7 +1302,7 @@ kill -9 PID    # matar processo`,
     }
   ),
 
-  createLesson('w03', 'w03-02-warp-ai-advanced', 'Warp AI Avançado',
+  createLesson('w03', 'w03-02-warp-ai-advanced', '02. Warp AI Avançado',
     'Técnicas avançadas para extrair máximo valor do Warp AI.',
     `# Warp AI - Técnicas Avançadas
 
@@ -1732,7 +1732,7 @@ Use tags para encontrar workflows relacionados:
     }
   ),
 
-  createLesson('w04', 'w04-01-workflows-intro', 'Introdução aos Workflows',
+  createLesson('w04', 'w04-01-workflows-intro', '01. Introdução aos Workflows',
     'Entenda o que são Workflows e como eles multiplicam sua produtividade.',
     `# Workflows do Warp
 
@@ -1881,7 +1881,7 @@ git stash list
     }
   ),
 
-  createLesson('w04', 'w04-02-workflows-creating', 'Criando Seus Workflows',
+  createLesson('w04', 'w04-02-workflows-creating', '02. Criando Seus Workflows',
     'Aprenda a criar workflows customizados para suas necessidades.',
     `# Criando Workflows
 
@@ -2098,7 +2098,7 @@ tags:
     }
   ),
 
-  createLesson('w04', 'w04-03-workflows-library', 'Biblioteca de Workflows Prontos',
+  createLesson('w04', 'w04-03-workflows-library', '03. Biblioteca de Workflows Prontos',
     'Workflows testados e aprovados para diversas situações.',
     `# Biblioteca de Workflows
 
@@ -2352,7 +2352,7 @@ tags:
 // ============================================================================
 
 const module05Lessons: Lesson[] = [
-  createLesson('w05', 'w05-01-warp-claude-synergy', 'Warp + Claude Code: Sinergia Perfeita',
+  createLesson('w05', 'w05-01-warp-claude-synergy', '01. Warp + Claude Code: Sinergia Perfeita',
     'Como usar Warp e Claude Code juntos para produtividade máxima.',
     `# Warp + Claude Code
 
@@ -2485,7 +2485,7 @@ description: "Setup completo de dev"
     }
   ),
 
-  createLesson('w05', 'w05-02-launch-configs', 'Launch Configurations',
+  createLesson('w05', 'w05-02-launch-configs', '02. Launch Configurations',
     'Crie configurações que abrem seu ambiente completo com um comando.',
     `# Launch Configurations
 
@@ -2639,7 +2639,7 @@ Tudo com **um comando**!
 // ============================================================================
 
 const module06Lessons: Lesson[] = [
-  createLesson('w06', 'w06-01-blocks-mastery', 'Dominando Blocks',
+  createLesson('w06', 'w06-01-blocks-mastery', '01. Dominando Blocks',
     'Use Blocks para organizar e navegar seu histórico como um pro.',
     `# Mastery de Blocks
 
@@ -2765,7 +2765,7 @@ echo "Agora navegue com ⌘ + ↑/↓"`,
     }
   ),
 
-  createLesson('w06', 'w06-02-tips-tricks', 'Dicas e Truques Pro',
+  createLesson('w06', 'w06-02-tips-tricks', '02. Dicas e Truques Pro',
     'Técnicas avançadas que poucos conhecem.',
     `# Dicas Pro do Warp
 
@@ -2903,7 +2903,7 @@ Configure notificações para comandos longos:
 // ============================================================================
 
 const module07Lessons: Lesson[] = [
-  createLesson('w07', 'w07-01-themes', 'Temas e Aparência',
+  createLesson('w07', 'w07-01-themes', '01. Temas e Aparência',
     'Personalize o visual do Warp para seu gosto.',
     `# Temas do Warp
 
@@ -3066,7 +3066,7 @@ cat ~/.warp/prefs.yaml
     }
   ),
 
-  createLesson('w07', 'w07-02-prefs-complete', 'Configuração Completa',
+  createLesson('w07', 'w07-02-prefs-complete', '02. Configuração Completa',
     'Todas as opções de configuração do prefs.yaml.',
     `# Configuração Completa do Warp
 
@@ -3261,7 +3261,7 @@ cat ~/.warp/prefs.yaml
 // ============================================================================
 
 const module08Lessons: Lesson[] = [
-  createLesson('w08', 'w08-01-final-project', 'Projeto Final: Setup TOP 1%',
+  createLesson('w08', 'w08-01-final-project', '01. Projeto Final: Setup TOP 1%',
     'Configure seu ambiente Warp completo como os TOP 1%.',
     `# Projeto Final: Setup TOP 1%
 
@@ -3531,7 +3531,7 @@ export const warpCourseModules: Module[] = [
     id: 'w01',
     courseId: 'warp-terminal',
     number: 1,
-    title: 'Introdução ao Warp',
+    title: '01. Introdução ao Warp',
     slug: 'introducao',
     description: 'Entenda o que é Warp e por que ele é o terminal do TOP 1%',
     icon: 'Zap',
@@ -3547,7 +3547,7 @@ export const warpCourseModules: Module[] = [
     id: 'w02',
     courseId: 'warp-terminal',
     number: 2,
-    title: 'Atalhos Essenciais',
+    title: '02. Atalhos Essenciais',
     slug: 'atalhos',
     description: 'Domine os atalhos que multiplicam sua produtividade',
     icon: 'Zap',
@@ -3563,7 +3563,7 @@ export const warpCourseModules: Module[] = [
     id: 'w03',
     courseId: 'warp-terminal',
     number: 3,
-    title: 'Warp AI',
+    title: '03. Warp AI',
     slug: 'warp-ai',
     description: 'Use a IA integrada para resolver problemas rapidamente',
     icon: 'Sparkles',
@@ -3579,7 +3579,7 @@ export const warpCourseModules: Module[] = [
     id: 'w04',
     courseId: 'warp-terminal',
     number: 4,
-    title: 'Workflows',
+    title: '04. Workflows',
     slug: 'workflows',
     description: 'Automatize comandos frequentes com workflows',
     icon: 'Settings',
@@ -3595,7 +3595,7 @@ export const warpCourseModules: Module[] = [
     id: 'w05',
     courseId: 'warp-terminal',
     number: 5,
-    title: 'Integração com Claude Code',
+    title: '05. Integração com Claude Code',
     slug: 'claude-code',
     description: 'Configure a sinergia perfeita entre Warp e Claude Code',
     icon: 'Terminal',
@@ -3611,7 +3611,7 @@ export const warpCourseModules: Module[] = [
     id: 'w06',
     courseId: 'warp-terminal',
     number: 6,
-    title: 'Produtividade Avançada',
+    title: '06. Produtividade Avançada',
     slug: 'produtividade',
     description: 'Técnicas avançadas de blocks, dicas e truques',
     icon: 'Rocket',
@@ -3627,7 +3627,7 @@ export const warpCourseModules: Module[] = [
     id: 'w07',
     courseId: 'warp-terminal',
     number: 7,
-    title: 'Customização',
+    title: '07. Customização',
     slug: 'customizacao',
     description: 'Personalize temas e configurações do Warp',
     icon: 'Palette',
@@ -3643,7 +3643,7 @@ export const warpCourseModules: Module[] = [
     id: 'w08',
     courseId: 'warp-terminal',
     number: 8,
-    title: 'Projeto Final',
+    title: '08. Projeto Final',
     slug: 'projeto-final',
     description: 'Configure seu ambiente completo como TOP 1%',
     icon: 'Trophy',
