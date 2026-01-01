@@ -19,13 +19,14 @@ import {
 } from 'lucide-react';
 import { NewsTicker, TrendsSection } from './components/NewsAndTrends';
 import { AINewsIntelligenceHub } from './components/AINewsIntelligenceHub';
+import { AITeamFramework } from './components/AITeamFramework';
 import './index.css';
 
 // ============================================================================
 // VIEW TYPES & PORTAL AREAS
 // ============================================================================
 
-type PortalArea = 'portal' | 'course' | 'news' | 'market-intel' | 'timeline';
+type PortalArea = 'portal' | 'course' | 'news' | 'market-intel' | 'timeline' | 'ai-team';
 
 interface PortalAreaConfig {
   id: PortalArea;
@@ -76,6 +77,16 @@ const PORTAL_AREAS: PortalAreaConfig[] = [
     icon: Calendar,
     gradient: 'from-purple-500 to-pink-500',
     color: 'purple',
+    badge: 'NEW'
+  },
+  {
+    id: 'ai-team',
+    label: 'AI Team Framework',
+    shortLabel: 'AI Team',
+    description: '12 especialistas IA para dev',
+    icon: Users,
+    gradient: 'from-cyan-500 to-blue-500',
+    color: 'cyan',
     badge: 'NEW'
   }
 ];
@@ -1764,6 +1775,32 @@ function App() {
           embedded={true}
           initialSection={currentArea === 'news' ? 'news' : currentArea === 'timeline' ? 'timeline' : 'trends'}
         />
+      </div>
+    );
+  }
+
+  // Show AI Team Framework
+  if (currentArea === 'ai-team') {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+        {/* Header with Context Switcher */}
+        <div className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <GlobalContextSwitcher
+              currentArea={currentArea}
+              currentCourseId={null}
+              onAreaChange={handleAreaChange}
+              onBackToPortal={handleBackToPortal}
+            />
+            <div className="flex items-center gap-3">
+              <ThemeSelector />
+              <UserMenu profile={profile} onLogout={handleLogout} />
+            </div>
+          </div>
+        </div>
+
+        {/* AI Team Framework Content */}
+        <AITeamFramework />
       </div>
     );
   }

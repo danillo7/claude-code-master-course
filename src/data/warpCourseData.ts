@@ -77,11 +77,48 @@ Warp representa a mesma filosofia que você aplica com Claude Code: **IA não é
 3. **Workflows** - Automatize comandos frequentes
 4. **Launch Configurations** - Abra múltiplas abas configuradas
 5. **Modern Editor** - Edição de texto como em IDE
+
+## Comparativo de Performance
+
+\`\`\`
+Benchmark: Renderização de 10.000 linhas
+─────────────────────────────────────────
+Terminal.app:  ~800ms
+iTerm2:        ~600ms
+Alacritty:     ~200ms
+Warp:          ~150ms (GPU-accelerated)
+\`\`\`
+
+## História do Warp
+
+- **2020**: Fundação por Zach Lloyd (ex-Google)
+- **2022**: Launch público
+- **2023**: Warp AI integrado
+- **2024**: Teams e Enterprise
+- **2025**: Ambient Agents (beta)
+
+## Quem Usa Warp?
+
+Empresas como **Figma**, **Vercel**, **Linear** e milhares de desenvolvedores individuais escolhem Warp pela produtividade.
 `,
     {
-      xp: 30,
-      duration: 8,
+      xp: 40,
+      duration: 10,
       tags: ['introdução', 'conceitos', 'ai-first'],
+      codeExamples: [
+        {
+          id: 'ce-w01-01-1',
+          title: 'Verificando versão do Warp',
+          language: 'bash',
+          code: `# Ver versão instalada
+warp --version
+
+# Ver informações do sistema
+warp --info`,
+          explanation: 'Comandos básicos para verificar sua instalação do Warp',
+          runnable: true
+        }
+      ],
       quizzes: [
         {
           id: 'q-w01-01-1',
@@ -95,6 +132,44 @@ Warp representa a mesma filosofia que você aplica com Claude Code: **IA não é
           correctIndex: 1,
           explanation: 'Warp é AI-native, tendo IA integrada como parte fundamental da experiência.',
           xp: 10
+        },
+        {
+          id: 'q-w01-01-2',
+          question: 'O que são "Blocks" no Warp?',
+          options: [
+            'Blocos de código para copiar',
+            'Cada comando executado vira uma unidade organizável',
+            'Extensões do terminal',
+            'Atalhos de teclado'
+          ],
+          correctIndex: 1,
+          explanation: 'Blocks transformam cada comando em uma unidade com header, output e timestamp, facilitando navegação e organização.',
+          xp: 10
+        },
+        {
+          id: 'q-w01-01-3',
+          question: 'Por que o Warp é mais rápido que terminais tradicionais?',
+          options: [
+            'Usa menos memória',
+            'É escrito em Python',
+            'Usa aceleração de GPU',
+            'Comprime o output'
+          ],
+          correctIndex: 2,
+          explanation: 'Warp utiliza GPU-acceleration (Rust + Metal no Mac) para renderização ultrarrápida.',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w01-01-1',
+          title: 'Explore o Warp',
+          description: 'Abra o Warp e experimente pressionar ⌘ + I para ativar a IA. Pergunte "como listar arquivos ordenados por tamanho".',
+          context: 'general' as const,
+          contextDescription: 'Primeiro contato com Warp AI',
+          difficulty: 'beginner' as const,
+          xpBonus: 20,
+          hints: ['Pressione ⌘ + I', 'Digite sua pergunta em português', 'Pressione Enter para aceitar a sugestão'],
         }
       ]
     }
@@ -169,16 +244,95 @@ Após instalar, teste:
       xp: 50,
       duration: 12,
       tags: ['instalação', 'setup', 'configuração'],
+      codeExamples: [
+        {
+          id: 'ce-w01-02-1',
+          title: 'Instalação via Homebrew',
+          language: 'bash',
+          code: `# Instalar Warp via Homebrew (recomendado)
+brew install --cask warp
+
+# Verificar instalação
+ls -la /Applications/Warp.app`,
+          explanation: 'Método mais fácil de instalar o Warp no macOS',
+          runnable: true
+        },
+        {
+          id: 'ce-w01-02-2',
+          title: 'Estrutura de configuração',
+          language: 'bash',
+          code: `# Criar estrutura de pastas
+mkdir -p ~/.warp/workflows
+mkdir -p ~/.warp/themes
+mkdir -p ~/.warp/launch_configurations
+
+# Verificar estrutura
+tree ~/.warp`,
+          explanation: 'Estrutura de pastas para configurações do Warp',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w01-02-1',
+          question: 'Qual é o método recomendado para instalar o Warp no macOS?',
+          options: [
+            'Download direto do site',
+            'brew install --cask warp',
+            'App Store',
+            'npm install warp'
+          ],
+          correctIndex: 1,
+          explanation: 'Homebrew é o método recomendado pois facilita atualizações e gerenciamento.',
+          xp: 10
+        },
+        {
+          id: 'q-w01-02-2',
+          question: 'Onde ficam armazenadas as configurações do Warp?',
+          options: [
+            '/etc/warp/',
+            '~/Library/Warp/',
+            '~/.warp/',
+            '/usr/local/warp/'
+          ],
+          correctIndex: 2,
+          explanation: 'Todas as configurações do Warp ficam em ~/.warp/ incluindo prefs.yaml, workflows e temas.',
+          xp: 10
+        },
+        {
+          id: 'q-w01-02-3',
+          question: 'Qual shell é recomendado para usar com Warp?',
+          options: [
+            'bash',
+            'sh',
+            'zsh',
+            'fish'
+          ],
+          correctIndex: 2,
+          explanation: 'Zsh é recomendado por ser o shell padrão do macOS e ter melhor integração com Warp.',
+          xp: 10
+        }
+      ],
       challenges: [
         {
           id: 'ch-w01-02-1',
           title: 'Configure seu Warp',
           description: 'Crie o arquivo ~/.warp/prefs.yaml com a configuração recomendada',
-          context: 'general',
+          context: 'general' as const,
           contextDescription: 'Configuração base para qualquer desenvolvedor',
-          difficulty: 'beginner',
+          difficulty: 'beginner' as const,
           xpBonus: 25,
           hints: ['Use mkdir -p ~/.warp para criar a pasta', 'Copie o YAML da lição'],
+        },
+        {
+          id: 'ch-w01-02-2',
+          title: 'Instale uma Nerd Font',
+          description: 'Instale a JetBrains Mono Nerd Font via Homebrew e configure no Warp',
+          context: 'general' as const,
+          contextDescription: 'Fontes com ícones para terminal moderno',
+          difficulty: 'beginner' as const,
+          xpBonus: 20,
+          hints: ['brew tap homebrew/cask-fonts', 'brew install font-jetbrains-mono-nerd-font'],
         }
       ]
     }
@@ -234,9 +388,91 @@ Cada comando cria um **Block** independente:
 | **Input** | Editor moderno com autocomplete |
 `,
     {
-      xp: 40,
-      duration: 10,
+      xp: 50,
+      duration: 12,
       tags: ['interface', 'blocks', 'navegação'],
+      codeExamples: [
+        {
+          id: 'ce-w01-03-1',
+          title: 'Navegação entre Blocks',
+          language: 'bash',
+          code: `# Execute vários comandos para criar blocks
+ls -la
+pwd
+echo "Navegue com ⌘ + ↑/↓"
+
+# Dica: ⌘ + ⇧ + C copia output do block selecionado`,
+          explanation: 'Demonstração de como blocks funcionam na prática',
+          runnable: true
+        },
+        {
+          id: 'ce-w01-03-2',
+          title: 'Links clicáveis no terminal',
+          language: 'bash',
+          code: `# URLs são clicáveis (⌘ + Click)
+echo "Documentação: https://docs.warp.dev"
+
+# Paths também são clicáveis
+echo "Config: ~/.warp/prefs.yaml"
+
+# ⌘ + Click abre no browser ou Finder`,
+          explanation: 'Warp detecta links e paths automaticamente',
+          runnable: true
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w01-03-1',
+          question: 'O que é um Block no Warp?',
+          options: [
+            'Uma extensão do terminal',
+            'Uma unidade organizacional com comando, output e timestamp',
+            'Um arquivo de configuração',
+            'Um tipo de workflow'
+          ],
+          correctIndex: 1,
+          explanation: 'Cada comando executado cria um Block independente com header (comando + timestamp) e body (output).',
+          xp: 10
+        },
+        {
+          id: 'q-w01-03-2',
+          question: 'Como copiar o output completo de um block?',
+          options: [
+            '⌘ + C',
+            '⌘ + V',
+            '⌘ + ⇧ + C',
+            '⌃ + C'
+          ],
+          correctIndex: 2,
+          explanation: '⌘ + ⇧ + C (Command + Shift + C) copia o output inteiro do block selecionado.',
+          xp: 10
+        },
+        {
+          id: 'q-w01-03-3',
+          question: 'Qual atalho navega entre blocks?',
+          options: [
+            '⌘ + Tab',
+            '⌘ + ↑/↓',
+            'Page Up/Down',
+            '⌃ + ↑/↓'
+          ],
+          correctIndex: 1,
+          explanation: '⌘ + ↑ vai para o block anterior e ⌘ + ↓ vai para o próximo block.',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w01-03-1',
+          title: 'Domine a navegação por Blocks',
+          description: 'Execute 5 comandos diferentes e navegue entre os blocks usando ⌘ + ↑/↓. Depois, copie o output do terceiro comando usando ⌘ + ⇧ + C.',
+          context: 'general' as const,
+          contextDescription: 'Prática de navegação no Warp',
+          difficulty: 'beginner' as const,
+          xpBonus: 25,
+          hints: ['Execute comandos como ls, pwd, whoami, date, echo', 'Use ⌘ + ↑ várias vezes para subir nos blocks'],
+        }
+      ]
     }
   ),
 ];
@@ -362,11 +598,79 @@ Cole estes atalhos ao lado do monitor por uma semana.
 Após isso, estarão na memória muscular.
 `,
     {
-      xp: 50,
-      duration: 8,
+      xp: 60,
+      duration: 10,
       difficulty: 'beginner',
       tags: ['atalhos', 'personalizado', 'referência'],
       isNew: true,
+      codeExamples: [
+        {
+          id: 'ce-w02-00-1',
+          title: 'Praticar navegação entre blocks',
+          language: 'bash',
+          code: `# Execute estes comandos para praticar ⌘ + ↑/↓
+ls -la
+pwd
+date
+whoami
+echo "Agora use ⌘ + ↑ para voltar aos comandos anteriores"`,
+          explanation: 'Sequência de comandos para praticar navegação',
+          runnable: true
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w02-00-1',
+          question: 'Qual atalho abre o buscador universal de histórico e workflows?',
+          options: [
+            '⌘ + F',
+            '⌃ + R',
+            '⌘ + H',
+            '⌃ + H'
+          ],
+          correctIndex: 1,
+          explanation: '⌃ + R (Control + R) abre o buscador que pesquisa tanto histórico quanto workflows.',
+          xp: 10
+        },
+        {
+          id: 'q-w02-00-2',
+          question: 'Qual atalho ativa o Warp AI inline?',
+          options: [
+            '⌘ + A',
+            '⌃ + I',
+            '⌘ + I',
+            '⌥ + I'
+          ],
+          correctIndex: 2,
+          explanation: '⌘ + I (Command + I) ativa a IA do Warp para responder perguntas sobre comandos.',
+          xp: 10
+        },
+        {
+          id: 'q-w02-00-3',
+          question: 'Qual atalho cria um split vertical?',
+          options: [
+            '⌘ + D',
+            '⌘ + V',
+            '⌘ + S',
+            '⌘ + ⇧ + D'
+          ],
+          correctIndex: 0,
+          explanation: '⌘ + D cria split vertical. Para horizontal, use ⌘ + ⇧ + D.',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w02-00-1',
+          title: 'Memorize os TOP 10',
+          description: 'Pratique os 10 atalhos essenciais: ⌃ + R, ⌘ + K, ⌘ + P, ⌘ + I, ⌘ + D, ⌘ + T, ⌘ + ↑/↓, ⌥ + ←/→, ⌘ + ., ⇧ + Enter',
+          context: 'general' as const,
+          contextDescription: 'Prática deliberada de atalhos',
+          difficulty: 'beginner' as const,
+          xpBonus: 30,
+          hints: ['Pratique cada atalho 5 vezes seguidas', 'Imprima a lista e cole ao lado do monitor'],
+        }
+      ]
     }
   ),
 
@@ -427,6 +731,35 @@ Quando você pressiona **⌃ + R**, o Warp mostra seus workflows primeiro. Confi
       duration: 15,
       difficulty: 'beginner',
       tags: ['atalhos', 'produtividade', 'essencial'],
+      codeExamples: [
+        {
+          id: 'ce-w02-01-1',
+          title: 'Comando multiline com ⇧ + Enter',
+          language: 'bash',
+          code: `# Use ⇧ + Enter para criar comando em múltiplas linhas
+docker run -d \\
+  --name meu-container \\
+  -p 8080:80 \\
+  -v $(pwd):/app \\
+  nginx:latest`,
+          explanation: 'Shift + Enter permite criar comandos legíveis em múltiplas linhas',
+          runnable: true
+        },
+        {
+          id: 'ce-w02-01-2',
+          title: 'Fluxo de busca com ⌃ + R',
+          language: 'bash',
+          code: `# Fluxo de uso do ⌃ + R:
+# 1. Pressione ⌃ + R
+# 2. Digite parte do comando (ex: "git")
+# 3. Use ↑/↓ para navegar resultados
+# 4. Enter para executar
+
+# Dica: workflows aparecem primeiro!`,
+          explanation: 'Passo a passo do buscador universal',
+          runnable: false
+        }
+      ],
       quizzes: [
         {
           id: 'q-w02-01-1',
@@ -440,6 +773,54 @@ Quando você pressiona **⌃ + R**, o Warp mostra seus workflows primeiro. Confi
           correctIndex: 1,
           explanation: '⌃ + R busca em histórico E workflows, sendo o caminho mais rápido para qualquer comando.',
           xp: 15
+        },
+        {
+          id: 'q-w02-01-2',
+          question: 'Como criar um comando em múltiplas linhas?',
+          options: [
+            'Enter normal',
+            '⌘ + Enter',
+            '⇧ + Enter',
+            '⌥ + Enter'
+          ],
+          correctIndex: 2,
+          explanation: '⇧ + Enter (Shift + Enter) cria uma nova linha sem executar o comando.',
+          xp: 12
+        },
+        {
+          id: 'q-w02-01-3',
+          question: 'Qual atalho cancela um comando em execução?',
+          options: [
+            '⌘ + C',
+            '⌃ + C',
+            '⌘ + .',
+            '⌘ + Q'
+          ],
+          correctIndex: 2,
+          explanation: 'No Warp, ⌘ + . é o atalho para cancelar (SIGINT). ⌃ + C também funciona tradicionalmente.',
+          xp: 12
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w02-01-1',
+          title: 'Domine o ⌃ + R',
+          description: 'Execute 10 comandos git variados, depois use ⌃ + R para encontrar e re-executar 3 deles.',
+          context: 'general' as const,
+          contextDescription: 'Prática do buscador universal',
+          difficulty: 'beginner' as const,
+          xpBonus: 25,
+          hints: ['Execute: git status, git log, git diff, git branch, etc.', 'Depois use ⌃ + R e digite "git"'],
+        },
+        {
+          id: 'ch-w02-01-2',
+          title: 'Comando Docker multiline',
+          description: 'Crie um comando docker run com pelo menos 5 flags usando ⇧ + Enter para cada linha.',
+          context: 'general' as const,
+          contextDescription: 'Prática de comandos multiline',
+          difficulty: 'intermediate' as const,
+          xpBonus: 30,
+          hints: ['Flags comuns: -d, --name, -p, -v, -e', 'Use \\ no final de cada linha'],
         }
       ]
     }
@@ -495,9 +876,90 @@ Tab 3: ~/spot-council → docker ps (monitoramento)
 - **⌘ + 3** → Monitoramento Docker
 `,
     {
-      xp: 50,
-      duration: 12,
+      xp: 55,
+      duration: 14,
       tags: ['navegação', 'atalhos', 'panes', 'abas'],
+      codeExamples: [
+        {
+          id: 'ce-w02-02-1',
+          title: 'Layout de desenvolvimento',
+          language: 'bash',
+          code: `# Setup ideal para desenvolvimento:
+# Aba 1: Projeto principal
+cd ~/spot-council && claude
+
+# Aba 2: Servidor de dev (⌘ + T para nova aba)
+npm run dev
+
+# Aba 3: Logs e monitoramento
+docker logs -f backend`,
+          explanation: 'Layout de 3 abas para desenvolvimento eficiente',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w02-02-1',
+          question: 'Qual atalho cria uma nova aba?',
+          options: [
+            '⌘ + N',
+            '⌘ + T',
+            '⌃ + T',
+            '⌥ + T'
+          ],
+          correctIndex: 1,
+          explanation: '⌘ + T (Command + T) cria uma nova aba, similar aos browsers.',
+          xp: 10
+        },
+        {
+          id: 'q-w02-02-2',
+          question: 'Como ir diretamente para a aba 3?',
+          options: [
+            '⌘ + ⇧ + 3',
+            '⌘ + 3',
+            '⌃ + 3',
+            '⌥ + 3'
+          ],
+          correctIndex: 1,
+          explanation: '⌘ + número (1-9) vai diretamente para a aba correspondente.',
+          xp: 10
+        },
+        {
+          id: 'q-w02-02-3',
+          question: 'Qual atalho alterna entre panes em uma mesma aba?',
+          options: [
+            '⌘ + Tab',
+            '⌘ + [ ou ]',
+            '⌃ + Tab',
+            '⌥ + Tab'
+          ],
+          correctIndex: 1,
+          explanation: '⌘ + [ vai para o pane anterior e ⌘ + ] vai para o próximo pane.',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w02-02-1',
+          title: 'Setup de 3 abas',
+          description: 'Crie 3 abas e configure cada uma para um propósito diferente usando ⌘ + T.',
+          context: 'general' as const,
+          contextDescription: 'Organização de workspace',
+          difficulty: 'beginner' as const,
+          xpBonus: 25,
+          hints: ['⌘ + T cria nova aba', '⌘ + 1/2/3 navega entre elas'],
+        },
+        {
+          id: 'ch-w02-02-2',
+          title: 'Split vertical e horizontal',
+          description: 'Em uma aba, crie um split vertical (⌘ + D) e depois um horizontal (⌘ + ⇧ + D).',
+          context: 'general' as const,
+          contextDescription: 'Layout de panes',
+          difficulty: 'intermediate' as const,
+          xpBonus: 30,
+          hints: ['⌘ + D = split vertical', '⌘ + ⇧ + D = split horizontal', 'Use ⌘ + W para fechar um pane'],
+        }
+      ]
     }
   ),
 
@@ -567,6 +1029,105 @@ curl -X POST https://api.example.com/v1/users/123/profile -H "Authorization: Bea
       xp: 45,
       duration: 10,
       tags: ['edição', 'atalhos', 'cursor'],
+      codeExamples: [
+        {
+          id: 'ce-w02-03-1',
+          title: 'Edição rápida com ⌥',
+          language: 'bash',
+          code: `# Comando longo para praticar edição:
+curl -X POST https://api.github.com/repos/user/repo/issues \\
+  -H "Authorization: Bearer YOUR_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{"title": "Bug report", "body": "Description here"}'
+
+# Pratique:
+# 1. ⌥ + Click no "YOUR_TOKEN" para editar
+# 2. ⌥ + ← para pular entre palavras
+# 3. ⌥ + Backspace para deletar palavra`,
+          explanation: 'Comando real para praticar navegação e edição',
+          runnable: true
+        },
+        {
+          id: 'ce-w02-03-2',
+          title: 'Multiline com ⇧ + Enter',
+          language: 'bash',
+          code: `# Digite este comando multiline:
+# (Use ⇧ + Enter após cada \\)
+
+find /Users/danillocosta/Developer \\
+  -name "*.ts" \\
+  -type f \\
+  -mtime -7 \\
+  -exec wc -l {} \\;
+
+# Resultado: arquivos .ts modificados nos últimos 7 dias`,
+          explanation: 'Comandos multiline organizados e legíveis',
+          runnable: true
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w02-03-1',
+          question: 'Como deletar a palavra ANTERIOR ao cursor no Warp?',
+          options: ['⌘ + Backspace', '⌥ + Backspace', 'Ctrl + W', 'Delete'],
+          correctIndex: 1,
+          explanation: '⌥ + Backspace deleta a palavra anterior. ⌘ + Backspace deleta até o início da linha.',
+          xp: 10
+        },
+        {
+          id: 'q-w02-03-2',
+          question: 'Qual a forma mais rápida de posicionar o cursor no MEIO de um comando longo?',
+          options: ['Usar setas ← até chegar', '⌥ + Click onde deseja', 'Home e depois setas', '⌘ + G'],
+          correctIndex: 1,
+          explanation: '⌥ + Click é a forma mais rápida! Basta clicar exatamente onde quer editar.',
+          xp: 12
+        },
+        {
+          id: 'q-w02-03-3',
+          question: 'Como criar um comando em MÚLTIPLAS LINHAS no Warp?',
+          options: ['Enter normal', '⇧ + Enter', '⌘ + Enter', '⌥ + Enter'],
+          correctIndex: 1,
+          explanation: '⇧ + Enter cria uma nova linha sem executar o comando, permitindo comandos multiline.',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w02-03-1',
+          title: 'Corrija o comando sem usar setas',
+          description: 'Você tem um comando com erro no meio. Use APENAS ⌥ + Click e ⌥ + Backspace para corrigir.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `git clone https://github.com/usario/repo-errado.git
+# Erro: "usario" deveria ser "usuario"
+# Desafio: Corrija sem usar setas ← ou →`,
+          solution: `# 1. ⌥ + Click em "usario"
+# 2. ⌥ + Backspace (deleta "usario")
+# 3. Digite "usuario"
+git clone https://github.com/usuario/repo-errado.git`,
+          hints: ['Use ⌥ + Click para posicionar cursor direto na palavra errada', 'Use ⌥ + Backspace para deletar a palavra inteira'],
+          difficulty: 'beginner' as const,
+          xpBonus: 25
+        },
+        {
+          id: 'ch-w02-03-2',
+          title: 'Comando multiline organizado',
+          description: 'Transforme um comando gigante em formato multiline legível.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `docker run -d --name myapp -p 8080:8080 -e NODE_ENV=production -e DB_HOST=localhost -v /data:/app/data myimage:latest`,
+          solution: `docker run -d \\
+  --name myapp \\
+  -p 8080:8080 \\
+  -e NODE_ENV=production \\
+  -e DB_HOST=localhost \\
+  -v /data:/app/data \\
+  myimage:latest`,
+          hints: ['Use ⇧ + Enter após cada \\\\', 'Agrupe flags similares', 'Use indentação de 2 espaços'],
+          difficulty: 'intermediate' as const,
+          xpBonus: 35
+        }
+      ]
     }
   ),
 ];
@@ -635,6 +1196,109 @@ git commit -m "sua mensagem aqui"
       xp: 50,
       duration: 12,
       tags: ['warp-ai', 'ia', 'comandos'],
+      codeExamples: [
+        {
+          id: 'ce-w03-01-1',
+          title: 'Warp AI para Docker',
+          language: 'bash',
+          code: `# ⌘ + I: "criar container postgres com volume persistente"
+
+# Warp AI sugere:
+docker run -d \\
+  --name postgres-local \\
+  -e POSTGRES_PASSWORD=secret \\
+  -p 5432:5432 \\
+  -v postgres_data:/var/lib/postgresql/data \\
+  postgres:15
+
+# Aceite com Enter ou Tab para editar`,
+          explanation: 'Exemplo real de como Warp AI gera comandos complexos',
+          runnable: false
+        },
+        {
+          id: 'ce-w03-01-2',
+          title: 'Warp AI vs Claude Code',
+          language: 'bash',
+          code: `# WARP AI (⌘ + I):
+# "como encontrar arquivos grandes"
+# → find . -type f -size +100M
+
+# CLAUDE CODE:
+# "analise os arquivos grandes deste projeto,
+#  identifique o que pode ser removido ou
+#  movido para .gitignore"
+# → Análise detalhada + sugestões + execução
+
+# Use cada um para o propósito certo!`,
+          explanation: 'Entenda quando usar cada IA',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w03-01-1',
+          question: 'Qual o atalho para ativar o Warp AI?',
+          options: ['⌘ + A', '⌘ + I', '⌃ + I', '⌘ + W'],
+          correctIndex: 1,
+          explanation: '⌘ + I (Command + I) ativa o Warp AI. "I" de Intelligence!',
+          xp: 10
+        },
+        {
+          id: 'q-w03-01-2',
+          question: 'Após Warp AI sugerir um comando, como você EDITA antes de executar?',
+          options: ['Enter', 'Tab', 'Esc', '⌘ + E'],
+          correctIndex: 1,
+          explanation: 'Tab transfere o comando para edição. Enter executa diretamente.',
+          xp: 12
+        },
+        {
+          id: 'q-w03-01-3',
+          question: 'Qual é o FOCO principal do Warp AI comparado ao Claude Code?',
+          options: ['Análise de projeto', 'Comandos shell rápidos', 'Refatoração de código', 'Code review'],
+          correctIndex: 1,
+          explanation: 'Warp AI foca em comandos shell rápidos. Claude Code é para desenvolvimento completo.',
+          xp: 12
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w03-01-1',
+          title: 'Sua primeira pergunta ao Warp AI',
+          description: 'Use Warp AI para descobrir como verificar uso de memória de processos.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Pressione ⌘ + I e pergunte:
+# "como ver processos usando mais memória"`,
+          solution: `# Warp AI deve sugerir algo como:
+ps aux --sort=-%mem | head -10
+
+# ou no macOS:
+top -o mem
+
+# Execute e veja os resultados!`,
+          hints: ['⌘ + I abre o Warp AI', 'Seja específico: "mais memória" ajuda', 'Tab para editar, Enter para executar'],
+          difficulty: 'beginner' as const,
+          xpBonus: 25
+        },
+        {
+          id: 'ch-w03-01-2',
+          title: 'Warp AI para problema real',
+          description: 'Use Warp AI para descobrir como matar um processo que está travando a porta 8080.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Cenário: npm start falhou dizendo "porta 8080 já em uso"
+# Use ⌘ + I para resolver`,
+          solution: `# Warp AI sugere:
+lsof -ti:8080 | xargs kill -9
+
+# ou separado:
+lsof -i :8080  # ver qual processo
+kill -9 PID    # matar processo`,
+          hints: ['Pergunte: "matar processo na porta 8080"', 'lsof mostra quem usa a porta', 'kill -9 força a parada'],
+          difficulty: 'beginner' as const,
+          xpBonus: 30
+        }
+      ]
     }
   ),
 
@@ -700,6 +1364,124 @@ Warp AI vê seu histórico recente. Se você executou vários comandos git, ele 
       duration: 14,
       difficulty: 'intermediate',
       tags: ['warp-ai', 'avançado', 'prompts'],
+      codeExamples: [
+        {
+          id: 'ce-w03-02-1',
+          title: 'Prompts específicos vs vagos',
+          language: 'bash',
+          code: `# ❌ VAGO - resultado genérico:
+# ⌘ + I: "como usar git"
+
+# ✅ ESPECÍFICO - resultado útil:
+# ⌘ + I: "como fazer squash dos últimos 3 commits em 1"
+# Warp sugere:
+git rebase -i HEAD~3
+# (usar 'squash' ou 's' nas linhas do editor)
+
+# ✅ AINDA MELHOR - com contexto:
+# ⌘ + I: "squash últimos 3 commits mantendo primeira mensagem"`,
+          explanation: 'Quanto mais específico, melhor o resultado',
+          runnable: false
+        },
+        {
+          id: 'ce-w03-02-2',
+          title: 'Explicação de erros',
+          language: 'bash',
+          code: `# Execute um comando com erro:
+npm run buil  # typo proposital
+
+# Error: Missing script: "buil"
+
+# Warp AI aparece automaticamente:
+# "Você quis dizer 'npm run build'?"
+
+# Aceite a correção ou pergunte:
+# ⌘ + I: "quais scripts disponíveis"
+# → npm run (lista scripts do package.json)`,
+          explanation: 'Warp AI ajuda a corrigir erros automaticamente',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w03-02-1',
+          question: 'Qual padrão de pergunta é MAIS EFICIENTE para Warp AI?',
+          options: [
+            '"como usar docker"',
+            '"docker help"',
+            '"criar container postgres 15 porta 5432 com volume"',
+            '"me ajuda com docker"'
+          ],
+          correctIndex: 2,
+          explanation: 'Perguntas específicas com detalhes (versão, porta, opções) geram comandos prontos para usar.',
+          xp: 12
+        },
+        {
+          id: 'q-w03-02-2',
+          question: 'O Warp AI considera qual contexto ao sugerir comandos?',
+          options: ['Apenas a pergunta', 'Diretório atual + histórico recente', 'Apenas o histórico', 'Nenhum contexto'],
+          correctIndex: 1,
+          explanation: 'Warp AI analisa seu diretório atual (detecta package.json, pyproject.toml, etc) E seu histórico recente.',
+          xp: 12
+        },
+        {
+          id: 'q-w03-02-3',
+          question: 'Quando Warp AI oferece ajuda AUTOMATICAMENTE?',
+          options: ['Sempre que você digita', 'Após cada comando', 'Quando um comando falha com erro', 'Nunca automaticamente'],
+          correctIndex: 2,
+          explanation: 'Quando um comando falha, Warp AI analisa o erro e oferece sugestões de correção.',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w03-02-1',
+          title: 'Prompt engineering para Warp AI',
+          description: 'Crie prompts específicos para obter comandos úteis.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Tarefa: Você quer encontrar todos os arquivos .ts
+# modificados nos últimos 3 dias no diretório Developer
+
+# Escreva um prompt ESPECÍFICO para o Warp AI:
+# ⌘ + I: "..."`,
+          solution: `# Prompt ideal:
+# ⌘ + I: "encontrar arquivos .ts modificados últimos 3 dias em ~/Developer"
+
+# Warp sugere:
+find ~/Developer -name "*.ts" -type f -mtime -3
+
+# Ou com fd (mais moderno):
+fd -e ts --changed-within 3d . ~/Developer`,
+          hints: ['Inclua a extensão (.ts)', 'Especifique o tempo (3 dias)', 'Mencione o diretório'],
+          difficulty: 'intermediate' as const,
+          xpBonus: 35
+        },
+        {
+          id: 'ch-w03-02-2',
+          title: 'Debug com Warp AI',
+          description: 'Use Warp AI para entender e corrigir um erro.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Execute este comando (vai dar erro):
+git push origin main
+
+# Se der erro "rejected", use Warp AI para entender
+# ⌘ + I: "por que git push foi rejeitado"`,
+          solution: `# Warp AI explica:
+# "O push foi rejeitado porque há commits no remoto que você não tem."
+
+# E sugere:
+git pull --rebase origin main
+# ou
+git fetch origin && git rebase origin/main
+
+# Depois: git push origin main`,
+          hints: ['Leia a mensagem de erro', 'Pergunte "por que" ao Warp AI', 'Geralmente precisa de pull/rebase antes'],
+          difficulty: 'intermediate' as const,
+          xpBonus: 40
+        }
+      ]
     }
   ),
 ];
@@ -882,6 +1664,71 @@ Use tags para encontrar workflows relacionados:
       difficulty: 'beginner',
       tags: ['workflows', 'catálogo', 'personalizado'],
       isNew: true,
+      codeExamples: [
+        {
+          id: 'ce-w04-00-1',
+          title: 'Acessando seus workflows',
+          language: 'bash',
+          code: `# Pressione ⌃ + R para abrir a busca de workflows
+
+# Digite parte do nome:
+# ⌃ + R → "docker" → encontra docker-cleanup, docker-ps, etc.
+# ⌃ + R → "git" → encontra git-sync, git-uncommit, etc.
+# ⌃ + R → "claude" → encontra todos os cc-* workflows
+
+# Dica: Use ↑/↓ para navegar e Enter para executar`,
+          explanation: 'Como acessar rapidamente qualquer workflow',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w04-00-1',
+          question: 'Quantos workflows você tem configurados no total?',
+          options: ['23 workflows', '45 workflows', '57 workflows', '100+ workflows'],
+          correctIndex: 2,
+          explanation: 'Você tem 57 workflows organizados em 6 arquivos YAML em ~/.warp/workflows/',
+          xp: 10
+        },
+        {
+          id: 'q-w04-00-2',
+          question: 'Qual é o atalho para acessar a busca de workflows?',
+          options: ['⌘ + R', '⌃ + R', '⌘ + W', '⌃ + W'],
+          correctIndex: 1,
+          explanation: '⌃ + R (Control + R) abre a busca de workflows no Warp.',
+          xp: 10
+        },
+        {
+          id: 'q-w04-00-3',
+          question: 'Qual arquivo contém o MAIOR número de workflows?',
+          options: ['claude-code.yaml', 'git-workflows.yaml', 'stack-synergies.yaml', 'devops-workflows.yaml'],
+          correctIndex: 2,
+          explanation: 'stack-synergies.yaml tem 23 workflows - o maior arquivo do seu catálogo!',
+          xp: 12
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w04-00-1',
+          title: 'Encontre um workflow por categoria',
+          description: 'Use ⌃ + R e encontre workflows para Docker, Git e Claude.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Desafio: Execute 3 workflows diferentes
+
+# 1. ⌃ + R → "docker" → escolha docker-ps
+# 2. ⌃ + R → "git" → escolha git-status-full
+# 3. ⌃ + R → "claude" → escolha cc-list`,
+          solution: `# Resultados esperados:
+
+# docker-ps → Lista containers formatada
+# git-status-full → Status + últimos 5 commits
+# cc-list → Lista projetos Claude Code`,
+          hints: ['⌃ + R abre a busca', 'Digite parte do nome para filtrar', 'Enter executa o workflow selecionado'],
+          difficulty: 'beginner' as const,
+          xpBonus: 25
+        }
+      ]
     }
   ),
 
@@ -948,6 +1795,89 @@ Baseado na sua configuração:
       xp: 55,
       duration: 12,
       tags: ['workflows', 'automação', 'produtividade'],
+      codeExamples: [
+        {
+          id: 'ce-w04-01-1',
+          title: 'Workflow com argumentos',
+          language: 'yaml',
+          code: `# Workflow com variável de entrada
+---
+name: git-commit-msg
+command: git commit -m "{{message}}"
+description: "Commit com mensagem personalizada"
+arguments:
+  - name: message
+    description: "Mensagem do commit"
+    default_value: "fix: correção"`,
+          explanation: 'Workflows podem receber argumentos dinâmicos',
+          runnable: false
+        },
+        {
+          id: 'ce-w04-01-2',
+          title: 'Workflow com múltiplos comandos',
+          language: 'yaml',
+          code: `# Workflow encadeado
+---
+name: git-sync-all
+command: "git fetch --all && git status && git log --oneline -5"
+description: "Sincroniza e mostra status completo"
+tags:
+  - git
+  - sync`,
+          explanation: 'Use && para encadear comandos no mesmo workflow',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w04-01-1',
+          question: 'Qual símbolo é usado para criar argumentos em workflows?',
+          options: ['${arg}', '{{arg}}', '[arg]', '<arg>'],
+          correctIndex: 1,
+          explanation: 'Warp usa {{nome_do_argumento}} para variáveis nos workflows.',
+          xp: 10
+        },
+        {
+          id: 'q-w04-01-2',
+          question: 'Onde ficam armazenados os workflows no sistema?',
+          options: ['~/.warp/commands/', '~/.warp/workflows/', '~/.config/warp/', '/etc/warp/'],
+          correctIndex: 1,
+          explanation: 'Todos os workflows ficam em ~/.warp/workflows/ como arquivos .yaml',
+          xp: 10
+        },
+        {
+          id: 'q-w04-01-3',
+          question: 'Qual atalho abre a busca de workflows?',
+          options: ['⌘ + R', '⌃ + R', '⌘ + P', '⌃ + Space'],
+          correctIndex: 1,
+          explanation: '⌃ + R (Control + R) abre o painel de busca de workflows.',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w04-01-1',
+          title: 'Execute um workflow com argumento',
+          description: 'Use o workflow git-stash-save que requer uma mensagem.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Faça uma alteração qualquer em um arquivo
+echo "teste" >> arquivo-teste.txt
+
+# Use ⌃ + R → "stash-save"
+# Warp vai pedir: "msg: ?"
+# Digite: "WIP feature X"`,
+          solution: `# Resultado:
+git stash push -m "WIP feature X"
+
+# Verificar:
+git stash list
+# stash@{0}: On main: WIP feature X`,
+          hints: ['⌃ + R para abrir workflows', 'Digite "stash" para filtrar', 'O workflow pede a mensagem automaticamente'],
+          difficulty: 'beginner' as const,
+          xpBonus: 25
+        }
+      ]
     }
   ),
 
@@ -1043,19 +1973,126 @@ tags:
       duration: 18,
       difficulty: 'intermediate',
       tags: ['workflows', 'yaml', 'automação'],
+      codeExamples: [
+        {
+          id: 'ce-w04-02-1',
+          title: 'Estrutura completa de workflow',
+          language: 'yaml',
+          code: `# ~/.warp/workflows/meu-workflow.yaml
+
+---
+name: projeto-rapido
+command: "cd {{path}} && code . && npm run dev"
+description: "Abre projeto no VSCode e inicia dev server"
+tags:
+  - dev
+  - projeto
+arguments:
+  - name: path
+    description: "Caminho do projeto"
+    default_value: "~/Developer/spot-council"`,
+          explanation: 'Template completo para criar seus próprios workflows',
+          runnable: false
+        },
+        {
+          id: 'ce-w04-02-2',
+          title: 'Múltiplos workflows no mesmo arquivo',
+          language: 'yaml',
+          code: `# Arquivo com múltiplos workflows (separados por ---)
+
+---
+name: docker-up
+command: "docker compose up -d"
+description: "Subir containers"
+tags:
+  - docker
+
+---
+name: docker-down
+command: "docker compose down"
+description: "Parar containers"
+tags:
+  - docker
+
+---
+name: docker-logs
+command: "docker compose logs -f {{service}}"
+arguments:
+  - name: service
+    default_value: ""`,
+          explanation: 'Agrupe workflows relacionados no mesmo arquivo',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w04-02-1',
+          question: 'Qual é a estrutura correta para um argumento em workflow?',
+          options: [
+            'args: [name, default]',
+            'arguments: [{ name, default_value }]',
+            'params: { name: value }',
+            'input: { name: default }'
+          ],
+          correctIndex: 1,
+          explanation: 'Warp usa "arguments" como array de objetos com "name" e opcionalmente "default_value".',
+          xp: 12
+        },
+        {
+          id: 'q-w04-02-2',
+          question: 'Como separar múltiplos workflows no mesmo arquivo YAML?',
+          options: ['===', '---', '***', '...'],
+          correctIndex: 1,
+          explanation: 'Use "---" (três hifens) para separar documentos YAML, permitindo múltiplos workflows por arquivo.',
+          xp: 10
+        },
+        {
+          id: 'q-w04-02-3',
+          question: 'Após criar um arquivo de workflow, como fazê-lo aparecer no Warp?',
+          options: [
+            'Reiniciar o Warp',
+            'Warp > Settings > Workflows > Import',
+            'warp reload',
+            'Aparece automaticamente'
+          ],
+          correctIndex: 3,
+          explanation: 'Warp detecta automaticamente novos arquivos em ~/.warp/workflows/!',
+          xp: 10
+        }
+      ],
       challenges: [
         {
           id: 'ch-w04-02-1',
           title: 'Crie seu primeiro Workflow',
-          description: 'Crie um workflow que abre seu projeto favorito',
-          context: 'personal',
+          description: 'Crie um workflow que abre seu projeto favorito no editor.',
+          context: 'general' as const,
           contextDescription: 'Personalize para seu caso de uso',
-          difficulty: 'intermediate',
-          xpBonus: 40,
+          starterCode: `# Crie o arquivo:
+# ~/.warp/workflows/meu-projeto.yaml
+
+# Com a estrutura:
+# ---
+# name: open-meu-projeto
+# command: "cd ~/Developer/PROJETO && code ."
+# description: "Abre meu projeto no VSCode"`,
+          solution: `# ~/.warp/workflows/meu-projeto.yaml
+
+---
+name: open-meu-projeto
+command: "cd ~/Developer/spot-council && code . && npm run dev"
+description: "Abre SPOT Council no VSCode e inicia dev"
+tags:
+  - projeto
+  - spot
+
+# Teste: ⌃ + R → "open-meu"`,
           hints: [
             'Comece com um comando que você usa frequentemente',
-            'Use {{argumento}} para parâmetros variáveis'
+            'Use && para encadear múltiplos comandos',
+            'Adicione tags para encontrar mais fácil depois'
           ],
+          difficulty: 'intermediate' as const,
+          xpBonus: 40
         }
       ]
     }
@@ -1169,6 +2206,143 @@ Organize seus workflows em arquivos separados por categoria:
       xp: 50,
       duration: 15,
       tags: ['workflows', 'biblioteca', 'templates'],
+      codeExamples: [
+        {
+          id: 'ce-w04-03-1',
+          title: 'Workflows para Git avançado',
+          language: 'yaml',
+          code: `# git-avancado.yaml
+
+---
+name: git-sync-rebase
+command: "git fetch origin && git rebase origin/main"
+description: "Sincronizar branch com main via rebase"
+tags:
+  - git
+  - sync
+
+---
+name: git-squash-last
+command: "git rebase -i HEAD~{{n}}"
+description: "Squash últimos N commits"
+arguments:
+  - name: n
+    description: "Número de commits"
+    default_value: "3"`,
+          explanation: 'Workflows para operações Git que você sempre esquece',
+          runnable: false
+        },
+        {
+          id: 'ce-w04-03-2',
+          title: 'Workflows para Claude Code',
+          language: 'yaml',
+          code: `# claude-projetos.yaml
+
+---
+name: cc-spot
+command: "cd ~/Developer/spot-council && claude"
+description: "Claude no SPOT Council"
+tags:
+  - claude
+  - projeto
+
+---
+name: cc-curso
+command: "cd ~/Developer/claude-code-master-course && claude"
+description: "Claude no Curso"
+tags:
+  - claude
+  - curso
+
+---
+name: cc-continue
+command: "claude --continue"
+description: "Continuar última sessão Claude"`,
+          explanation: 'Workflows para acessar projetos com Claude Code rapidamente',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w04-03-1',
+          question: 'Qual é a melhor prática para organizar muitos workflows?',
+          options: [
+            'Colocar todos em um arquivo só',
+            'Separar por categoria em arquivos diferentes',
+            'Criar um arquivo por workflow',
+            'Não usar tags'
+          ],
+          correctIndex: 1,
+          explanation: 'Organize por categoria (git-workflows.yaml, devops-workflows.yaml) para fácil manutenção.',
+          xp: 10
+        },
+        {
+          id: 'q-w04-03-2',
+          question: 'Como encontrar workflows por categoria no Warp?',
+          options: ['⌃ + R → nome', '⌃ + R → #tag', '⌘ + F → categoria', '⌃ + T → tag'],
+          correctIndex: 1,
+          explanation: 'Use # seguido da tag para filtrar. Ex: ⌃ + R → "#docker" mostra todos workflows tagueados com docker.',
+          xp: 12
+        },
+        {
+          id: 'q-w04-03-3',
+          question: 'Qual workflow é ideal para iniciar o dia de trabalho?',
+          options: ['git-sync', 'morning-setup', 'docker-cleanup', 'port-kill'],
+          correctIndex: 1,
+          explanation: 'morning-setup combina múltiplas ações: abre projeto, browser, mostra agenda.',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w04-03-1',
+          title: 'Crie sua biblioteca personalizada',
+          description: 'Crie um arquivo com 3+ workflows para seu caso de uso.',
+          context: 'general' as const,
+          contextDescription: 'Seu ambiente de trabalho',
+          starterCode: `# Crie: ~/.warp/workflows/minha-biblioteca.yaml
+
+# Inclua pelo menos:
+# 1. Um workflow para abrir projeto favorito
+# 2. Um workflow para operação git frequente
+# 3. Um workflow com argumento dinâmico`,
+          solution: `# minha-biblioteca.yaml
+
+---
+name: meu-projeto
+command: "cd ~/Developer/meu-projeto && code ."
+description: "Abrir meu projeto principal"
+tags:
+  - projeto
+
+---
+name: git-quick-commit
+command: "git add . && git commit -m '{{msg}}'"
+description: "Add all e commit rápido"
+arguments:
+  - name: msg
+    default_value: "wip"
+tags:
+  - git
+
+---
+name: npm-start-port
+command: "PORT={{port}} npm start"
+description: "Iniciar npm em porta específica"
+arguments:
+  - name: port
+    default_value: "3001"
+tags:
+  - npm`,
+          hints: [
+            'Use tags consistentes para organização',
+            'Adicione default_value úteis',
+            'Teste cada workflow após criar'
+          ],
+          difficulty: 'intermediate' as const,
+          xpBonus: 50
+        }
+      ]
     }
   ),
 ];
@@ -1238,6 +2412,76 @@ Use **⌘ + D** para ter Claude Code e terminal lado a lado:
       xp: 60,
       duration: 15,
       tags: ['claude-code', 'integração', 'workflow'],
+      codeExamples: [
+        {
+          id: 'ce-w05-01-1',
+          title: 'Workflow combo Warp + Claude',
+          language: 'yaml',
+          code: `# workflow para sinergia perfeita
+---
+name: dev-session
+command: |
+  cd ~/Developer/spot-council &&
+  warp-cli split-pane horizontal &&
+  claude --continue
+description: "Abre projeto + split + Claude"
+tags:
+  - dev
+  - claude`,
+          explanation: 'Combine Warp e Claude Code no mesmo workflow',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w05-01-1',
+          question: 'Qual é a principal vantagem de usar Warp + Claude Code juntos?',
+          options: [
+            'Warp substitui Claude Code',
+            'Claude roda dentro do Warp (mesmo terminal)',
+            'Só funciona com iTerm2',
+            'Não há vantagem'
+          ],
+          correctIndex: 1,
+          explanation: 'Claude Code roda DENTRO do Warp, aproveitando blocks, histórico, AI e todos os recursos!',
+          xp: 12
+        },
+        {
+          id: 'q-w05-01-2',
+          question: 'Como copiar rapidamente o output de um Claude Code para usar em outro comando?',
+          options: ['Selecionar manualmente', '⌘ + ⇧ + C (copy block)', 'Ctrl+C', 'Não é possível'],
+          correctIndex: 1,
+          explanation: '⌘ + ⇧ + C copia o output inteiro do block, perfeito para usar em outros comandos!',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w05-01-1',
+          title: 'Sessão de desenvolvimento integrada',
+          description: 'Configure uma sessão que combina Warp splits com Claude Code.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Objetivo: Criar setup de desenvolvimento com:
+# - Aba 1: Claude Code no projeto
+# - Aba 2: npm run dev
+# - Aba 3: git/logs`,
+          solution: `# Crie workflow:
+# ~/.warp/workflows/dev-setup.yaml
+
+---
+name: dev-full-setup
+command: "cd ~/Developer/spot-council && claude"
+description: "Setup completo de dev"
+
+# Depois manualmente:
+# ⌘ + T para nova aba → npm run dev
+# ⌘ + T para nova aba → git log --oneline -10`,
+          hints: ['Use ⌘ + T para novas abas', 'Claude Code roda perfeitamente no Warp', 'Blocks separam cada output'],
+          difficulty: 'intermediate' as const,
+          xpBonus: 35
+        }
+      ]
     }
   ),
 
@@ -1309,6 +2553,83 @@ Tudo com **um comando**!
       duration: 12,
       difficulty: 'intermediate',
       tags: ['launch-config', 'automação', 'setup'],
+      codeExamples: [
+        {
+          id: 'ce-w05-02-1',
+          title: 'Launch Config completo',
+          language: 'json',
+          code: `// Exemplo de Launch Configuration
+// Warp > Settings > Launch Configurations
+
+{
+  "name": "Dev SPOT Council",
+  "tabs": [
+    {
+      "title": "Claude",
+      "commands": ["cd ~/Developer/spot-council", "claude"]
+    },
+    {
+      "title": "Dev Server",
+      "commands": ["cd ~/Developer/spot-council/frontend", "npm run dev"]
+    },
+    {
+      "title": "Backend",
+      "commands": ["cd ~/Developer/spot-council/backend", "uv run uvicorn app.main:app --reload"]
+    }
+  ]
+}`,
+          explanation: 'Launch Configuration abre múltiplas abas configuradas',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w05-02-1',
+          question: 'Onde são criadas as Launch Configurations no Warp?',
+          options: ['~/.warp/launch/', '~/.warp/workflows/', 'Warp > Settings > Launch Configurations', 'package.json'],
+          correctIndex: 2,
+          explanation: 'Launch Configurations são criadas via GUI em Warp > Settings > Launch Configurations.',
+          xp: 10
+        },
+        {
+          id: 'q-w05-02-2',
+          question: 'Qual é a diferença entre Launch Config e Workflow?',
+          options: [
+            'São iguais',
+            'Launch Config abre múltiplas abas, Workflow executa comando único',
+            'Workflow é mais rápido',
+            'Launch Config só funciona no macOS'
+          ],
+          correctIndex: 1,
+          explanation: 'Launch Configs salvam layout de abas; Workflows executam comandos. Complementares!',
+          xp: 12
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w05-02-1',
+          title: 'Crie seu Launch Config de desenvolvimento',
+          description: 'Configure um Launch Config que abre seu ambiente completo.',
+          context: 'general' as const,
+          contextDescription: 'Configurações do Warp',
+          starterCode: `# Vá em: Warp > Settings > Launch Configurations
+# Clique em "+" para criar nova
+
+# Configure:
+# - Nome: "Meu Dev Setup"
+# - Tab 1: Claude no projeto
+# - Tab 2: npm run dev
+# - Tab 3: terminal livre`,
+          solution: `# Após criar via GUI, você pode acessar com:
+# ⌘ + ⇧ + O → selecionar "Meu Dev Setup"
+
+# Resultado: 3 abas abertas automaticamente
+# cada uma no diretório e comando certos`,
+          hints: ['Use a GUI para criar (mais fácil)', 'Nomeie de forma descritiva', 'Teste após criar'],
+          difficulty: 'beginner' as const,
+          xpBonus: 30
+        }
+      ]
     }
   ),
 ];
@@ -1389,6 +2710,58 @@ Inclui comando, output E timestamp!
       xp: 50,
       duration: 12,
       tags: ['blocks', 'organização', 'navegação'],
+      quizzes: [
+        {
+          id: 'q-w06-01-1',
+          question: 'O que é um Block no Warp?',
+          options: [
+            'Uma aba separada',
+            'Comando + output agrupados visualmente',
+            'Um tipo de workflow',
+            'Configuração de tema'
+          ],
+          correctIndex: 1,
+          explanation: 'Cada Block agrupa comando + output, facilitando navegação e cópia.',
+          xp: 10
+        },
+        {
+          id: 'q-w06-01-2',
+          question: 'Como navegar entre Blocks rapidamente?',
+          options: ['Page Up/Down', '⌘ + ↑/↓', 'Tab', 'Ctrl + Tab'],
+          correctIndex: 1,
+          explanation: '⌘ + ↑ vai para o block anterior, ⌘ + ↓ para o próximo.',
+          xp: 10
+        },
+        {
+          id: 'q-w06-01-3',
+          question: 'Como copiar TODO o output de um Block de uma vez?',
+          options: ['Selecionar com mouse', '⌘ + C', '⌘ + ⇧ + C', '⌘ + A e depois ⌘ + C'],
+          correctIndex: 2,
+          explanation: '⌘ + ⇧ + C copia o output inteiro do block selecionado!',
+          xp: 12
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w06-01-1',
+          title: 'Navegação por Blocks',
+          description: 'Execute 3 comandos e navegue entre eles usando atalhos.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Execute estes comandos:
+ls -la
+pwd
+echo "Agora navegue com ⌘ + ↑/↓"`,
+          solution: `# Após executar os 3:
+# ⌘ + ↑ → vai para pwd
+# ⌘ + ↑ → vai para ls -la
+# ⌘ + ↓ → volta para pwd
+# ⌘ + ⇧ + C → copia output do block atual`,
+          hints: ['⌘ + ↑ sobe um block', '⌘ + ↓ desce um block', 'O block selecionado fica destacado'],
+          difficulty: 'beginner' as const,
+          xpBonus: 25
+        }
+      ]
     }
   ),
 
@@ -1473,6 +2846,54 @@ Configure notificações para comandos longos:
       duration: 15,
       difficulty: 'intermediate',
       tags: ['dicas', 'produtividade', 'truques'],
+      quizzes: [
+        {
+          id: 'q-w06-02-1',
+          question: 'URLs no output do Warp são clicáveis?',
+          options: ['Não', 'Sim, com ⌘ + Click', 'Só em alguns casos', 'Precisa de plugin'],
+          correctIndex: 1,
+          explanation: '⌘ + Click em qualquer URL no output abre no browser automaticamente!',
+          xp: 10
+        },
+        {
+          id: 'q-w06-02-2',
+          question: 'Como acessar rapidamente um diretório mostrado no output?',
+          options: ['Copiar e colar', '⌘ + Click no path', 'Não é possível', 'Arrastar para a linha'],
+          correctIndex: 1,
+          explanation: 'Paths são clicáveis! ⌘ + Click abre no Finder, ⌘ + ⇧ + Click cd para o diretório.',
+          xp: 12
+        },
+        {
+          id: 'q-w06-02-3',
+          question: 'Como repetir o último comando rapidamente?',
+          options: ['Digitar novamente', '↑ e Enter', '⌘ + R', 'Tab'],
+          correctIndex: 1,
+          explanation: 'Seta ↑ mostra o comando anterior, Enter executa. Simples e rápido!',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w06-02-1',
+          title: 'Use 3 truques Pro',
+          description: 'Demonstre domínio dos truques avançados do Warp.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# 1. Execute: echo "Visite https://github.com"
+# 2. ⌘ + Click na URL (deve abrir browser)
+# 3. Execute: ls ~/Developer
+# 4. ⌘ + Click em um diretório (deve abrir Finder)`,
+          solution: `# Verificação:
+# 1. URL abriu no browser ✓
+# 2. Diretório abriu no Finder ✓
+# 3. Experimente também:
+#    - ⌘ + ⇧ + Click em path para cd
+#    - ⌘ + K para limpar terminal`,
+          hints: ['⌘ + Click é seu melhor amigo', 'Paths também são clicáveis', 'Combine com ⇧ para ações extras'],
+          difficulty: 'beginner' as const,
+          xpBonus: 25
+        }
+      ]
     }
   ),
 ];
@@ -1546,9 +2967,102 @@ Para apresentações ou gravações:
 4. Volte ao escuro depois
 `,
     {
-      xp: 35,
-      duration: 10,
+      xp: 50,
+      duration: 12,
+      difficulty: 'beginner',
       tags: ['temas', 'customização', 'aparência'],
+      codeExamples: [
+        {
+          id: 'ce-w07-01-1',
+          title: 'prefs.yaml - Configuração Visual',
+          language: 'yaml',
+          code: `# ~/.warp/prefs.yaml
+theme: "catppuccin_mocha"
+font_family: "JetBrains Mono Nerd Font"
+font_size: 15
+window_opacity: 0.92
+cursor_shape: "block"
+cursor_blink: false`,
+          explanation: 'Configuração visual completa do Warp com tema Catppuccin',
+          runnable: false
+        },
+        {
+          id: 'ce-w07-01-2',
+          title: 'Tema Customizado',
+          language: 'yaml',
+          code: `# ~/.warp/themes/meu-tema.yaml
+name: "Meu Tema Custom"
+background: "#1a1b26"
+foreground: "#c0caf5"
+cursor: "#f7768e"
+selection: "#33467c"
+# Cores ANSI
+black: "#15161e"
+red: "#f7768e"
+green: "#9ece6a"
+yellow: "#e0af68"
+blue: "#7aa2f7"
+magenta: "#bb9af7"
+cyan: "#7dcfff"
+white: "#c0caf5"`,
+          explanation: 'Estrutura de tema personalizado para o Warp',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w07-01-1',
+          question: 'Qual tema é recomendado para longas sessões de código?',
+          options: ['Tema claro do sistema', 'Catppuccin Mocha (escuro, suave)', 'High contrast', 'Qualquer um'],
+          correctIndex: 1,
+          explanation: 'Catppuccin Mocha tem cores suaves que reduzem cansaço visual em sessões longas!',
+          xp: 10
+        },
+        {
+          id: 'q-w07-01-2',
+          question: 'Onde ficam os temas customizados do Warp?',
+          options: ['~/.config/warp/', '~/.warp/themes/', '/usr/local/warp/', '~/Library/Warp/'],
+          correctIndex: 1,
+          explanation: 'Temas personalizados ficam em ~/.warp/themes/ com extensão .yaml!',
+          xp: 10
+        },
+        {
+          id: 'q-w07-01-3',
+          question: 'Como trocar tema rapidamente para apresentações?',
+          options: ['Editar prefs.yaml', '⌘ + P → theme', 'Reinstalar Warp', 'Preferences > Themes'],
+          correctIndex: 1,
+          explanation: '⌘ + P abre Command Palette, digite "theme" para trocar rapidamente!',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w07-01-1',
+          title: 'Personalize seu Warp',
+          description: 'Configure o visual do Warp do seu jeito.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# 1. Veja os temas disponíveis:
+⌘ + P → digite "theme"
+
+# 2. Escolha um tema e aplique
+
+# 3. Configure sua fonte preferida em:
+cat ~/.warp/prefs.yaml | grep font`,
+          solution: `# Verificação:
+# 1. Tema alterado com sucesso ✓
+# 2. Verificar configuração:
+cat ~/.warp/prefs.yaml
+
+# Deve mostrar:
+# theme: "seu_tema_escolhido"
+# font_family: "sua_fonte"
+# font_size: 14-16`,
+          hints: ['Catppuccin é ótimo para quem programa muito', 'JetBrains Mono tem ligatures', 'Teste opacidade entre 0.85 e 0.95'],
+          difficulty: 'beginner' as const,
+          xpBonus: 25
+        }
+      ]
     }
   ),
 
@@ -1644,9 +3158,100 @@ Após editar \`prefs.yaml\`:
 4. Configurações aplicadas!
 `,
     {
-      xp: 45,
-      duration: 12,
+      xp: 70,
+      duration: 15,
+      difficulty: 'intermediate',
       tags: ['configuração', 'prefs.yaml', 'personalização'],
+      codeExamples: [
+        {
+          id: 'ce-w07-02-1',
+          title: 'prefs.yaml Completo TOP 1%',
+          language: 'yaml',
+          code: `# ~/.warp/prefs.yaml - Config TOP 1%
+# ═══ APARÊNCIA ═══
+theme: "catppuccin_mocha"
+font_family: "JetBrains Mono Nerd Font"
+font_size: 15
+window_opacity: 0.92
+cursor_shape: "block"
+cursor_blink: false
+
+# ═══ FUNCIONALIDADES ═══
+warp_ai_enabled: true
+blocks_enabled: true
+show_block_timestamps: true
+input_position: "bottom"
+
+# ═══ COMPORTAMENTO ═══
+bell_enabled: false
+scrollback_lines: 10000
+restore_working_directory: true
+
+# ═══ TERMINAL ═══
+default_shell: "/bin/zsh"
+inherit_env: true`,
+          explanation: 'Configuração completa do Warp com todas as categorias',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w07-02-1',
+          question: 'Como aplicar mudanças após editar prefs.yaml?',
+          options: ['Automático', 'Reiniciar o computador', 'Fechar e abrir Warp (⌘ + Q)', 'Rodar warp --reload'],
+          correctIndex: 2,
+          explanation: 'Após editar prefs.yaml, feche o Warp com ⌘ + Q e abra novamente para aplicar!',
+          xp: 10
+        },
+        {
+          id: 'q-w07-02-2',
+          question: 'Qual a configuração recomendada para scrollback_lines?',
+          options: ['100 (mínimo)', '1000 (padrão)', '10000 (recomendado)', 'Infinito'],
+          correctIndex: 2,
+          explanation: '10000 linhas dá bastante histórico sem consumir muita memória!',
+          xp: 10
+        },
+        {
+          id: 'q-w07-02-3',
+          question: 'Por que desabilitar cursor_blink e bell_enabled?',
+          options: ['Performance', 'Menos distrações visuais/sonoras', 'Obrigatório no Warp', 'Não faz diferença'],
+          correctIndex: 1,
+          explanation: 'Cursor piscando e sons são distrações. TOP devs preferem ambiente limpo!',
+          xp: 10
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-w07-02-1',
+          title: 'Configure seu prefs.yaml TOP 1%',
+          description: 'Aplique todas as configurações recomendadas no seu Warp.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# 1. Abra o arquivo de configuração:
+code ~/.warp/prefs.yaml
+# ou
+nano ~/.warp/prefs.yaml
+
+# 2. Adicione as configurações TOP 1%
+# (veja o code example acima)
+
+# 3. Salve e reinicie o Warp`,
+          solution: `# Verificação:
+cat ~/.warp/prefs.yaml
+
+# Deve conter (mínimo):
+# - theme definido
+# - font_family definida
+# - cursor_blink: false
+# - bell_enabled: false
+# - scrollback_lines: 10000
+
+# Teste: ⌘ + Q para fechar, reabra e veja as mudanças`,
+          hints: ['Copie o code example como base', 'Ajuste font_size para seu monitor', 'Test window_opacity entre 0.9 e 1.0'],
+          difficulty: 'beginner' as const,
+          xpBonus: 30
+        }
+      ]
     }
   ),
 ];
@@ -1723,24 +3328,194 @@ Com este setup você tem:
 🎉 **Parabéns! Você dominou o Warp Terminal!**
 `,
     {
-      xp: 100,
-      duration: 30,
-      difficulty: 'intermediate',
+      xp: 150,
+      duration: 45,
+      difficulty: 'advanced',
       tags: ['projeto-final', 'setup', 'top1'],
+      codeExamples: [
+        {
+          id: 'ce-w08-01-1',
+          title: 'Setup Completo - Script de Inicialização',
+          language: 'bash',
+          code: `#!/bin/bash
+# setup-warp-top1.sh - Setup automático TOP 1%
+
+echo "🚀 Configurando Warp TOP 1%..."
+
+# 1. Criar estrutura
+mkdir -p ~/.warp/workflows ~/.warp/themes
+
+# 2. Verificar prefs.yaml
+if [ -f ~/.warp/prefs.yaml ]; then
+  echo "✅ prefs.yaml existe"
+else
+  echo "⚠️  Crie ~/.warp/prefs.yaml"
+fi
+
+# 3. Contar workflows
+WF_COUNT=$(find ~/.warp/workflows -name "*.yaml" 2>/dev/null | wc -l)
+echo "📁 Workflows encontrados: $WF_COUNT"
+
+# 4. Verificar fonte
+if fc-list | grep -q "JetBrains Mono"; then
+  echo "✅ JetBrains Mono instalada"
+else
+  echo "⚠️  Instale: brew install --cask font-jetbrains-mono-nerd-font"
+fi
+
+echo "🎉 Setup verificado!"`,
+          explanation: 'Script para verificar e configurar ambiente Warp completo',
+          runnable: false
+        },
+        {
+          id: 'ce-w08-01-2',
+          title: 'Aliases Claude Code no .zshrc',
+          language: 'bash',
+          code: `# ~/.zshrc - Aliases TOP 1%
+
+# ═══ CLAUDE CODE ALIASES ═══
+alias cc='claude'
+alias cc-spot='CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000 claude --resume spot-ai'
+alias cc-curso='CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000 claude --resume curso-claude'
+alias cc-sandbox='CLAUDE_CODE_MAX_OUTPUT_TOKENS=64000 claude --resume sandbox'
+
+# ═══ WARP HELPERS ═══
+alias warp-workflows='ls -la ~/.warp/workflows/*.yaml | wc -l'
+alias warp-edit='code ~/.warp/prefs.yaml'
+alias warp-theme='cat ~/.warp/prefs.yaml | grep theme'
+
+# ═══ GIT + WARP ═══
+alias gs='git status'
+alias gd='git diff'
+alias glog='git log --oneline -10'`,
+          explanation: 'Aliases para integrar Claude Code e Warp no terminal',
+          runnable: false
+        }
+      ],
+      quizzes: [
+        {
+          id: 'q-w08-01-1',
+          question: 'Qual o primeiro passo para setup TOP 1% do Warp?',
+          options: ['Instalar temas', 'Criar estrutura de pastas (~/.warp/workflows)', 'Configurar Claude', 'Editar .zshrc'],
+          correctIndex: 1,
+          explanation: 'mkdir -p ~/.warp/workflows ~/.warp/themes é o primeiro passo para organização!',
+          xp: 15
+        },
+        {
+          id: 'q-w08-01-2',
+          question: 'Quantos workflows você deve ter para ser TOP 1%?',
+          options: ['5-10', '10-20', '20-30+', 'Quanto menos melhor'],
+          correctIndex: 2,
+          explanation: 'TOP 1% tem 20-30+ workflows cobrindo todas as tarefas repetitivas!',
+          xp: 15
+        },
+        {
+          id: 'q-w08-01-3',
+          question: 'Qual integração é essencial no setup TOP 1%?',
+          options: ['Apenas Git', 'Apenas Docker', 'Claude Code + Git + DevOps', 'Nenhuma integração'],
+          correctIndex: 2,
+          explanation: 'Setup TOP 1% integra Claude Code, Git, DevOps e produtividade!',
+          xp: 15
+        },
+        {
+          id: 'q-w08-01-4',
+          question: 'Para que servem Launch Configurations?',
+          options: ['Temas', 'Iniciar terminal em diretório/projeto específico', 'Atalhos de teclado', 'Instalar plugins'],
+          correctIndex: 1,
+          explanation: 'Launch Configs abrem terminal já no diretório do projeto com variáveis configuradas!',
+          xp: 15
+        }
+      ],
       challenges: [
         {
           id: 'ch-w08-01-1',
-          title: 'Setup Completo',
-          description: 'Implemente todo o setup descrito nesta lição',
-          context: 'personal',
-          contextDescription: 'Personalize para seus projetos',
-          difficulty: 'intermediate',
-          xpBonus: 100,
+          title: 'Setup Completo TOP 1%',
+          description: 'Implemente todo o setup descrito nesta lição e valide cada componente.',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# PROJETO FINAL - Setup TOP 1%
+
+# 1. Criar estrutura:
+mkdir -p ~/.warp/workflows ~/.warp/themes
+
+# 2. Verificar prefs.yaml:
+cat ~/.warp/prefs.yaml
+
+# 3. Contar workflows:
+ls ~/.warp/workflows/*.yaml | wc -l
+
+# 4. Testar Claude Code alias:
+echo "alias cc='claude'" >> ~/.zshrc
+source ~/.zshrc
+
+# 5. Validar tudo:
+echo "✅ Estrutura criada"
+echo "✅ Prefs configurado"
+echo "✅ Workflows: $(ls ~/.warp/workflows/*.yaml 2>/dev/null | wc -l)"`,
+          solution: `# Verificação completa:
+
+# 1. Estrutura
+ls -la ~/.warp/
+# Deve mostrar: workflows/, themes/, prefs.yaml
+
+# 2. Workflows (mínimo 20+)
+ls ~/.warp/workflows/*.yaml | wc -l
+# Deve ser >= 20
+
+# 3. Aliases funcionando
+which cc  # ou: alias | grep cc
+
+# 4. Launch Configs
+# ⌘ + P → "open launch" → deve mostrar configs
+
+# 🎉 Se tudo passou: VOCÊ É TOP 1%!`,
           hints: [
             'Siga o checklist passo a passo',
+            'Use os code examples como template',
             'Valide cada componente antes de prosseguir',
-            'Use os workflows como templates'
+            'O script setup-warp-top1.sh ajuda na verificação'
           ],
+          difficulty: 'intermediate' as const,
+          xpBonus: 100
+        },
+        {
+          id: 'ch-w08-01-2',
+          title: 'Crie 5 workflows personalizados',
+          description: 'Crie workflows para SUAS tarefas mais frequentes (não copie, adapte!).',
+          context: 'general' as const,
+          contextDescription: 'Terminal Warp',
+          starterCode: `# Identifique suas 5 tarefas mais repetitivas:
+# 1. _________________
+# 2. _________________
+# 3. _________________
+# 4. _________________
+# 5. _________________
+
+# Crie um workflow para cada:
+cat > ~/.warp/workflows/meu-workflow-1.yaml << 'EOF'
+name: Minha Tarefa 1
+command: |
+  # comandos aqui
+description: O que faz
+tags: [pessoal, produtividade]
+EOF`,
+          solution: `# Exemplo de 5 workflows personalizados:
+
+# 1. Backup diário
+# 2. Deploy do meu projeto
+# 3. Limpeza de Docker
+# 4. Update de dependências
+# 5. Verificação de saúde do sistema
+
+# Teste: ⌃ + R → busque pelo nome
+# Todos devem aparecer e executar corretamente!`,
+          hints: [
+            'Pense nas tarefas que você repete TODO DIA',
+            'Workflows economizam segundos que viram horas',
+            'Inclua comentários para lembrar o que faz'
+          ],
+          difficulty: 'intermediate' as const,
+          xpBonus: 75
         }
       ]
     }

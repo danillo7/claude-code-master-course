@@ -137,8 +137,9 @@ export interface CodeExample {
   title: string;
   language: string;
   code: string;
-  explanation: string;
-  runnable: boolean;
+  explanation?: string; // Optional - use description for simpler examples
+  runnable?: boolean; // Optional - defaults to false
+  description?: string; // Optional description for extended examples
 }
 
 export interface Challenge {
@@ -150,6 +151,7 @@ export interface Challenge {
   difficulty: DifficultyLevel;
   xpBonus: number;
   hints: string[];
+  starterCode?: string; // Initial code/commands for the challenge
   solution?: string;
   validation?: string; // How to verify completion
 }
