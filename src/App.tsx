@@ -40,6 +40,9 @@ interface PortalAreaConfig {
   badge?: string;
 }
 
+// ============================================================================
+// PORTAL AREAS - UNIFIED VISUAL IDENTITY (indigo/violet base)
+// ============================================================================
 const PORTAL_AREAS: PortalAreaConfig[] = [
   {
     id: 'course',
@@ -47,7 +50,7 @@ const PORTAL_AREAS: PortalAreaConfig[] = [
     shortLabel: 'Cursos',
     description: 'Claude Code & Warp Terminal',
     icon: BookOpen,
-    gradient: 'from-indigo-500 to-violet-500',
+    gradient: 'from-indigo-500 via-violet-500 to-purple-500',
     color: 'indigo'
   },
   {
@@ -56,8 +59,8 @@ const PORTAL_AREAS: PortalAreaConfig[] = [
     shortLabel: 'Notícias',
     description: 'Breaking news e tendências',
     icon: Newspaper,
-    gradient: 'from-emerald-500 to-teal-500',
-    color: 'emerald',
+    gradient: 'from-indigo-500 to-emerald-500',
+    color: 'indigo',
     badge: 'LIVE'
   },
   {
@@ -66,8 +69,8 @@ const PORTAL_AREAS: PortalAreaConfig[] = [
     shortLabel: 'Intel',
     description: 'Chess Game & análise competitiva',
     icon: BarChart3,
-    gradient: 'from-orange-500 to-amber-500',
-    color: 'orange',
+    gradient: 'from-indigo-600 to-violet-600',
+    color: 'indigo',
     badge: 'PRO'
   },
   {
@@ -76,8 +79,8 @@ const PORTAL_AREAS: PortalAreaConfig[] = [
     shortLabel: 'Timeline',
     description: 'Eventos e marcos do ano',
     icon: Calendar,
-    gradient: 'from-purple-500 to-pink-500',
-    color: 'purple',
+    gradient: 'from-indigo-400 via-violet-500 to-purple-500',
+    color: 'indigo',
     badge: 'NEW'
   },
   {
@@ -86,8 +89,8 @@ const PORTAL_AREAS: PortalAreaConfig[] = [
     shortLabel: 'AI Team',
     description: '12 especialistas IA para dev',
     icon: Users,
-    gradient: 'from-cyan-500 to-blue-500',
-    color: 'cyan',
+    gradient: 'from-indigo-500 via-blue-500 to-violet-500',
+    color: 'indigo',
     badge: 'NEW'
   },
   {
@@ -96,8 +99,8 @@ const PORTAL_AREAS: PortalAreaConfig[] = [
     shortLabel: 'K-LLMs',
     description: 'Multi-LLM paralelo da Palantir',
     icon: Layers,
-    gradient: 'from-rose-500 to-red-500',
-    color: 'rose',
+    gradient: 'from-indigo-600 via-violet-500 to-purple-600',
+    color: 'indigo',
     badge: 'HOT'
   }
 ];

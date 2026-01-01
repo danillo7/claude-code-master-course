@@ -174,20 +174,20 @@ export const AITeamFramework: React.FC<AITeamFrameworkProps> = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header - Unified Brand Identity */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20
-                          border border-cyan-500/30 rounded-full px-6 py-2 mb-6">
-            <Users className="w-5 h-5 text-cyan-400" />
-            <span className="text-cyan-300 font-medium">AI Development Framework</span>
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-indigo-500/20 to-violet-500/20
+                          border border-indigo-500/30 rounded-full px-6 py-2 mb-6">
+            <Users className="w-5 h-5 text-indigo-400" />
+            <span className="text-indigo-300 font-medium">AI Development Framework</span>
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
               12 AI Specialists
             </span>
           </h1>
@@ -210,7 +210,7 @@ export const AITeamFramework: React.FC<AITeamFrameworkProps> = () => {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/25'
+                  ? 'bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/25'
                   : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50'
               }`}
             >
@@ -350,7 +350,7 @@ export const AITeamFramework: React.FC<AITeamFrameworkProps> = () => {
                       className="flex items-center gap-4 p-4 bg-slate-900/50 rounded-xl
                                  border border-slate-700/50 hover:border-cyan-500/30 transition-all"
                     >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-500
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500
                                       flex items-center justify-center">
                         <rule.icon className="w-6 h-6 text-white" />
                       </div>
@@ -391,7 +391,7 @@ export const AITeamFramework: React.FC<AITeamFrameworkProps> = () => {
                   {['Input', 'Análise', 'Design', 'Implement', 'Review', 'Deploy'].map((step, i) => (
                     <React.Fragment key={step}>
                       <div className="flex flex-col items-center gap-2">
-                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500
+                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500
                                         flex items-center justify-center text-white font-bold">
                           {i + 1}
                         </div>

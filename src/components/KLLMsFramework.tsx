@@ -154,23 +154,23 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
   const [expandedModel, setExpandedModel] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-rose-950/20 to-slate-900 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950/20 to-slate-900 py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
+        {/* Header - Unified Brand Identity */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-rose-500/20 to-red-500/20
-                          border border-rose-500/30 rounded-full px-6 py-2 mb-6">
-            <Layers className="w-5 h-5 text-rose-400" />
-            <span className="text-rose-300 font-medium">Palantir Architecture</span>
-            <span className="px-2 py-0.5 bg-rose-500/30 rounded-full text-xs text-rose-200">HOT</span>
+          <div className="inline-flex items-center gap-3 bg-gradient-to-r from-indigo-500/20 to-violet-500/20
+                          border border-indigo-500/30 rounded-full px-6 py-2 mb-6">
+            <Layers className="w-5 h-5 text-indigo-400" />
+            <span className="text-indigo-300 font-medium">Palantir Architecture</span>
+            <span className="px-2 py-0.5 bg-violet-500/30 rounded-full text-xs text-violet-200">HOT</span>
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="bg-gradient-to-r from-rose-400 via-red-400 to-orange-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
               K-LLMs Architecture
             </span>
           </h1>
@@ -186,7 +186,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
               href="https://www.youtube.com/watch?v=wS5xRxGnqIQ"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-rose-400 hover:text-rose-300 transition-colors"
+              className="text-indigo-400 hover:text-indigo-300 transition-colors"
             >
               <ExternalLink className="w-4 h-4" />
             </a>
@@ -206,7 +206,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center gap-2 px-5 py-3 rounded-xl font-medium transition-all ${
                 activeTab === tab.id
-                  ? 'bg-gradient-to-r from-rose-500 to-red-500 text-white shadow-lg shadow-rose-500/25'
+                  ? 'bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/25'
                   : 'bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-700/50'
               }`}
             >
@@ -229,20 +229,20 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
               {/* What is K-LLMs */}
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-8">
                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Brain className="w-7 h-7 text-rose-400" />
+                  <Brain className="w-7 h-7 text-indigo-400" />
                   O que e K-LLMs?
                 </h2>
 
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-4">
                     <p className="text-slate-300 leading-relaxed">
-                      <strong className="text-rose-400">K-LLMs</strong> e o paradigma de usar{' '}
+                      <strong className="text-indigo-400">K-LLMs</strong> e o paradigma de usar{' '}
                       <span className="text-white font-medium">K modelos de linguagem em paralelo</span>,
                       sintetizando suas respostas para obter resultados superiores.
                     </p>
 
                     <div className="bg-slate-900/50 rounded-xl p-4 border border-slate-700/50">
-                      <h4 className="text-sm font-medium text-rose-300 mb-3 flex items-center gap-2">
+                      <h4 className="text-sm font-medium text-indigo-300 mb-3 flex items-center gap-2">
                         <Sparkles className="w-4 h-4" />
                         Principios Fundamentais
                       </h4>
@@ -262,7 +262,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-br from-rose-500/10 to-red-500/10 rounded-xl p-6 border border-rose-500/20">
+                  <div className="bg-gradient-to-br from-indigo-500/10 to-violet-500/10 rounded-xl p-6 border border-indigo-500/20">
                     <h4 className="text-lg font-bold text-white mb-4">Analogia: Conselho de Especialistas</h4>
                     <p className="text-slate-300 text-sm mb-4">
                       Assim como decisoes criticas em empresas sao tomadas por um conselho
@@ -270,7 +270,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
                       para decisoes mais robustas.
                     </p>
                     <div className="flex items-center gap-3 text-slate-400 text-sm">
-                      <Users className="w-5 h-5 text-rose-400" />
+                      <Users className="w-5 h-5 text-indigo-400" />
                       <span>1 LLM = 1 Consultor | K-LLMs = Board of Directors</span>
                     </div>
                   </div>
@@ -305,7 +305,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
                     className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-xl p-6
-                               hover:border-rose-500/30 transition-all"
+                               hover:border-indigo-500/30 transition-all"
                   >
                     <div className={`w-12 h-12 rounded-xl bg-${benefit.color}-500/20
                                     flex items-center justify-center mb-4`}>
@@ -320,7 +320,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
               {/* Trade-offs Table */}
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-6">
                 <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
-                  <BarChart3 className="w-6 h-6 text-rose-400" />
+                  <BarChart3 className="w-6 h-6 text-indigo-400" />
                   Trade-offs: Single LLM vs K-LLMs
                 </h3>
 
@@ -371,7 +371,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
               {/* Architecture Diagram */}
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-8">
                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Network className="w-7 h-7 text-rose-400" />
+                  <Network className="w-7 h-7 text-indigo-400" />
                   Arquitetura K-LLMs
                 </h2>
 
@@ -457,7 +457,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
                     <ul className="space-y-1">
                       {component.details.map((detail) => (
                         <li key={detail} className="text-xs text-slate-500 flex items-center gap-2">
-                          <ArrowRight className="w-3 h-3 text-rose-400" />
+                          <ArrowRight className="w-3 h-3 text-indigo-400" />
                           {detail}
                         </li>
                       ))}
@@ -469,7 +469,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
               {/* LLM Models Grid */}
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-6">
                 <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Layers className="w-6 h-6 text-rose-400" />
+                  <Layers className="w-6 h-6 text-indigo-400" />
                   Modelos Disponiveis para K-LLMs
                 </h3>
 
@@ -483,7 +483,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
                       onClick={() => setExpandedModel(expandedModel === model.id ? null : model.id)}
                       className={`bg-slate-900/50 border border-slate-700/50 rounded-xl p-4 cursor-pointer
                                   hover:border-${model.color}-500/50 transition-all
-                                  ${expandedModel === model.id ? 'ring-2 ring-rose-500/50' : ''}`}
+                                  ${expandedModel === model.id ? 'ring-2 ring-indigo-500/50' : ''}`}
                     >
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-3">
@@ -541,7 +541,7 @@ export const KLLMsFramework: React.FC<KLLMsFrameworkProps> = () => {
               {/* Synthesis Prompt */}
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-6">
                 <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-                  <MessageSquare className="w-6 h-6 text-rose-400" />
+                  <MessageSquare className="w-6 h-6 text-indigo-400" />
                   Synthesis Prompt Template
                 </h3>
 
@@ -582,7 +582,7 @@ OUTPUT FORMAT:
             >
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-6">
                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Target className="w-7 h-7 text-rose-400" />
+                  <Target className="w-7 h-7 text-indigo-400" />
                   Casos de Uso Reais
                 </h2>
 
@@ -601,7 +601,7 @@ OUTPUT FORMAT:
 
                           <div className="space-y-3">
                             <div>
-                              <span className="text-xs text-rose-400 uppercase tracking-wide">Problema:</span>
+                              <span className="text-xs text-indigo-400 uppercase tracking-wide">Problema:</span>
                               <p className="text-sm text-slate-400">{useCase.problem}</p>
                             </div>
 
@@ -619,8 +619,8 @@ OUTPUT FORMAT:
                               {useCase.models.map((model) => (
                                 <span
                                   key={model}
-                                  className="px-2 py-0.5 text-xs bg-rose-500/20 text-rose-300
-                                           border border-rose-500/30 rounded"
+                                  className="px-2 py-0.5 text-xs bg-indigo-500/20 text-indigo-300
+                                           border border-indigo-500/30 rounded"
                                 >
                                   {model}
                                 </span>
@@ -701,7 +701,7 @@ OUTPUT FORMAT:
               {/* Implementation Phases */}
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-6">
                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Play className="w-7 h-7 text-rose-400" />
+                  <Play className="w-7 h-7 text-indigo-400" />
                   Fases de Implementacao
                 </h2>
 
@@ -754,7 +754,7 @@ OUTPUT FORMAT:
               {/* Code Example */}
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-6">
                 <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
-                  <Code2 className="w-6 h-6 text-rose-400" />
+                  <Code2 className="w-6 h-6 text-indigo-400" />
                   Pseudo-codigo: K-LLMs Orchestrator
                 </h3>
 
@@ -799,7 +799,7 @@ OUTPUT FORMAT:
               {/* Metrics */}
               <div className="bg-slate-800/50 backdrop-blur border border-slate-700/50 rounded-2xl p-6">
                 <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
-                  <BarChart3 className="w-6 h-6 text-rose-400" />
+                  <BarChart3 className="w-6 h-6 text-indigo-400" />
                   Metricas de Sucesso
                 </h3>
 
@@ -826,7 +826,7 @@ OUTPUT FORMAT:
               </div>
 
               {/* CTA */}
-              <div className="bg-gradient-to-r from-rose-500/20 to-red-500/20 border border-rose-500/30
+              <div className="bg-gradient-to-r from-rose-500/20 to-red-500/20 border border-indigo-500/30
                               rounded-2xl p-8 text-center">
                 <h3 className="text-2xl font-bold text-white mb-4">
                   Pronto para implementar K-LLMs?
@@ -840,7 +840,7 @@ OUTPUT FORMAT:
                     href="https://www.youtube.com/watch?v=wS5xRxGnqIQ"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-rose-500 hover:bg-rose-600
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-indigo-500 hover:bg-indigo-600
                                text-white font-medium rounded-xl transition-colors"
                   >
                     <Play className="w-5 h-5" />

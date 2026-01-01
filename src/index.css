@@ -567,3 +567,68 @@ code {
 .dark .text-caption {
   @apply text-slate-500;
 }
+
+/* ================================================================
+   BRAND UNIFIED DESIGN SYSTEM
+   Identidade Visual Unificada - indigo/violet base
+   ================================================================ */
+
+/* Primary Brand Gradients */
+.brand-gradient {
+  @apply bg-gradient-to-r from-indigo-500 to-violet-500;
+}
+
+.brand-gradient-text {
+  @apply bg-gradient-to-r from-indigo-500 to-violet-500 bg-clip-text text-transparent;
+}
+
+.brand-gradient-accent {
+  @apply bg-gradient-to-r from-indigo-500 to-emerald-500;
+}
+
+.brand-gradient-deep {
+  @apply bg-gradient-to-r from-indigo-600 via-violet-500 to-purple-600;
+}
+
+.brand-gradient-subtle {
+  @apply bg-gradient-to-r from-indigo-400 to-violet-400;
+}
+
+/* Area-specific variations (baseadas em indigo/violet) */
+.brand-gradient-course {
+  @apply bg-gradient-to-br from-indigo-500 via-violet-500 to-purple-500;
+}
+
+.brand-gradient-news {
+  @apply bg-gradient-to-r from-indigo-500 to-emerald-500;
+}
+
+.brand-gradient-intel {
+  @apply bg-gradient-to-r from-indigo-600 to-violet-600;
+}
+
+.brand-gradient-timeline {
+  @apply bg-gradient-to-r from-indigo-400 via-violet-500 to-purple-500;
+}
+
+.brand-gradient-team {
+  @apply bg-gradient-to-r from-indigo-500 via-blue-500 to-violet-500;
+}
+
+.brand-gradient-kllms {
+  @apply bg-gradient-to-r from-indigo-600 via-violet-500 to-purple-600;
+}
+
+/* Hover effects for brand gradients */
+.brand-hover {
+  @apply hover:from-indigo-600 hover:to-violet-600 transition-all duration-300;
+}
+
+/* Dark mode adjustments */
+.dark .brand-gradient {
+  @apply from-indigo-600 to-violet-600;
+}
+
+.dark .brand-gradient-subtle {
+  @apply from-indigo-500 to-violet-500;
+}
