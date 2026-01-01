@@ -3677,11 +3677,625 @@ const module10Lessons: Lesson[] = [
     'Use o modo de pensamento estendido para problemas complexos.',
     `# Extended Thinking
 
-Extended Thinking permite que Claude "pense por mais tempo" antes de responder.
+Extended Thinking permite que Claude "pense por mais tempo" antes de responder, gerando raciocínios mais profundos e soluções mais elaboradas.
 
-[Conteúdo detalhado aqui...]
+## O que é Extended Thinking?
+
+Extended Thinking é um modo onde Claude pode usar mais tokens internamente para "pensar" sobre um problema antes de gerar a resposta final. É especialmente útil para:
+
+- **Problemas complexos** que requerem múltiplas etapas
+- **Análises profundas** de código ou arquitetura
+- **Decisões arquiteturais** com trade-offs
+- **Debugging** de issues difíceis
+
+## Como Ativar
+
+No Claude Code, você pode ativar o thinking mode de diferentes formas:
+
+\`\`\`bash
+# Via flag na CLI
+claude --thinking
+
+# Ou usando o modelo Opus 4.5 que tem melhor reasoning
+claude --model opus
+\`\`\`
+
+## Quando Usar Extended Thinking
+
+| Cenário | Usar Extended Thinking? |
+|---------|------------------------|
+| Refatoração complexa | ✅ Sim |
+| Fix simples de typo | ❌ Não necessário |
+| Arquitetura de sistema | ✅ Sim |
+| Adicionar um console.log | ❌ Não necessário |
+| Debug de race condition | ✅ Sim |
+| Formatação de código | ❌ Não necessário |
+
+## Dica TOP 1%
+
+> **Pro Tip:** Combine Extended Thinking com prompts específicos como "Analise profundamente antes de responder" ou "Considere todos os edge cases" para resultados ainda melhores.
+
+## Exemplo Prático
+
+\`\`\`
+Prompt SEM Extended Thinking:
+"Refatore este código"
+→ Resposta rápida, pode perder nuances
+
+Prompt COM Extended Thinking:
+"Preciso refatorar este sistema de autenticação.
+Considere: segurança, performance, manutenibilidade,
+e compatibilidade com o código existente."
+→ Análise profunda antes de propor mudanças
+\`\`\`
 `,
-    { xp: 100, duration: 30, difficulty: 'expert', tags: ['thinking', 'avançado'] }
+    {
+      xp: 100,
+      duration: 30,
+      difficulty: 'expert',
+      tags: ['thinking', 'avançado', 'reasoning'],
+      quizzes: [
+        {
+          question: 'Quando você DEVE usar Extended Thinking?',
+          options: [
+            'Para qualquer tarefa, sempre',
+            'Para problemas complexos que requerem análise profunda',
+            'Apenas para correção de typos',
+            'Nunca, é desnecessário'
+          ],
+          correctIndex: 1,
+          explanation: 'Extended Thinking é ideal para problemas complexos como refatoração, arquitetura e debugging difícil. Para tarefas simples, não é necessário.'
+        }
+      ]
+    }
+  ),
+
+  createLesson('10', '10-02-plan-mode', '02. Plan Mode',
+    'Planeje antes de executar - o segredo dos projetos bem-sucedidos.',
+    `# Plan Mode
+
+O Plan Mode é uma funcionalidade poderosa que permite planejar mudanças complexas antes de executá-las.
+
+## Por Que Planejar?
+
+> "Weeks of coding can save you hours of planning" - Ditado de desenvolvedor
+
+O Plan Mode resolve um problema comum: fazer mudanças grandes sem entender o impacto completo.
+
+## Como Funciona
+
+1. **Claude analisa** todo o contexto do projeto
+2. **Cria um plano** detalhado das mudanças necessárias
+3. **Você revisa** o plano antes de aprovar
+4. **Executa** com confiança sabendo o que vai mudar
+
+## Ativando Plan Mode
+
+\`\`\`bash
+# Usando flag --plan
+claude --plan "Adicionar sistema de autenticação"
+
+# Ou via prompt
+claude "Quero implementar cache Redis. Me mostre um plano primeiro."
+\`\`\`
+
+## Anatomia de um Bom Plano
+
+Um plano bem estruturado inclui:
+
+\`\`\`markdown
+## 1. Análise do Estado Atual
+- Arquivos que serão modificados
+- Dependências existentes
+- Possíveis conflitos
+
+## 2. Mudanças Propostas
+- [ ] Criar novo arquivo X
+- [ ] Modificar arquivo Y (linhas 10-50)
+- [ ] Atualizar configuração Z
+
+## 3. Ordem de Execução
+1. Primeiro: criar interfaces
+2. Depois: implementar lógica
+3. Por fim: atualizar imports
+
+## 4. Riscos e Mitigações
+- Risco: Quebrar testes existentes
+- Mitigação: Rodar testes após cada etapa
+\`\`\`
+
+## Quando Usar Plan Mode
+
+| Cenário | Recomendação |
+|---------|--------------|
+| Nova feature grande | ✅ Sempre planejar |
+| Refatoração de múltiplos arquivos | ✅ Sempre planejar |
+| Bug fix simples | ❌ Ir direto |
+| Mudança em 1 arquivo | ❌ Ir direto |
+| Migração de dependência | ✅ Sempre planejar |
+
+## Workflow TOP 1%
+
+\`\`\`
+1. "Planeje a implementação de [feature]"
+   ↓
+2. Revise o plano, peça ajustes se necessário
+   ↓
+3. "Execute o plano, etapa por etapa"
+   ↓
+4. Valide cada etapa antes de continuar
+   ↓
+5. "Resuma as mudanças feitas"
+\`\`\`
+
+## Exemplo Real: Adicionando Autenticação
+
+\`\`\`
+Você: "Planeje a adição de autenticação JWT ao projeto"
+
+Claude:
+## Plano: Implementação de Autenticação JWT
+
+### Fase 1: Setup (30 min)
+- [ ] Instalar dependências: jsonwebtoken, bcrypt
+- [ ] Criar pasta src/auth/
+
+### Fase 2: Modelos (20 min)
+- [ ] Criar User model com password hash
+- [ ] Criar migrations
+
+### Fase 3: Middleware (30 min)
+- [ ] Criar authMiddleware.ts
+- [ ] Implementar verificação de token
+
+### Fase 4: Rotas (40 min)
+- [ ] POST /auth/register
+- [ ] POST /auth/login
+- [ ] GET /auth/me
+
+### Fase 5: Testes (30 min)
+- [ ] Testes unitários para auth
+- [ ] Testes de integração
+
+Deseja que eu execute este plano?
+\`\`\`
+`,
+    {
+      xp: 120,
+      duration: 35,
+      difficulty: 'advanced',
+      tags: ['plan-mode', 'planejamento', 'workflow'],
+      quizzes: [
+        {
+          question: 'Qual é a principal vantagem do Plan Mode?',
+          options: [
+            'Escrever código mais rápido',
+            'Evitar usar o terminal',
+            'Visualizar e aprovar mudanças antes de executar',
+            'Reduzir o consumo de tokens'
+          ],
+          correctIndex: 2,
+          explanation: 'O Plan Mode permite ver todo o plano de mudanças antes de executar, dando controle total sobre o que será modificado no projeto.'
+        },
+        {
+          question: 'Quando você NÃO precisa usar Plan Mode?',
+          options: [
+            'Refatoração de múltiplos arquivos',
+            'Nova feature complexa',
+            'Fix simples de um bug em um arquivo',
+            'Migração de banco de dados'
+          ],
+          correctIndex: 2,
+          explanation: 'Para mudanças simples e localizadas (como um bug fix em um único arquivo), ir direto é mais eficiente que criar um plano elaborado.'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-10-02-1',
+          title: 'Planeje um Sistema de Notificações',
+          description: 'Use o Plan Mode para planejar a adição de um sistema de notificações push a um projeto existente. Documente o plano gerado.',
+          context: 'general',
+          contextDescription: 'Qualquer projeto web/mobile',
+          difficulty: 'advanced',
+          xpBonus: 80,
+          hints: [
+            'Considere: banco de dados, filas, serviço de push',
+            'Pense em rate limiting e retry logic'
+          ]
+        }
+      ]
+    }
+  ),
+
+  createLesson('10', '10-03-multi-file-editing', '03. Multi-File Editing',
+    'Edite múltiplos arquivos de forma coordenada e segura.',
+    `# Multi-File Editing
+
+Uma das capacidades mais poderosas do Claude Code é editar múltiplos arquivos de forma coordenada, mantendo consistência e evitando quebras.
+
+## O Desafio
+
+Mudanças em projetos reais raramente afetam apenas um arquivo:
+
+- Renomear uma função → atualizar todos os imports
+- Adicionar um campo → model, migration, API, frontend
+- Refatorar um módulo → dezenas de arquivos
+
+## Como Claude Code Lida com Isso
+
+O Claude Code mantém contexto de múltiplos arquivos e pode:
+
+1. **Ler** vários arquivos para entender o contexto
+2. **Planejar** mudanças coordenadas
+3. **Editar** em sequência lógica
+4. **Validar** que as mudanças são consistentes
+
+## Técnicas para Multi-File Editing
+
+### 1. Dar Contexto Completo
+
+\`\`\`bash
+# Adicione arquivos relevantes ao contexto
+claude "Olhe estes arquivos: src/models/user.ts,
+src/api/users.ts, src/types/user.ts.
+Preciso adicionar um campo 'avatar' em todos."
+\`\`\`
+
+### 2. Usar Referências Explícitas
+
+\`\`\`
+"No arquivo src/models/user.ts, adicione o campo avatar.
+Depois, atualize src/api/users.ts para aceitar avatar.
+Por fim, adicione o tipo em src/types/user.ts."
+\`\`\`
+
+### 3. Pedir Confirmação Entre Arquivos
+
+\`\`\`
+"Edite o model primeiro e me mostre. Depois de aprovado,
+continue com os outros arquivos."
+\`\`\`
+
+## Padrão: Renomear Símbolo
+
+Um dos casos mais comuns - renomear uma função/classe:
+
+\`\`\`
+Você: "Renomeie a função 'getUserData' para 'fetchUserProfile'
+em todo o projeto"
+
+Claude:
+Encontrei 'getUserData' em 12 arquivos:
+- src/services/user.ts (definição)
+- src/api/users.ts (2 usos)
+- src/components/Profile.tsx (1 uso)
+... [lista completa]
+
+Procedendo com a renomeação:
+1. ✅ src/services/user.ts - definição atualizada
+2. ✅ src/api/users.ts - 2 imports atualizados
+3. ✅ src/components/Profile.tsx - 1 uso atualizado
+...
+
+Todas as 12 ocorrências foram atualizadas.
+\`\`\`
+
+## Padrão: Adicionar Feature Cross-Cutting
+
+\`\`\`
+Você: "Adicione logging a todas as funções de API"
+
+Claude analisa:
+- src/api/users.ts - 5 funções
+- src/api/products.ts - 8 funções
+- src/api/orders.ts - 6 funções
+
+E adiciona logging consistente em todas.
+\`\`\`
+
+## Ordem de Edição Importa
+
+O Claude Code é inteligente sobre a ordem:
+
+| Tipo de Mudança | Ordem Correta |
+|-----------------|---------------|
+| Adicionar campo | Types → Model → API → Frontend |
+| Remover campo | Frontend → API → Model → Types |
+| Renomear | Definição → Usos |
+| Nova dependência | package.json → imports → uso |
+
+## Dicas TOP 1%
+
+### Use Glob Patterns para Contexto
+\`\`\`
+"Edite todos os arquivos em src/api/*.ts para
+adicionar rate limiting"
+\`\`\`
+
+### Peça Resumo no Final
+\`\`\`
+"Após todas as edições, me dê um resumo das mudanças
+em cada arquivo"
+\`\`\`
+
+### Valide com Build/Test
+\`\`\`
+"Após editar, rode o build e me diga se há erros"
+\`\`\`
+
+## Exemplo Completo: Adicionar Soft Delete
+
+\`\`\`
+Você: "Adicione soft delete ao model User.
+Preciso do campo deletedAt, atualizar queries para
+ignorar deletados, e adicionar endpoint de restore."
+
+Claude:
+## Plano de Mudanças (5 arquivos)
+
+1. **src/models/User.ts**
+   - Adicionar campo \`deletedAt: Date | null\`
+
+2. **src/migrations/xxx-add-soft-delete.ts**
+   - Criar migration para novo campo
+
+3. **src/repositories/UserRepository.ts**
+   - Modificar queries para filtrar deletedAt
+
+4. **src/api/users.ts**
+   - Modificar DELETE para soft delete
+   - Adicionar POST /users/:id/restore
+
+5. **src/types/user.ts**
+   - Adicionar deletedAt ao tipo
+
+Executando mudanças...
+[edições coordenadas em todos os arquivos]
+
+✅ Todas as mudanças aplicadas. Build passou.
+\`\`\`
+`,
+    {
+      xp: 130,
+      duration: 40,
+      difficulty: 'advanced',
+      tags: ['multi-file', 'refactoring', 'editing'],
+      quizzes: [
+        {
+          question: 'Qual é a ordem correta para ADICIONAR um novo campo?',
+          options: [
+            'Frontend → API → Model → Types',
+            'Types → Model → API → Frontend',
+            'Qualquer ordem funciona',
+            'Model → Types → Frontend → API'
+          ],
+          correctIndex: 1,
+          explanation: 'Para adicionar, começamos pela definição (Types, Model) e vamos para os consumidores (API, Frontend). Para remover, é o contrário.'
+        },
+        {
+          question: 'O que você deve fazer após edições multi-arquivo?',
+          options: [
+            'Nada, Claude garante que está tudo certo',
+            'Fechar o terminal',
+            'Pedir para rodar build/testes e verificar erros',
+            'Deletar os arquivos originais'
+          ],
+          correctIndex: 2,
+          explanation: 'Sempre valide com build e testes após mudanças multi-arquivo para garantir que não há erros de tipagem ou runtime.'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-10-03-1',
+          title: 'Refatoração Multi-Arquivo',
+          description: 'Renomeie uma entidade principal do seu projeto (ex: User → Account) usando Claude Code. Documente quantos arquivos foram modificados.',
+          context: 'general',
+          contextDescription: 'Qualquer projeto com múltiplos arquivos',
+          difficulty: 'advanced',
+          xpBonus: 100,
+          hints: [
+            'Use Plan Mode primeiro para ver o impacto',
+            'Peça confirmação arquivo por arquivo se necessário'
+          ]
+        }
+      ]
+    }
+  ),
+
+  createLesson('10', '10-04-project-architecture', '04. Arquitetura de Projetos',
+    'Como Claude Code entende e trabalha com arquiteturas complexas.',
+    `# Arquitetura de Projetos
+
+Claude Code não apenas edita arquivos - ele entende a arquitetura do seu projeto e trabalha de forma consistente com ela.
+
+## Como Claude Code Entende Seu Projeto
+
+### 1. Análise de Estrutura
+\`\`\`
+src/
+├── components/     # UI components
+├── services/       # Business logic
+├── api/           # API layer
+├── models/        # Data models
+└── utils/         # Helpers
+\`\`\`
+
+Claude Code infere padrões pela estrutura de pastas.
+
+### 2. Análise de Imports
+Ao ler imports, Claude entende dependências:
+\`\`\`typescript
+import { User } from '@/models/User'
+import { api } from '@/services/api'
+// Claude entende: este arquivo depende de models e services
+\`\`\`
+
+### 3. Análise de Configuração
+- \`package.json\` → dependências, scripts
+- \`tsconfig.json\` → paths, strict mode
+- \`.eslintrc\` → padrões de código
+
+## Informando Arquitetura via CLAUDE.md
+
+O melhor jeito de informar sua arquitetura:
+
+\`\`\`markdown
+# Arquitetura do Projeto
+
+## Camadas
+1. **Presentation** (src/components) - React components
+2. **Application** (src/services) - Use cases, business rules
+3. **Domain** (src/models) - Entities, value objects
+4. **Infrastructure** (src/api) - External services
+
+## Regras
+- Components NUNCA acessam API diretamente
+- Services são a única camada que faz I/O
+- Models são puros (sem side effects)
+
+## Padrões em Uso
+- Repository Pattern para data access
+- Factory Pattern para criação de objetos
+- Observer Pattern para eventos
+\`\`\`
+
+## Claude Code Respeita Sua Arquitetura
+
+### Exemplo: Seguindo Camadas
+
+\`\`\`
+Você: "Adicione busca de produtos"
+
+Claude (entendendo a arquitetura):
+1. Cria ProductRepository em src/repositories/
+2. Cria ProductService em src/services/
+3. Cria useProducts hook em src/hooks/
+4. Usa o hook no ProductList component
+
+❌ NÃO faz fetch direto no component
+✅ Segue o fluxo de camadas definido
+\`\`\`
+
+### Exemplo: Respeitando Padrões
+
+\`\`\`
+Seu projeto usa factories:
+
+// Existente
+const user = UserFactory.create({ name: 'João' })
+
+Você pede: "Crie Product model"
+
+Claude cria:
+// src/factories/ProductFactory.ts
+export const ProductFactory = {
+  create(data: ProductData): Product {
+    return new Product(data)
+  }
+}
+
+// Segue o mesmo padrão existente
+\`\`\`
+
+## Dica TOP 1%: Arquitetura Explícita
+
+Quanto mais explícita sua arquitetura no CLAUDE.md, melhores os resultados:
+
+\`\`\`markdown
+## Estrutura de Features (Feature-Sliced Design)
+
+Cada feature tem:
+\`\`\`
+features/
+└── [feature-name]/
+    ├── api/        # API calls
+    ├── model/      # Types, stores
+    ├── ui/         # Components
+    └── lib/        # Utils
+\`\`\`
+
+## Quando criar novo código:
+1. Identificar a feature
+2. Colocar no slice correto
+3. Exportar via index.ts
+4. Nunca importar de outra feature diretamente
+\`\`\`
+
+## Anti-Padrões que Claude Code Evita
+
+| Anti-Padrão | O que Claude Faz |
+|-------------|------------------|
+| God Component | Sugere split em componentes menores |
+| Prop Drilling | Sugere Context ou state management |
+| Business logic em UI | Move para services |
+| Imports circulares | Alerta e sugere refatoração |
+
+## Trabalhando com Monorepos
+
+Claude Code entende monorepos:
+
+\`\`\`
+packages/
+├── web/          # Next.js app
+├── mobile/       # React Native
+├── shared/       # Shared types & utils
+└── api/          # Backend
+\`\`\`
+
+\`\`\`
+Você: "Adicione um novo tipo User compartilhado"
+
+Claude:
+1. Cria em packages/shared/types/User.ts
+2. Exporta via packages/shared/index.ts
+3. Mostra como importar em web e mobile
+\`\`\`
+`,
+    {
+      xp: 140,
+      duration: 45,
+      difficulty: 'expert',
+      tags: ['arquitetura', 'patterns', 'design'],
+      quizzes: [
+        {
+          question: 'Como você informa sua arquitetura ao Claude Code?',
+          options: [
+            'Não precisa, ele adivinha',
+            'Via comentários em cada arquivo',
+            'Documentando no CLAUDE.md do projeto',
+            'Enviando diagrama UML'
+          ],
+          correctIndex: 2,
+          explanation: 'O CLAUDE.md do projeto é o lugar ideal para documentar arquitetura, padrões e regras. Claude Code lê e respeita essas diretrizes.'
+        },
+        {
+          question: 'O que Claude Code faz se você tem business logic em um component?',
+          options: [
+            'Ignora e mantém assim',
+            'Sugere mover para a camada de services',
+            'Deleta o código',
+            'Adiciona mais business logic'
+          ],
+          correctIndex: 1,
+          explanation: 'Claude Code entende separação de concerns e sugere mover lógica de negócio para a camada apropriada (services/use cases).'
+        }
+      ],
+      challenges: [
+        {
+          id: 'ch-10-04-1',
+          title: 'Documente Sua Arquitetura',
+          description: 'Crie uma seção de Arquitetura no CLAUDE.md do seu projeto. Inclua: camadas, padrões usados e regras. Depois, peça ao Claude para criar um novo módulo e veja se ele segue as regras.',
+          context: 'general',
+          contextDescription: 'Qualquer projeto pessoal ou profissional',
+          difficulty: 'expert',
+          xpBonus: 120,
+          hints: [
+            'Seja específico sobre onde cada tipo de código deve ficar',
+            'Inclua exemplos de import paths corretos'
+          ]
+        }
+      ]
+    }
   ),
 ];
 
@@ -3899,15 +4513,16 @@ export const courseModules: Module[] = [
     id: '10',
     courseId: 'claude-code',
     number: 10,
-    title: '10. Avançado',
-    slug: 'avancado',
-    description: 'Extended thinking, sandboxing e features experimentais',
+    title: '10. Técnicas Avançadas',
+    slug: 'tecnicas-avancadas',
+    description: 'Plan Mode, Multi-File Editing, Extended Thinking e Arquitetura de Projetos',
     icon: 'Sparkles',
     color: 'violet',
+    isNew: true,
     lessons: module10Lessons,
     totalXp: module10Lessons.reduce((acc, l) => acc + l.xp, 0),
-    estimatedHours: 4,
-    prerequisites: ['05', '06', '07'],
+    estimatedHours: 3,
+    prerequisites: ['03', '05'],
     version: '1.0.0',
     dateUpdated: new Date().toISOString().split('T')[0],
   },
