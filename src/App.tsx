@@ -1108,10 +1108,11 @@ function Sidebar({ isOpen, onClose, currentModule, onSelectLesson, courseModules
 interface LessonViewProps {
   lessonId: string;
   onBack: () => void;
+  onSelectLesson: (lessonId: string) => void;
   courseModules?: Module[];
 }
 
-function LessonView({ lessonId, onBack, courseModules }: LessonViewProps) {
+function LessonView({ lessonId, onBack, onSelectLesson, courseModules }: LessonViewProps) {
   const storeModules = useCourseStore((s) => s.modules);
   const modules = courseModules || storeModules;
   const lessonProgress = useCourseStore((s) => s.lessonProgress);
@@ -1120,7 +1121,15 @@ function LessonView({ lessonId, onBack, courseModules }: LessonViewProps) {
   const toggleBookmark = useCourseStore((s) => s.toggleBookmark);
   const bookmarks = useCourseStore((s) => s.bookmarks);
 
-  const lesson = modules.flatMap((m) => m.lessons).find((l) => l.id === lessonId);
+  // All lessons flattened for navigation
+  const allLessons = modules.flatMap((m) => m.lessons);
+  const currentIndex = allLessons.findIndex((l) => l.id === lessonId);
+  const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
+  const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
+  const currentModuleIndex = modules.findIndex((m) => m.lessons.some((l) => l.id === lessonId));
+  const currentModule = modules[currentModuleIndex];
+
+  const lesson = allLessons.find((l) => l.id === lessonId);
   const module = modules.find((m) => m.id === lesson?.moduleId);
 
   if (!lesson || !module) {
@@ -1294,6 +1303,84 @@ function LessonView({ lessonId, onBack, courseModules }: LessonViewProps) {
           <div className="text-sm">+{lesson.xp} XP ganhos</div>
         </div>
       )}
+
+      {/* Navigation - Previous/Next Lesson */}
+      <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+        {/* Progress indicator */}
+        <div className="flex items-center justify-center gap-2 mb-4 text-sm text-slate-500 dark:text-slate-400">
+          <span>Lição {currentIndex + 1} de {allLessons.length}</span>
+          <span className="text-slate-300 dark:text-slate-600">•</span>
+          <span>Módulo: {currentModule?.title}</span>
+        </div>
+
+        {/* Navigation buttons */}
+        <div className="flex items-center justify-between gap-4">
+          {/* Previous button */}
+          {prevLesson ? (
+            <button
+              onClick={() => onSelectLesson(prevLesson.id)}
+              className="flex-1 group flex items-center gap-3 p-4 bg-white dark:bg-slate-900
+                       border border-slate-200 dark:border-slate-700 rounded-xl
+                       hover:border-indigo-300 dark:hover:border-indigo-600
+                       hover:shadow-md transition-all"
+            >
+              <div className="w-10 h-10 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center
+                            group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/30 transition-colors">
+                <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-indigo-500 rotate-180" />
+              </div>
+              <div className="flex-1 text-left min-w-0">
+                <div className="text-xs text-slate-500 dark:text-slate-400 font-medium uppercase tracking-wider">
+                  Anterior
+                </div>
+                <div className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+                  {prevLesson.title}
+                </div>
+              </div>
+            </button>
+          ) : (
+            <div className="flex-1" />
+          )}
+
+          {/* Back to module button (center) */}
+          <button
+            onClick={onBack}
+            className="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700
+                     transition-colors text-slate-600 dark:text-slate-300"
+            title="Voltar ao módulo"
+          >
+            <LayoutGrid className="w-5 h-5" />
+          </button>
+
+          {/* Next button */}
+          {nextLesson ? (
+            <button
+              onClick={() => onSelectLesson(nextLesson.id)}
+              className="flex-1 group flex items-center gap-3 p-4 bg-gradient-to-r from-indigo-500 to-violet-500
+                       rounded-xl shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/30
+                       hover:scale-[1.02] active:scale-[0.98] transition-all"
+            >
+              <div className="flex-1 text-right min-w-0">
+                <div className="text-xs text-indigo-100 font-medium uppercase tracking-wider">
+                  Próxima
+                </div>
+                <div className="text-sm font-semibold text-white truncate">
+                  {nextLesson.title}
+                </div>
+              </div>
+              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                <ChevronRight className="w-5 h-5 text-white" />
+              </div>
+            </button>
+          ) : (
+            <div className="flex-1 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl text-center">
+              <div className="flex items-center justify-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold">
+                <Trophy className="w-5 h-5" />
+                <span>Curso Concluído! 🎉</span>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -1716,6 +1803,13 @@ function App() {
             <LessonView
               lessonId={currentLesson}
               onBack={() => setCurrentLesson(null)}
+              onSelectLesson={(id) => {
+                const lesson = courseModules.flatMap(m => m.lessons).find(l => l.id === id);
+                if (lesson) {
+                  setCurrentModule(lesson.moduleId);
+                  setCurrentLesson(id);
+                }
+              }}
               courseModules={courseModules}
             />
           ) : (

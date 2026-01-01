@@ -47,7 +47,7 @@ function createLesson(
 // ============================================================================
 
 const module00Lessons: Lesson[] = [
-  createLesson('00', '00-01-paradigm-shift', 'A Mudança de Paradigma',
+  createLesson('00', '00-01-paradigm-shift', '01. A Mudança de Paradigma',
     'Entenda a transformação fundamental: de executor de código para orquestrador de IA.',
     `# A Grande Mudança de Paradigma
 
@@ -123,7 +123,7 @@ A mudança de paradigma não é opcional - é survival. Os desenvolvedores que n
     }
   ),
 
-  createLesson('00', '00-02-ai-first-principles', 'Os 10 Princípios AI-FIRST',
+  createLesson('00', '00-02-ai-first-principles', '02. Os 10 Princípios AI-FIRST',
     'Domine os 10 princípios que separam os TOP 1% dos desenvolvedores comuns.',
     `# Os 10 Princípios AI-FIRST dos Top 1%
 
@@ -246,7 +246,7 @@ Os TOP 1% dedicam tempo toda semana para aprender novas técnicas e ferramentas.
     }
   ),
 
-  createLesson('00', '00-03-four-eras', 'As 4 Eras do Desenvolvedor',
+  createLesson('00', '00-03-four-eras', '03. As 4 Eras do Desenvolvedor',
     'Entenda a evolução histórica e por que a Era AI-First exige uma nova mentalidade.',
     `# A Evolução das 4 Eras do Desenvolvedor
 
@@ -364,7 +364,7 @@ Em qual era você opera hoje? Marque as que se aplicam:
     }
   ),
 
-  createLesson('00', '00-04-five-traps', 'Por que 90% Ficam Estagnados',
+  createLesson('00', '00-04-five-traps', '04. Por que 90% Ficam Estagnados',
     'Identifique e evite as 5 armadilhas que prendem a maioria dos desenvolvedores.',
     `# Por que 90% dos Desenvolvedores Ficam Estagnados
 
@@ -538,7 +538,7 @@ Configurar uma vez e nunca mais evoluir. Mesmos prompts de meses atrás, mesmo C
 // ============================================================================
 
 const module01Lessons: Lesson[] = [
-  createLesson('01', '01-01-introduction', 'O que é Claude Code?',
+  createLesson('01', '01-01-introduction', '01. O que é Claude Code?',
     'Entenda o que é Claude Code, sua filosofia e como ele revoluciona o desenvolvimento de software.',
     `# O que é Claude Code?
 
@@ -587,7 +587,7 @@ Claude Code representa a nova era de desenvolvimento onde **IA não é uma ferra
     }
   ),
 
-  createLesson('01', '01-02-installation', 'Instalação e Configuração Inicial',
+  createLesson('01', '01-02-installation', '02. Instalação e Configuração Inicial',
     'Aprenda a instalar o Claude Code e configurar seu ambiente para máxima produtividade.',
     `# Instalação do Claude Code
 
@@ -664,7 +664,7 @@ claude "Qual é a data de hoje?"
     }
   ),
 
-  createLesson('01', '01-03-first-session', 'Sua Primeira Sessão',
+  createLesson('01', '01-03-first-session', '03. Sua Primeira Sessão',
     'Inicie sua primeira sessão interativa e entenda o fluxo básico de trabalho.',
     `# Sua Primeira Sessão
 
@@ -723,7 +723,7 @@ Sempre comece descrevendo seu **objetivo final**, não apenas a tarefa imediata:
     }
   ),
 
-  createLesson('01', '01-04-file-operations', 'Operações com Arquivos',
+  createLesson('01', '01-04-file-operations', '04. Operações com Arquivos',
     'Domine as operações de leitura, escrita e edição de arquivos.',
     `# Operações com Arquivos
 
@@ -799,7 +799,7 @@ Por padrão, Claude pede confirmação para operações de escrita. Você pode:
     }
   ),
 
-  createLesson('01', '01-05-context-management', 'Gerenciamento de Contexto',
+  createLesson('01', '01-05-context-management', '05. Gerenciamento de Contexto',
     'Entenda como o contexto funciona e como gerenciá-lo eficientemente.',
     `# Gerenciamento de Contexto
 
@@ -880,7 +880,7 @@ Isso cria um "checkpoint" que pode ser referenciado depois.
 // ============================================================================
 
 const module02Lessons: Lesson[] = [
-  createLesson('02', '02-01-flags-overview', 'Visão Geral das Flags',
+  createLesson('02', '02-01-flags-overview', '01. Visão Geral das Flags',
     'Conheça todas as flags disponíveis na CLI e quando usar cada uma.',
     `# Flags da CLI
 
@@ -938,7 +938,7 @@ claude --no-continue --model opus "Revise este código crítico"
     }
   ),
 
-  createLesson('02', '02-02-slash-commands', 'Slash Commands',
+  createLesson('02', '02-02-slash-commands', '02. Slash Commands',
     'Domine os comandos internos que começam com / para controlar a sessão.',
     `# Slash Commands
 
@@ -1000,7 +1000,7 @@ Você pode executar slash commands seguidos de texto:
     }
   ),
 
-  createLesson('02', '02-03-headless-mode', 'Modo Headless e Automação',
+  createLesson('02', '02-03-headless-mode', '03. Modo Headless e Automação',
     'Use Claude Code em scripts e pipelines de CI/CD.',
     `# Modo Headless
 
@@ -1076,7 +1076,7 @@ git commit -m "$MESSAGE"
     }
   ),
 
-  createLesson('02', '02-10-plan-mode', 'Plan Mode: O Segredo dos TOP 1%',
+  createLesson('02', '02-10-plan-mode', '04. Plan Mode: O Segredo dos TOP 1%',
     'Domine o modo de planejamento para arquitetar soluções antes de implementar.',
     `# Plan Mode: Pense Antes de Agir
 
@@ -1210,7 +1210,7 @@ PRO (TOP 1%):
     }
   ),
 
-  createLesson('02', '02-11-checkpoints', 'Checkpoints e /rewind',
+  createLesson('02', '02-11-checkpoints', '05. Checkpoints e /rewind',
     'Navegue pelo histórico de mudanças e volte no tempo quando necessário.',
     `# Checkpoints: Seu Ctrl+Z Turbinado
 
@@ -1337,7 +1337,7 @@ DICA: Verbalize "crie um checkpoint antes" para mudanças críticas
     }
   ),
 
-  createLesson('02', '02-12-best-of-n', 'Padrão Best of N',
+  createLesson('02', '02-12-best-of-n', '06. Padrão Best of N',
     'Gere múltiplas soluções e escolha a melhor - técnica dos especialistas.',
     `# Best of N: Múltiplas Soluções, Melhor Escolha
 
@@ -1493,7 +1493,7 @@ RESULTADO: Solução otimizada com baixo risco
     }
   ),
 
-  createLesson('02', '02-13-project-architecture', 'Arquitetura de Projetos com Claude',
+  createLesson('02', '02-13-project-architecture', '07. Arquitetura de Projetos com Claude',
     'Domine como estruturar e navegar projetos complexos com Claude Code.',
     `# Arquitetura de Projetos com Claude Code
 
@@ -1638,7 +1638,7 @@ CheckoutPage
     }
   ),
 
-  createLesson('02', '02-14-multifile-editing', 'Multi-file Editing Avançado',
+  createLesson('02', '02-14-multifile-editing', '08. Multi-file Editing Avançado',
     'Técnicas para editar múltiplos arquivos de forma coordenada e eficiente.',
     `# Multi-file Editing: O Superpoder do Claude Code
 
@@ -1816,7 +1816,7 @@ Claude cria (em ordem):
 // ============================================================================
 
 const module03Lessons: Lesson[] = [
-  createLesson('03', '03-00-what-is-context', 'O que é Context Engineering',
+  createLesson('03', '03-00-what-is-context', '01. O que é Context Engineering',
     'Descubra por que fornecer o contexto certo para IA é a habilidade mais valiosa da era AI.',
     `# Context Engineering: A Habilidade #1 dos TOP 1%
 
@@ -1927,7 +1927,7 @@ ANTES de escrever qualquer prompt, pergunte:
     }
   ),
 
-  createLesson('03', '03-01-hierarchy', 'Hierarquia de Contexto TOP 1%',
+  createLesson('03', '03-01-hierarchy', '02. Hierarquia de Contexto TOP 1%',
     'Entenda como os arquivos de contexto se organizam e priorizam.',
     `# A Hierarquia de Contexto do Claude Code
 
@@ -2063,7 +2063,7 @@ Antes de criar um CLAUDE.md, pergunte:
     }
   ),
 
-  createLesson('03', '03-02-claudemd', 'O Arquivo CLAUDE.md',
+  createLesson('03', '03-02-claudemd', '03. O Arquivo CLAUDE.md',
     'Domine o arquivo de configuração mais importante do Claude Code.',
     `# CLAUDE.md - Sua "Constituição" para Claude
 
@@ -2184,7 +2184,7 @@ export default function(props) { ... }
     }
   ),
 
-  createLesson('03', '03-03-settings', 'Configurações Avançadas',
+  createLesson('03', '03-03-settings', '04. Configurações Avançadas',
     'Configure permissões, modelos padrão e comportamentos.',
     `# Configurações Avançadas
 
@@ -2251,7 +2251,7 @@ claude config set theme light
     }
   ),
 
-  createLesson('03', '03-04-master-context', 'Master Context Documents',
+  createLesson('03', '03-04-master-context', '05. Master Context Documents',
     'Crie documentos de contexto de nível profissional usados pelos TOP 1%.',
     `# Master Context Documents
 
@@ -2433,7 +2433,7 @@ Ongoing: Atualizar com cada mudança significativa
     }
   ),
 
-  createLesson('03', '03-05-per-folder', 'Per-Folder CLAUDE.md',
+  createLesson('03', '03-05-per-folder', '06. Per-Folder CLAUDE.md',
     'Contexto granular por pasta para projetos complexos.',
     `# Per-Folder CLAUDE.md: Contexto Granular
 
@@ -2549,7 +2549,7 @@ src/api/.claude/CLAUDE.md  ← Maior prioridade nesta pasta
     }
   ),
 
-  createLesson('03', '03-06-include-system', 'Sistema @include',
+  createLesson('03', '03-06-include-system', '07. Sistema @include',
     'Modularize e reutilize contexto entre arquivos.',
     `# Sistema @include: Modularização de Contexto
 
@@ -2687,7 +2687,7 @@ EOF
     }
   ),
 
-  createLesson('03', '03-07-challenge-final', 'Challenge: CLAUDE.md TOP 1%',
+  createLesson('03', '03-07-challenge-final', '08. Challenge: CLAUDE.md TOP 1%',
     'Aplique tudo que aprendeu criando um CLAUDE.md de nível profissional.',
     `# 🏆 CHALLENGE FINAL: Crie seu CLAUDE.md TOP 1%
 
@@ -2825,7 +2825,7 @@ Após completar:
 // ============================================================================
 
 const module04Lessons: Lesson[] = [
-  createLesson('04', '04-01-skills-intro', 'Introdução às Skills',
+  createLesson('04', '04-01-skills-intro', '01. Introdução às Skills',
     'Entenda o que são Skills e como elas estendem as capacidades do Claude.',
     `# Skills - Superpoderes para Claude
 
@@ -2885,7 +2885,7 @@ model-invoked: true  # ou false para manual
     }
   ),
 
-  createLesson('04', '04-02-creating-skills', 'Criando suas Próprias Skills',
+  createLesson('04', '04-02-creating-skills', '02. Criando suas Próprias Skills',
     'Aprenda a criar skills personalizadas para seu fluxo de trabalho.',
     `# Criando Skills Customizadas
 
@@ -2988,7 +2988,7 @@ Quando houver texto de contrato ou menção a "contrato", "cláusula", "acordo".
 // ============================================================================
 
 const module05Lessons: Lesson[] = [
-  createLesson('05', '05-01-mcp-intro', 'O que é MCP?',
+  createLesson('05', '05-01-mcp-intro', '01. O que é MCP?',
     'Entenda o Model Context Protocol e como ele expande as capacidades do Claude.',
     `# Model Context Protocol (MCP)
 
@@ -3043,7 +3043,7 @@ claude mcp remove memory
     }
   ),
 
-  createLesson('05', '05-02-installing-mcps', 'Instalando e Configurando MCPs',
+  createLesson('05', '05-02-installing-mcps', '02. Instalando e Configurando MCPs',
     'Aprenda a instalar e configurar MCPs para seu fluxo de trabalho.',
     `# Instalando MCPs
 
@@ -3117,7 +3117,7 @@ claude mcp test memory
 // ============================================================================
 
 const module06Lessons: Lesson[] = [
-  createLesson('06', '06-01-hooks-intro', 'Introdução aos Hooks',
+  createLesson('06', '06-01-hooks-intro', '01. Introdução aos Hooks',
     'Aprenda a automatizar ações com hooks do Claude Code.',
     `# Hooks - Automação Inteligente
 
@@ -3177,7 +3177,7 @@ Hooks são **scripts que executam automaticamente** em resposta a eventos do Cla
 // ============================================================================
 
 const module07Lessons: Lesson[] = [
-  createLesson('07', '07-01-subagents-intro', 'Entendendo Subagents',
+  createLesson('07', '07-01-subagents-intro', '01. Entendendo Subagents',
     'Aprenda a usar subagents para tarefas especializadas.',
     `# Subagents - Especialistas sob Demanda
 
@@ -3226,7 +3226,7 @@ Subagents são **agentes especializados** que Claude pode invocar para tarefas e
     }
   ),
 
-  createLesson('07', '07-02-multi-agent-orchestration', 'Orquestração Multi-Agente',
+  createLesson('07', '07-02-multi-agent-orchestration', '02. Orquestração Multi-Agente',
     'Aprenda a coordenar múltiplos subagents para resolver problemas complexos.',
     `# Orquestração Multi-Agente
 
@@ -3332,7 +3332,7 @@ Tarefa ─ Agente B ─┴→ Síntese
     }
   ),
 
-  createLesson('07', '07-03-master-clone-lead-specialist', 'Padrões: Master-Clone vs Lead-Specialist',
+  createLesson('07', '07-03-master-clone-lead-specialist', '03. Padrões: Master-Clone vs Lead-Specialist',
     'Entenda os dois padrões fundamentais de arquitetura multi-agente.',
     `# Master-Clone vs Lead-Specialist
 
@@ -3481,7 +3481,7 @@ Na prática, você pode combinar os padrões!
     }
   ),
 
-  createLesson('07', '07-04-parallel-subagents', 'Parallel Subagents na Prática',
+  createLesson('07', '07-04-parallel-subagents', '04. Parallel Subagents na Prática',
     'Execute múltiplos subagents simultaneamente para máxima velocidade.',
     `# Parallel Subagents na Prática
 
@@ -3647,7 +3647,7 @@ Tempo paralelo: ~12 min (4x mais rápido)
 // ============================================================================
 
 const module08Lessons: Lesson[] = [
-  createLesson('08', '08-01-plugins-intro', 'Introdução aos Plugins',
+  createLesson('08', '08-01-plugins-intro', '01. Introdução aos Plugins',
     'Entenda o sistema de plugins do Claude Code.',
     `# Plugins
 
@@ -3660,7 +3660,7 @@ Plugins são extensões distribuíveis que adicionam funcionalidades ao Claude C
 ];
 
 const module09Lessons: Lesson[] = [
-  createLesson('09', '09-01-vscode-integration', 'Integração com VS Code',
+  createLesson('09', '09-01-vscode-integration', '01. Integração com VS Code',
     'Configure Claude Code para trabalhar com VS Code.',
     `# VS Code Integration
 
@@ -3673,7 +3673,7 @@ A integração com VS Code traz Claude para seu editor preferido.
 ];
 
 const module10Lessons: Lesson[] = [
-  createLesson('10', '10-01-extended-thinking', 'Extended Thinking',
+  createLesson('10', '10-01-extended-thinking', '01. Extended Thinking',
     'Use o modo de pensamento estendido para problemas complexos.',
     `# Extended Thinking
 
@@ -3686,7 +3686,7 @@ Extended Thinking permite que Claude "pense por mais tempo" antes de responder.
 ];
 
 const module11Lessons: Lesson[] = [
-  createLesson('11', '11-01-prompting-patterns', 'Padrões de Prompting',
+  createLesson('11', '11-01-prompting-patterns', '01. Padrões de Prompting',
     'Melhores práticas de prompting para resultados consistentes.',
     `# Padrões de Prompting
 
@@ -3699,7 +3699,7 @@ Prompting eficaz é uma habilidade fundamental para tirar o máximo do Claude.
 ];
 
 const module12Lessons: Lesson[] = [
-  createLesson('12', '12-01-project-api-rest', 'Projeto: API REST Completa',
+  createLesson('12', '12-01-project-api-rest', '01. Projeto: API REST Completa',
     'Construa uma API REST do zero usando Claude Code.',
     `# Projeto Prático: API REST
 
